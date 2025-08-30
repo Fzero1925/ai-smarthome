@@ -1,0 +1,21 @@
+{{- $pages := .Site.RegularPages -}}
+{{- $limited := ($pages | first 10) -}}
+{
+  "version": "1.1",
+  "title": "{{ .Site.Title }}",
+  "home_page_url": "{{ .Site.BaseURL }}",
+  "description": "{{ .Site.Params.description }}",
+  "items": [
+    {{- range $index, $page := $limited -}}
+    {{- if $index }}, {{ end }}
+    {
+      "id": "{{ .Permalink }}",
+      "url": "{{ .Permalink }}",
+      "title": {{ .Title | jsonify }},
+      "summary": {{ .Summary | plainify | jsonify }},
+      "date_published": {{ .Date.Format "2006-01-02T15:04:05Z07:00" | jsonify }},
+      "date_modified": {{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" | jsonify }}
+    }
+    {{- end }}
+  ]
+}

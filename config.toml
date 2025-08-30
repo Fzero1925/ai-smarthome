@@ -3,7 +3,7 @@ title = "AI Smart Home Hub - Your Ultimate Smart Home Guide"
 languageCode = "en-us"
 paginate = 12
 enableRobotsTXT = true
-enableGitInfo = true
+enableGitInfo = false
 
 [params]
   description = "Comprehensive reviews and guides for smart home devices, automation systems, and AI-powered home technology."
@@ -29,14 +29,16 @@ defaultContentLanguage = "en"
     languageName = "English"
     weight = 1
     title = "AI Smart Home Hub"
-    description = "Your ultimate guide to smart home technology and automation"
+    [languages.en.params]
+      description = "Your ultimate guide to smart home technology and automation"
   
   [languages.zh]
     contentDir = "content-zh"
     languageName = "中文"
     weight = 2
     title = "AI智能家居中心"
-    description = "智能家居技术和自动化的终极指南"
+    [languages.zh.params]
+      description = "智能家居技术和自动化的终极指南"
 
 [menu]
   [[menu.main]]
