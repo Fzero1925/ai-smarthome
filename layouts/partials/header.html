@@ -38,7 +38,7 @@
       <div class="language-switcher">
         {{ range .Site.Languages }}
         {{ if not (eq .Lang $.Site.Language.Lang) }}
-        <a href="{{ $.Page.Permalink | relLangURL .Lang }}" class="lang-link">
+        <a href="{{ $.Page.RelPermalink | relLangURL }}" class="lang-link">
           {{ .LanguageName }}
         </a>
         {{ end }}
