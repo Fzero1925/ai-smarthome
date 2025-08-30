@@ -1,7 +1,6 @@
 baseURL = "/"
 title = "AI Smart Home Hub - Your Ultimate Smart Home Guide"
 languageCode = "en-us"
-theme = "smarthome"
 paginate = 12
 enableRobotsTXT = true
 enableGitInfo = true
@@ -10,9 +9,9 @@ enableGitInfo = true
   description = "Comprehensive reviews and guides for smart home devices, automation systems, and AI-powered home technology."
   author = "AI Smart Home Team"
   keywords = "smart home, home automation, IoT devices, smart plugs, smart speakers, security cameras"
-  google_adsense_id = "ca-pub-XXXXXXXXXXXXXXXX"  # 替换为实际的AdSense ID
-  amazon_affiliate_tag = "your-affiliate-tag"     # 替换为实际的Amazon联盟标签
-  google_analytics_id = "G-XXXXXXXXXX"           # 替换为实际的GA ID
+  google_adsense_id = "ca-pub-test"
+  amazon_affiliate_tag = "test-20"
+  google_analytics_id = "G-TEST123"
 
 [markup]
   [markup.goldmark]
