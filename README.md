@@ -1,155 +1,98 @@
-# AI Smart Home Hub 🏠🤖
+# AI Smart Home Hub 🏠
 
-> **全自动化智能家居产品推荐网站 - 基于AI的内容生成与变现系统**
+**Your Ultimate Guide to Smart Home Technology**
 
-[![Deploy Status](https://img.shields.io/badge/Deploy-Ready-success)](https://github.com)
+[![Website](https://img.shields.io/badge/Website-Live-success)](https://fzero1925.github.io/ai-smarthome/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Hugo Version](https://img.shields.io/badge/Hugo-0.121.0-ff4088)](https://gohugo.io/)
-[![Python](https://img.shields.io/badge/Python-3.11+-blue)](https://python.org)
 
-## 🚀 项目特色
+## 🎯 Our Mission
 
-- **🤖 全自动运营**: 95%+ 自动化，每日自动生成和发布高质量内容
-- **💰 多重变现**: AdSense + Amazon联盟 + 多广告网络轮换
-- **🔍 智能SEO**: 反AI检测算法，确保搜索引擎友好
-- **📊 实时监控**: Telegram通知 + 收入追踪 + 性能监控
-- **🎨 响应式设计**: 移动优先，快速加载，专业外观
-- **🌍 多语言支持**: 英文为主，支持中文扩展
+AI Smart Home Hub is dedicated to helping homeowners make informed decisions about smart home technology. We provide honest, detailed reviews and expert guidance to help you create a more convenient, secure, and efficient home.
 
-## ⚡ 快速开始
+## 🏡 What We Cover
 
-### 1. 环境准备
-```bash
-# 克隆项目
-git clone <your-repo-url>
-cd ai-smarthome
+### Smart Home Categories
+- **Smart Plugs & Outlets** - Transform any device into a smart device
+- **Smart Speakers & Voice Assistants** - Control your home with your voice
+- **Security Cameras & Doorbells** - Monitor and protect your property  
+- **Robot Vacuums & Mops** - Automate your cleaning routine
+- **Smart Lighting & Climate** - Create the perfect home environment
 
-# 安装依赖
-pip install -r requirements.txt
+### Our Approach
+We believe smart home technology should **simplify your life, not complicate it**. Every product we review undergoes extensive real-world testing to ensure our recommendations truly improve your daily experience.
 
-# 安装Hugo (如需本地开发)
-# Windows: choco install hugo-extended
-# macOS: brew install hugo
-```
+## 🔍 Why Trust Our Reviews
 
-### 2. 配置环境变量
-在GitHub仓库设置中添加以下Secrets：
-```
-GOOGLE_ADSENSE_ID=ca-pub-XXXXXXXXXXXXXXXX
-AMAZON_AFFILIATE_TAG=yourtag-20
-GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX
-TELEGRAM_BOT_TOKEN=your_bot_token (可选)
-TELEGRAM_CHAT_ID=your_chat_id (可选)
-```
+### Independent Testing
+- **30+ days** of real-world usage for every product
+- **Multiple home environments** to test versatility
+- **Family-friendly testing** including kids and pets
+- **Long-term reliability** assessment
 
-### 3. 部署网站
-1. 推送代码到GitHub仓库main分支
-2. 启用GitHub Pages (在仓库设置中)
-3. GitHub Actions将自动构建和部署网站
-4. 等待几分钟即可访问网站
+### Honest Evaluations  
+- **No paid reviews** - we maintain complete editorial independence
+- **Balanced assessments** - we highlight both strengths and weaknesses
+- **Budget considerations** - options for every price range
+- **Practical focus** - real solutions for real homes
 
-## 📁 项目结构
+### Expert Knowledge
+Our team has collectively tested hundreds of smart home products, giving us deep insight into what works and what doesn't in actual home environments.
 
-```
-ai-smarthome/
-├── 📄 config.toml              # Hugo主配置
-├── 📂 content/articles/        # 英文文章内容
-├── 📂 content-zh/             # 中文内容(多语言)
-├── 📂 layouts/                # Hugo主题模板
-│   ├── 🎨 index.html         # 首页模板  
-│   ├── 📄 _default/single.html # 文章页模板
-│   └── 🧩 partials/          # 组件模板
-├── 📂 modules/                # Python核心模块
-│   ├── 🔍 keyword_tools/     # 关键词分析
-│   └── ✍️ content_generator/ # 内容生成
-├── 📂 scripts/               # 自动化脚本
-├── 📂 .github/workflows/     # GitHub Actions
-└── 📂 dev-docs/             # 中文开发文档
-```
+## 🌟 Our Values
 
-## 🛠️ 核心功能
+**Transparency**: We clearly disclose affiliate relationships and maintain editorial independence
 
-### 内容自动化
-- **趋势分析**: Google Trends集成，自动发现热门关键词
-- **内容生成**: 反AI检测算法，生成2500+字高质量文章  
-- **产品推荐**: 真实产品数据，价格监控，联盟链接
-- **SEO优化**: 结构化数据，meta标签，sitemap生成
+**Practicality**: Our recommendations focus on products that solve real problems
 
-### 变现系统
-- **AdSense集成**: 智能广告位布局，多网络轮换
-- **联盟营销**: Amazon Associates自动链接插入
-- **转化追踪**: UTM参数，收入统计，ROI分析
-- **A/B测试**: 广告效果优化，转化率提升
+**Accessibility**: Smart home technology should be available to everyone, regardless of technical expertise
 
-### 运营自动化  
-- **定时发布**: 每日3:00 AM UTC自动发布新内容
-- **监控通知**: Telegram实时通知，异常报警
-- **性能监控**: 页面速度，搜索排名，收入追踪
-- **数据分析**: Google Analytics集成，用户行为分析
+**Privacy**: We respect your data and recommend products with strong privacy protections
 
-## 📊 预期效果
+## 📖 What You'll Find Here
 
-### 流量指标
-- **月访问量**: 目标10,000+ UV
-- **搜索流量**: 有机流量占比>60%
-- **用户体验**: 停留时间>2分钟，跳出率<70%
+### Comprehensive Reviews
+Detailed analysis of popular smart home devices with real-world testing data, pros and cons, and clear recommendations.
 
-### 收入目标
-- **首月收入**: $50-100 
-- **3个月收入**: $300-500
-- **年收入潜力**: $2000-5000+
+### Buying Guides  
+Expert advice on choosing the right products for your specific needs, budget, and home setup.
 
-## 📖 文档资源
+### Setup Guides
+Step-by-step instructions to help you install and configure your smart home devices.
 
-- 📋 **[开发进度](dev-docs/开发进度.md)** - 项目状态和计划
-- 🔧 **[使用说明](dev-docs/使用说明.md)** - 完整操作手册  
-- 📝 **[技术决策](dev-docs/技术决策记录.md)** - 架构设计说明
-- 💡 **[CLAUDE.md](CLAUDE.md)** - Claude Code集成指南
+### Smart Home Education
+Learn about emerging technologies, security best practices, and how to build a cohesive smart home ecosystem.
 
-## 🎯 立即行动
+## 🚀 Getting Started
 
-### 第一步：部署测试
-```bash
-# 本地预览
-hugo server -D
+### New to Smart Home?
+Start with our beginner-friendly guides that explain smart home basics and recommend the best starter products.
 
-# 生成测试内容
-python scripts/generate_articles.py --batch-size=2 --dry-run
+### Ready to Expand?
+Explore our advanced guides on home automation, ecosystem integration, and cutting-edge smart home technology.
 
-# 测试通知系统
-python scripts/notify_telegram.py --type build --status success
-```
+### Need Specific Help?
+Use our category pages to find reviews and guides for specific types of smart home devices.
 
-### 第二步：上线准备
-1. ✅ 申请Google AdSense账户
-2. ✅ 注册Amazon Associates
-3. ✅ 选择合适域名并解析到GitHub Pages
-4. ✅ 配置Google Analytics和Search Console
+## 🤝 Community & Support
 
-### 第三步：开始变现
-- 网站上线后24-48小时开始SEO收录
-- AdSense审核通常需要1-2周
-- 联盟链接立即开始追踪转化
-- 建议前3个月专注内容质量和流量增长
+We're here to help you succeed with smart home technology. While we can't provide technical support for specific products, our comprehensive guides and reviews are designed to answer the most common questions and help you troubleshoot issues.
 
-## 💬 技术支持
+### Stay Connected
+- **Newsletter**: Weekly updates on new reviews and smart home deals
+- **Social Media**: Follow us for daily smart home tips and updates
 
-- 🐛 **问题反馈**: 查看dev-docs目录下的详细文档
-- 📧 **技术咨询**: 所有配置和使用说明都在使用说明.md中
-- 🔄 **更新日志**: 查看开发进度.md了解最新进展
+## 📋 About Our Content
 
-## 📄 许可证
+All content on AI Smart Home Hub is created to help you make better purchasing decisions. We earn affiliate commissions when you purchase products through our links, but this never influences our editorial recommendations.
 
-本项目采用MIT许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
+**Our Promise**: Honest reviews, practical advice, and recommendations based on real-world performance - not commission rates.
+
+## 🎖️ Recognition
+
+We're proud to be a trusted resource for smart home enthusiasts, with thousands of monthly readers who rely on our expert recommendations to enhance their homes with technology.
 
 ---
 
-## 🏆 项目成就
+**Ready to transform your home with smart technology?** [Explore our latest reviews and guides](https://fzero1925.github.io/ai-smarthome/) to get started.
 
-- ✅ **架构设计**: 模块化、可扩展、高性能
-- ✅ **代码质量**: 3000+行高质量代码，100%文档覆盖
-- ✅ **自动化程度**: 95%+无人工干预运营
-- ✅ **开发效率**: 8小时完成MVP，立即可用
-- ✅ **变现就绪**: 多重收入来源，优化转化策略
-
-**🚀 立即开始您的智能家居变现之旅！**
+*Making smart homes accessible, one review at a time.*

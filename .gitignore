@@ -1,0 +1,57 @@
+# Development documentation (contains sensitive information)
+dev-docs/
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Python cache and temporary files
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.coverage
+*.egg-info/
+
+# Data cache directories
+data/keyword_cache/
+data/stats/
+*.json.bak
+
+# Log files
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+
+# IDE configuration files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Hugo build cache and output
+resources/
+public/
+.hugo_build.lock
+
+# Node modules (if any)
+node_modules/
+
+# Operating system files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Claude Code local settings (keep local only)
+.claude/settings.local.json
