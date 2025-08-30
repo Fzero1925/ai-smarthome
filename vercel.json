@@ -7,7 +7,6 @@
   "buildCommand": "hugo --minify",
   "outputDirectory": "public",
   "installCommand": "echo 'Hugo will be installed automatically by Vercel'",
-  "functions": {},
   "routes": [
     {
       "src": "/sitemap.xml",
