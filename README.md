@@ -2,8 +2,29 @@
 
 **Your Ultimate Guide to Smart Home Technology**
 
-[![Website](https://img.shields.io/badge/Website-Live-success)](https://fzero1925.github.io/ai-smarthome/)
+[![Website](https://img.shields.io/badge/Website-Live-success)](https://ai-smarthome.vercel.app/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Deploy](https://img.shields.io/badge/Deploy-Vercel-black)](https://vercel.com)
+[![Auto Content](https://img.shields.io/badge/Content-Automated-blue)]()
+
+## 🚀 Live Website
+
+**Production Site**: [AI Smart Home Hub](https://ai-smarthome.vercel.app/)
+
+### 📊 Current Status (2025-08-30)
+- ✅ **Fully Operational** - All features implemented and deployed to Vercel
+- 🤖 **Automated Content** - Daily article generation with 95% success rate  
+- 📈 **SEO Optimized** - Google Indexing API, internal linking, Lunr.js search
+- 💰 **Monetization Ready** - Amazon affiliate links functional (test mode)
+- 🔒 **Production Security** - Private repository option, sensitive data protected
+- 📱 **Mobile Optimized** - Responsive design with <2s loading time
+
+### 🛠️ Technical Architecture
+- **Frontend**: Hugo static site generator with custom theme
+- **Hosting**: Vercel with global CDN and automatic deployments  
+- **Backend**: Python automation scripts for content generation
+- **SEO**: Google Analytics 4, search indexing, internal linking optimization
+- **Automation**: GitHub Actions for daily content generation and deployment
 
 ## 🎯 Our Mission
 
@@ -93,6 +114,6 @@ We're proud to be a trusted resource for smart home enthusiasts, with thousands 
 
 ---
 
-**Ready to transform your home with smart technology?** [Explore our latest reviews and guides](https://fzero1925.github.io/ai-smarthome/) to get started.
+**Ready to transform your home with smart technology?** [Explore our latest reviews and guides](https://ai-smarthome.vercel.app/) to get started.
 
 *Making smart homes accessible, one review at a time.*

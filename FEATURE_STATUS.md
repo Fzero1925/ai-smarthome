@@ -190,28 +190,58 @@ TELEGRAM_CHAT_ID=your_chat_id                  # Optional
 
 ---
 
+## 💰 Monetization Strategy & Implementation
+
+### 🎯 Current Strategy (Conservative Approach)
+**Phase 1: AdSense Focus (Months 1-2)**
+- ✅ **Test Amazon Affiliate Setup** - Links functional with `test-20` tag
+- 🎯 **Google AdSense Priority** - More AI-content friendly
+- 📊 **Traffic Accumulation** - Build 1000+ monthly visitors
+- 📝 **Content Library** - Generate 30-50 high-quality articles
+
+**Phase 2: Amazon Associates (Months 3-6)**
+- 📈 **Traffic Proof** - Demonstrate real user engagement
+- 🔍 **Content Quality** - Hand-optimize top-performing articles
+- 🎖️ **Expert Positioning** - Add author credentials and testing methodology
+- 💼 **Amazon Application** - Apply with established website credibility
+
+### ⚠️ Risk Mitigation
+**AI Content Risks:**
+- Amazon Associates: High sensitivity to auto-generated content
+- Google AdSense: More tolerant if content quality is high
+- **Solution**: Gradual transition from AI-assisted to human-curated
+
+**Current Configuration:**
+```toml
+amazon_affiliate_tag = "test-20"  # Functional links, no commissions
+google_analytics_id = "G-8T4PY1JQRW"  # Real tracking ID active
+google_adsense_id = "ca-pub-test"  # Ready for real AdSense ID
+```
+
 ## 🎯 Next Steps & Recommendations
 
-### 🌟 Immediate Actions (Ready to Deploy)
-1. **Add Google Service Account** for Indexing API
-   - Create service account at Google Cloud Console
-   - Download JSON and encode to base64
-   - Add as `GOOGLE_SERVICE_ACCOUNT_JSON` secret
+### 🌟 Immediate Actions (Months 1-2)
+1. **Monitor Analytics** - Track user behavior and popular content
+2. **Content Quality** - Let automation build 30+ articles
+3. **Google AdSense Application** - Apply once traffic reaches 500+ monthly visits
+4. **SEO Optimization** - Continue internal linking and indexing
 
-2. **Purchase Custom Domain** 
-   - Recommended: `.com` or `.org` for authority
-   - Configure in Vercel dashboard
-   - Update `SITE_DOMAIN` in scripts
+### 🚀 Medium-term Goals (Months 3-6)
+1. **Amazon Associates Preparation**
+   - Add "About Us" and testing methodology pages
+   - Include author photos and credentials
+   - Create product unboxing and testing documentation
+   
+2. **Revenue Optimization**
+   - A/B test ad placements and affiliate button designs
+   - Implement email capture for product recommendations
+   - Add comparison tables with affiliate links
 
-3. **Set Up Telegram Monitoring** (Optional)
-   - Create bot via @BotFather
-   - Add `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`
-
-### 🔮 Future Enhancements (Low Priority)
+### 🔮 Future Enhancements (Months 6+)
 - **Revenue Dashboard** - AdSense/Amazon earnings tracking
-- **A/B Testing** - Template variations for optimization  
-- **User Analytics** - Behavior tracking and optimization
-- **Multi-Site Management** - Scale to multiple verticals
+- **Direct Partnerships** - Manufacturer affiliate programs
+- **Premium Content** - Paid guides and exclusive reviews
+- **Multi-Site Scaling** - Expand to other product verticals
 
 ---
 
