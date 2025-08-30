@@ -1,0 +1,103 @@
+{{ define "main" }}
+<div class="container">
+  <div class="page-header">
+    <h1>{{ .Title }}</h1>
+    {{ if .Description }}
+    <p class="page-description">{{ .Description }}</p>
+    {{ end }}
+  </div>
+  
+  <!-- Top AdSense Slot -->
+  {{ partial "adsense.html" . }}
+  
+  <div class="articles-grid">
+    {{ $paginator := .Paginate .Pages }}
+    {{ range $paginator.Pages }}
+    <article class="article-card">
+      <div class="card-header">
+        {{ if .Params.featured_image }}
+        <div class="card-image">
+          <img src="{{ .Params.featured_image | relURL }}" alt="{{ .Title }}" loading="lazy">
+        </div>
+        {{ end }}
+        
+        <div class="card-meta">
+          <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+            {{ .Date.Format "Jan 2, 2006" }}
+          </time>
+          {{ if .Params.categories }}
+          <span class="category">
+            {{ range first 1 .Params.categories }}
+            <a href="{{ "/categories/" | relLangURL }}{{ . | urlize }}">{{ . }}</a>
+            {{ end }}
+          </span>
+          {{ end }}
+        </div>
+      </div>
+      
+      <div class="card-content">
+        <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+        <p>{{ .Summary | truncate 120 }}</p>
+        
+        {{ if .Params.rating }}
+        <div class="rating">
+          {{ range seq .Params.rating }}
+          <i class="fa fa-star"></i>
+          {{ end }}
+          {{ range seq (sub 5 .Params.rating) }}
+          <i class="fa fa-star-o"></i>
+          {{ end }}
+          <span class="rating-text">{{ .Params.rating }}/5</span>
+        </div>
+        {{ end }}
+        
+        {{ if .Params.price }}
+        <div class="price">
+          <span class="current-price">${{ .Params.price }}</span>
+          {{ if .Params.original_price }}
+          <span class="original-price">${{ .Params.original_price }}</span>
+          {{ end }}
+        </div>
+        {{ end }}
+      </div>
+      
+      <div class="card-footer">
+        <a href="{{ .Permalink }}" class="read-more">
+          Read Full Review <i class="fa fa-arrow-right"></i>
+        </a>
+      </div>
+    </article>
+    {{ end }}
+  </div>
+  
+  <!-- Middle AdSense Slot -->
+  {{ partial "adsense.html" . }}
+  
+  <!-- Pagination -->
+  {{ if gt $paginator.TotalPages 1 }}
+  <nav class="pagination">
+    {{ if $paginator.HasPrev }}
+    <a href="{{ $paginator.Prev.URL }}" class="page-link prev">
+      <i class="fa fa-chevron-left"></i> Previous
+    </a>
+    {{ end }}
+    
+    <span class="page-numbers">
+      {{ range $paginator.Pagers }}
+      {{ if eq . $paginator }}
+      <span class="current-page">{{ .PageNumber }}</span>
+      {{ else }}
+      <a href="{{ .URL }}" class="page-number">{{ .PageNumber }}</a>
+      {{ end }}
+      {{ end }}
+    </span>
+    
+    {{ if $paginator.HasNext }}
+    <a href="{{ $paginator.Next.URL }}" class="page-link next">
+      Next <i class="fa fa-chevron-right"></i>
+    </a>
+    {{ end }}
+  </nav>
+  {{ end }}
+</div>
+{{ end }}

@@ -1,0 +1,389 @@
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-section about">
+        <h3><i class="fa fa-home"></i> {{ .Site.Title }}</h3>
+        <p>{{ .Site.Params.description }}</p>
+        
+        <div class="social-links">
+          <a href="#" aria-label="Follow us on Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" aria-label="Follow us on Twitter">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="#" aria-label="Follow us on Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" aria-label="Subscribe to our YouTube channel">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <a href="{{ "index.xml" | relURL }}" aria-label="Subscribe to RSS feed">
+            <i class="fa fa-rss"></i>
+          </a>
+        </div>
+      </div>
+      
+      <div class="footer-section categories">
+        <h4><i class="fa fa-folder"></i> Categories</h4>
+        <ul>
+          <li><a href="/categories/smart-plugs/">Smart Plugs</a></li>
+          <li><a href="/categories/smart-speakers/">Smart Speakers</a></li>
+          <li><a href="/categories/security-cameras/">Security Cameras</a></li>
+          <li><a href="/categories/robot-vacuums/">Robot Vacuums</a></li>
+          <li><a href="/categories/smart-thermostats/">Smart Thermostats</a></li>
+          <li><a href="/categories/smart-lighting/">Smart Lighting</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section quick-links">
+        <h4><i class="fa fa-link"></i> Quick Links</h4>
+        <ul>
+          <li><a href="/about/">About Us</a></li>
+          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/privacy-policy/">Privacy Policy</a></li>
+          <li><a href="/terms-of-service/">Terms of Service</a></li>
+          <li><a href="/affiliate-disclosure/">Affiliate Disclosure</a></li>
+          <li><a href="/sitemap.xml">Sitemap</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section newsletter">
+        <h4><i class="fa fa-envelope"></i> Stay Updated</h4>
+        <p>Get the latest smart home reviews and deals delivered to your inbox.</p>
+        
+        <form class="newsletter-form" action="#" method="post">
+          <div class="input-group">
+            <input type="email" 
+                   name="email" 
+                   placeholder="Enter your email..." 
+                   required 
+                   aria-label="Email address for newsletter subscription">
+            <button type="submit" class="subscribe-btn">
+              <i class="fa fa-paper-plane"></i>
+            </button>
+          </div>
+          <small class="newsletter-disclaimer">
+            We respect your privacy. Unsubscribe at any time.
+          </small>
+        </form>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="copyright">
+        <p>&copy; {{ now.Format "2006" }} {{ .Site.Title }}. All rights reserved.</p>
+        <p class="powered-by">
+          Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 
+          • Designed for smart home enthusiasts
+        </p>
+      </div>
+      
+      <div class="footer-badges">
+        <div class="trust-badges">
+          <span class="badge">
+            <i class="fa fa-shield-alt"></i> Secure
+          </span>
+          <span class="badge">
+            <i class="fa fa-award"></i> Trusted Reviews
+          </span>
+          <span class="badge">
+            <i class="fa fa-handshake"></i> Affiliate Partner
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Back to Top Button -->
+  <button id="back-to-top" class="back-to-top" aria-label="Back to top">
+    <i class="fa fa-chevron-up"></i>
+  </button>
+</footer>
+
+<style>
+.site-footer {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  color: #ecf0f1;
+  padding-top: 3rem;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-section h3, .footer-section h4 {
+  margin-bottom: 1rem;
+  color: #3498db;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-section.about p {
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  color: #bdc3c7;
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-links a {
+  width: 40px;
+  height: 40px;
+  background: #3498db;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+  background: #2980b9;
+  transform: translateY(-3px);
+  text-decoration: none;
+}
+
+.footer-section ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-section ul li a {
+  color: #bdc3c7;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.footer-section ul li a:hover {
+  color: #3498db;
+  text-decoration: none;
+  padding-left: 5px;
+}
+
+.newsletter-form {
+  margin-top: 1rem;
+}
+
+.input-group {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+
+.newsletter-form input[type="email"] {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 2px solid #34495e;
+  border-right: none;
+  border-radius: 6px 0 0 6px;
+  background: #34495e;
+  color: #ecf0f1;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.newsletter-form input[type="email"]:focus {
+  border-color: #3498db;
+}
+
+.newsletter-form input[type="email"]::placeholder {
+  color: #95a5a6;
+}
+
+.subscribe-btn {
+  background: #3498db;
+  color: white;
+  border: 2px solid #3498db;
+  padding: 0.75rem 1rem;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.subscribe-btn:hover {
+  background: #2980b9;
+  border-color: #2980b9;
+}
+
+.newsletter-disclaimer {
+  color: #95a5a6;
+  font-size: 0.8rem;
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.footer-bottom {
+  border-top: 1px solid #34495e;
+  padding: 1.5rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.copyright p {
+  margin: 0;
+  color: #95a5a6;
+  font-size: 0.9rem;
+}
+
+.powered-by {
+  margin-top: 0.25rem !important;
+  font-size: 0.8rem !important;
+}
+
+.powered-by a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.powered-by a:hover {
+  text-decoration: underline;
+}
+
+.trust-badges {
+  display: flex;
+  gap: 1rem;
+}
+
+.trust-badges .badge {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  background: #34495e;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  color: #ecf0f1;
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.back-to-top:hover {
+  background: #2980b9;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+}
+
+.back-to-top.show {
+  display: flex;
+}
+
+@media (max-width: 992px) {
+  .footer-content {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .trust-badges {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .back-to-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 45px;
+    height: 45px;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-footer {
+    padding-top: 2rem;
+  }
+  
+  .input-group {
+    flex-direction: column;
+  }
+  
+  .newsletter-form input[type="email"] {
+    border-radius: 6px;
+    border: 2px solid #34495e;
+    margin-bottom: 0.5rem;
+  }
+  
+  .subscribe-btn {
+    border-radius: 6px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Back to top functionality
+  const backToTopButton = document.getElementById('back-to-top');
+  
+  window.addEventListener('scroll', function() {
+    if (window.pageYOffset > 300) {
+      backToTopButton.classList.add('show');
+    } else {
+      backToTopButton.classList.remove('show');
+    }
+  });
+  
+  backToTopButton.addEventListener('click', function() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+  
+  // Newsletter form handling
+  const newsletterForm = document.querySelector('.newsletter-form');
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Add newsletter subscription logic here
+      alert('Newsletter subscription functionality will be implemented with backend integration.');
+    });
+  }
+});
+</script>

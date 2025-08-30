@@ -1,0 +1,72 @@
+baseURL = "/"
+title = "AI Smart Home Hub - Your Ultimate Smart Home Guide"
+languageCode = "en-us"
+theme = "smarthome"
+paginate = 12
+enableRobotsTXT = true
+enableGitInfo = true
+
+[params]
+  description = "Comprehensive reviews and guides for smart home devices, automation systems, and AI-powered home technology."
+  author = "AI Smart Home Team"
+  keywords = "smart home, home automation, IoT devices, smart plugs, smart speakers, security cameras"
+  google_adsense_id = "ca-pub-XXXXXXXXXXXXXXXX"  # 替换为实际的AdSense ID
+  amazon_affiliate_tag = "your-affiliate-tag"     # 替换为实际的Amazon联盟标签
+  google_analytics_id = "G-XXXXXXXXXX"           # 替换为实际的GA ID
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    style = "github"
+    lineNos = true
+
+# Multilingual support
+defaultContentLanguage = "en"
+[languages]
+  [languages.en]
+    contentDir = "content"
+    languageName = "English"
+    weight = 1
+    title = "AI Smart Home Hub"
+    description = "Your ultimate guide to smart home technology and automation"
+  
+  [languages.zh]
+    contentDir = "content-zh"
+    languageName = "中文"
+    weight = 2
+    title = "AI智能家居中心"
+    description = "智能家居技术和自动化的终极指南"
+
+[menu]
+  [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    name = "Smart Plugs"
+    url = "/categories/smart-plugs/"
+    weight = 2
+  [[menu.main]]
+    name = "Smart Speakers"
+    url = "/categories/smart-speakers/"
+    weight = 3
+  [[menu.main]]
+    name = "Security Cameras"
+    url = "/categories/security-cameras/"
+    weight = 4
+  [[menu.main]]
+    name = "Robot Vacuums"
+    url = "/categories/robot-vacuums/"
+    weight = 5
+
+[sitemap]
+  changefreq = "weekly"
+  priority = 0.5
+  filename = "sitemap.xml"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  page = ["HTML"]
+  section = ["HTML", "RSS"]

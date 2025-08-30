@@ -1,0 +1,83 @@
+{{ define "main" }}
+<article class="article">
+  <div class="container">
+    <div class="article-header">
+      <h1 class="article-title">{{ .Title }}</h1>
+      
+      <div class="article-meta">
+        <time class="published" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+          <i class="fa fa-calendar"></i> {{ .Date.Format "January 2, 2006" }}
+        </time>
+        {{ if .Params.categories }}
+        <span class="categories">
+          <i class="fa fa-folder"></i>
+          {{ range .Params.categories }}
+            <a href="{{ "/categories/" | relLangURL }}{{ . | urlize }}">{{ . }}</a>
+          {{ end }}
+        </span>
+        {{ end }}
+        {{ if .Params.tags }}
+        <span class="tags">
+          <i class="fa fa-tags"></i>
+          {{ range .Params.tags }}
+            <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}">#{{ . }}</a>
+          {{ end }}
+        </span>
+        {{ end }}
+      </div>
+    </div>
+
+    <!-- Top AdSense Slot -->
+    {{ partial "adsense.html" . }}
+    
+    <div class="article-content">
+      {{ .Content }}
+    </div>
+    
+    <!-- Middle AdSense Slot -->
+    {{ partial "adsense.html" . }}
+    
+    <!-- Affiliate Product Recommendations -->
+    {{ if .Params.featured_products }}
+    <section class="featured-products">
+      <h3><i class="fa fa-star"></i> Recommended Products</h3>
+      {{ partial "affiliate.html" . }}
+    </section>
+    {{ end }}
+    
+    <!-- FAQ Section -->
+    {{ if .Params.faq }}
+    <section class="faq-section">
+      <h3><i class="fa fa-question-circle"></i> Frequently Asked Questions</h3>
+      {{ range .Params.faq }}
+      <div class="faq-item">
+        <h4>{{ .question }}</h4>
+        <p>{{ .answer | markdownify }}</p>
+      </div>
+      {{ end }}
+    </section>
+    {{ end }}
+    
+    <!-- Bottom AdSense Slot -->
+    {{ partial "adsense.html" . }}
+    
+    <!-- Related Articles -->
+    {{ $related := .Site.RegularPages.Related . | first 4 }}
+    {{ if $related }}
+    <section class="related-articles">
+      <h3><i class="fa fa-lightbulb"></i> Related Articles</h3>
+      <div class="related-grid">
+        {{ range $related }}
+        <article class="related-item">
+          <a href="{{ .Permalink }}">
+            <h4>{{ .Title }}</h4>
+            <p>{{ .Summary | truncate 100 }}</p>
+          </a>
+        </article>
+        {{ end }}
+      </div>
+    </section>
+    {{ end }}
+  </div>
+</article>
+{{ end }}

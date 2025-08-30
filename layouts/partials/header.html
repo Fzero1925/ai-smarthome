@@ -1,0 +1,253 @@
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-brand">
+      <a href="{{ .Site.BaseURL }}" class="brand-link">
+        <i class="fa fa-home"></i>
+        <span>{{ .Site.Title }}</span>
+      </a>
+    </div>
+    
+    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-menu">
+      <span class="sr-only">Toggle navigation</span>
+      <i class="fa fa-bars"></i>
+    </button>
+    
+    <div class="navbar-menu" id="navbar-menu">
+      <ul class="navbar-nav">
+        {{ range .Site.Menus.main }}
+        <li class="nav-item">
+          <a href="{{ .URL | relURL }}" class="nav-link">
+            {{ .Name }}
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+      
+      <!-- Search Box -->
+      <div class="navbar-search">
+        <form class="search-form" role="search">
+          <input type="search" class="search-input" placeholder="Search smart home devices..." aria-label="Search">
+          <button type="submit" class="search-button">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
+      </div>
+      
+      <!-- Language Switcher -->
+      {{ if .Site.IsMultiLingual }}
+      <div class="language-switcher">
+        {{ range .Site.Languages }}
+        {{ if not (eq .Lang $.Site.Language.Lang) }}
+        <a href="{{ $.Page.Permalink | relLangURL .Lang }}" class="lang-link">
+          {{ .LanguageName }}
+        </a>
+        {{ end }}
+        {{ end }}
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</nav>
+
+<style>
+.navbar {
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.navbar-brand .brand-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: #007bff;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.navbar-brand .brand-link:hover {
+  text-decoration: none;
+  color: #0056b3;
+}
+
+.navbar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #495057;
+  cursor: pointer;
+}
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navbar-nav {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #495057;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  text-decoration: none;
+  color: #007bff;
+  background-color: #f8f9fa;
+}
+
+.navbar-search {
+  position: relative;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  width: 250px;
+  padding: 0.5rem 1rem;
+  border: 2px solid #e9ecef;
+  border-radius: 25px 0 0 25px;
+  outline: none;
+  font-size: 0.9rem;
+  transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #007bff;
+}
+
+.search-button {
+  background: #007bff;
+  color: white;
+  border: 2px solid #007bff;
+  border-left: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0 25px 25px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+  background: #0056b3;
+  border-color: #0056b3;
+}
+
+.language-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lang-link {
+  padding: 0.25rem 0.75rem;
+  background: #e9ecef;
+  color: #495057;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.lang-link:hover {
+  text-decoration: none;
+  background: #007bff;
+  color: white;
+}
+
+@media (max-width: 992px) {
+  .navbar-toggle {
+    display: block;
+  }
+  
+  .navbar-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    flex-direction: column;
+    padding: 1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    gap: 1rem;
+  }
+  
+  .navbar-menu.show {
+    display: flex;
+  }
+  
+  .navbar-nav {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+  }
+  
+  .search-input {
+    width: 200px;
+  }
+  
+  .language-switcher {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-input {
+    width: 150px;
+  }
+  
+  .navbar .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const toggle = document.querySelector('.navbar-toggle');
+  const menu = document.querySelector('.navbar-menu');
+  
+  if (toggle && menu) {
+    toggle.addEventListener('click', function() {
+      menu.classList.toggle('show');
+    });
+  }
+  
+  // Close menu when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+      menu.classList.remove('show');
+    }
+  });
+});
+</script>

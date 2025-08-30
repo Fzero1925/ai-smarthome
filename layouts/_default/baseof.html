@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>{{ if .Title }}{{ .Title }} - {{ .Site.Title }}{{ else }}{{ .Site.Title }}{{ end }}</title>
+  
+  <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  <meta name="keywords" content="{{ if .Params.keywords }}{{ delimit .Params.keywords ", " }}{{ else }}{{ .Site.Params.keywords }}{{ end }}">
+  <meta name="author" content="{{ .Site.Params.author }}">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ .Permalink }}">
+  <meta property="og:title" content="{{ .Title }}">
+  <meta property="og:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="{{ .Permalink }}">
+  <meta property="twitter:title" content="{{ .Title }}">
+  <meta property="twitter:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="{{ .Permalink }}">
+  
+  <!-- RSS Feed -->
+  {{ with .OutputFormats.Get "RSS" }}
+    <link rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" href="{{ .Permalink }}">
+  {{ end }}
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  <!-- Google Analytics -->
+  {{ if .Site.Params.google_analytics_id }}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ .Site.Params.google_analytics_id }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ .Site.Params.google_analytics_id }}');
+  </script>
+  {{ end }}
+  
+  <!-- AdSense -->
+  {{ if .Site.Params.google_adsense_id }}
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ .Site.Params.google_adsense_id }}" crossorigin="anonymous"></script>
+  {{ end }}
+</head>
+
+<body>
+  <header>
+    {{ partial "header.html" . }}
+  </header>
+  
+  <main>
+    {{ block "main" . }}{{ end }}
+  </main>
+  
+  <footer>
+    {{ partial "footer.html" . }}
+  </footer>
+  
+  <!-- JavaScript -->
+  <script src="{{ "js/main.js" | relURL }}"></script>
+</body>
+</html>

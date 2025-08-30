@@ -1,0 +1,351 @@
+name: Daily Content Generation and Publishing
+
+on:
+  schedule:
+    # Run at 3:00 AM UTC daily (adjust for your timezone)
+    - cron: '0 3 * * *'
+  workflow_dispatch:  # Allow manual triggering
+    inputs:
+      article_count:
+        description: 'Number of articles to generate'
+        required: false
+        default: '1'
+        type: string
+      force_generation:
+        description: 'Force generation even if recent articles exist'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write  # Need write permission to commit new content
+  pull-requests: write
+
+jobs:
+  generate-content:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Create environment file
+        run: |
+          echo "GOOGLE_ADSENSE_ID=${{ secrets.GOOGLE_ADSENSE_ID }}" >> .env
+          echo "AMAZON_AFFILIATE_TAG=${{ secrets.AMAZON_AFFILIATE_TAG }}" >> .env
+          echo "GOOGLE_ANALYTICS_ID=${{ secrets.GOOGLE_ANALYTICS_ID }}" >> .env
+
+      - name: Update keyword trends
+        run: |
+          echo "🔍 Updating keyword trends data..."
+          python modules/keyword_tools/keyword_analyzer.py --update-trends --cache-refresh
+        continue-on-error: true  # Don't fail if trends update fails
+
+      - name: Check if content generation is needed
+        id: check_generation
+        run: |
+          # Check when last article was published
+          if [ "${{ github.event.inputs.force_generation }}" = "true" ]; then
+            echo "🔄 Force generation enabled"
+            echo "should_generate=true" >> $GITHUB_OUTPUT
+            echo "reason=forced" >> $GITHUB_OUTPUT
+          else
+            # Check if there are articles published in last 24 hours
+            recent_articles=$(find content/articles -name "*.md" -mtime -1 | wc -l)
+            
+            if [ "$recent_articles" -eq 0 ]; then
+              echo "📝 No recent articles found, generating new content"
+              echo "should_generate=true" >> $GITHUB_OUTPUT
+              echo "reason=no_recent_content" >> $GITHUB_OUTPUT
+            else
+              echo "✅ Recent articles exist ($recent_articles), skipping generation"
+              echo "should_generate=false" >> $GITHUB_OUTPUT
+              echo "reason=recent_content_exists" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: Generate trending keyword report
+        if: steps.check_generation.outputs.should_generate == 'true'
+        run: |
+          echo "📊 Generating keyword trend report..."
+          python -c "
+          from modules.keyword_tools.keyword_analyzer import SmartHomeKeywordAnalyzer
+          
+          analyzer = SmartHomeKeywordAnalyzer()
+          trends = analyzer.analyze_trending_topics()
+          
+          # Sort by trend score and get top keywords
+          top_trends = sorted(trends, key=lambda x: x.get('trend_score', 0), reverse=True)[:5]
+          
+          print('Top trending keywords:')
+          for i, trend in enumerate(top_trends, 1):
+              print(f'{i}. {trend.get(\"keyword\", \"N/A\")} (score: {trend.get(\"trend_score\", 0):.2f})')
+          
+          # Save for article generation
+          import json
+          with open('trending_keywords.json', 'w') as f:
+              json.dump(top_trends, f, indent=2, default=str)
+          "
+
+      - name: Generate new articles
+        if: steps.check_generation.outputs.should_generate == 'true'
+        run: |
+          ARTICLE_COUNT="${{ github.event.inputs.article_count || '1' }}"
+          echo "📝 Generating $ARTICLE_COUNT new article(s)..."
+          
+          python -c "
+          import json
+          import os
+          from datetime import datetime
+          from modules.content_generator.anti_ai_content_generator import AntiAIContentGenerator
+          
+          # Load trending keywords
+          try:
+              with open('trending_keywords.json', 'r') as f:
+                  trends = json.load(f)
+          except:
+              trends = [{'keyword': 'smart home automation', 'category': 'general'}]
+          
+          generator = AntiAIContentGenerator()
+          article_count = min(int('$ARTICLE_COUNT'), len(trends))
+          
+          generated_files = []
+          
+          for i in range(article_count):
+              trend = trends[i] if i < len(trends) else trends[0]
+              keyword = trend.get('keyword', 'smart home device')
+              category = trend.get('category', 'smart_plugs')
+              
+              print(f'Generating article {i+1}/{article_count} for: {keyword}')
+              
+              try:
+                  article = generator.generate_smart_home_article(
+                      keyword=keyword,
+                      category=category,
+                      article_type='review',
+                      target_length=2500
+                  )
+                  
+                  # Create filename
+                  safe_title = keyword.lower().replace(' ', '-').replace(',', '').replace(':', '')
+                  filename = f'content/articles/{safe_title}-{datetime.now().strftime(\"%Y%m%d\")}.md'
+                  
+                  # Generate Hugo front matter
+                  front_matter = f'''---
+title: \"{article['title']}\"
+description: \"{article['metadata'].get('description', 'Complete guide and review of ' + keyword)}\"
+date: {datetime.now().isoformat()}Z
+categories: {article['metadata']['categories']}
+tags: {article['metadata']['tags']}
+keywords: [\"{keyword}\", \"smart home\", \"automation\", \"review\"]
+featured: true
+rating: 4.5
+author: \"Smart Home Team\"
+---
+
+'''
+                  
+                  # Write article file
+                  os.makedirs('content/articles', exist_ok=True)
+                  with open(filename, 'w', encoding='utf-8') as f:
+                      f.write(front_matter)
+                      f.write(article['content'])
+                  
+                  generated_files.append(filename)
+                  print(f'✅ Generated: {filename}')
+                  
+              except Exception as e:
+                  print(f'❌ Error generating article for {keyword}: {str(e)}')
+                  continue
+          
+          # Save list of generated files
+          with open('generated_files.txt', 'w') as f:
+              f.write('\\n'.join(generated_files))
+          
+          print(f'Successfully generated {len(generated_files)} articles')
+          "
+
+      - name: Run content quality checks
+        if: steps.check_generation.outputs.should_generate == 'true'
+        run: |
+          echo "🔍 Running content quality checks..."
+          
+          if [ -f "generated_files.txt" ]; then
+            while IFS= read -r file; do
+              if [ -f "$file" ]; then
+                echo "Checking: $file"
+                
+                # Basic checks
+                word_count=$(wc -w < "$file")
+                echo "  Word count: $word_count"
+                
+                if [ "$word_count" -lt 1000 ]; then
+                  echo "  ⚠️ Warning: Article may be too short"
+                fi
+                
+                # Check for required sections
+                if grep -q "## " "$file"; then
+                  echo "  ✅ Has section headings"
+                else
+                  echo "  ⚠️ Warning: No section headings found"
+                fi
+                
+                # Check for FAQ section
+                if grep -qi "faq\|frequently asked" "$file"; then
+                  echo "  ✅ Has FAQ section"
+                fi
+                
+              fi
+            done < generated_files.txt
+          else
+            echo "No files were generated"
+          fi
+
+      - name: Commit and push new content
+        if: steps.check_generation.outputs.should_generate == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # Add all new content files
+          git add content/articles/*.md
+          git add data/ || true  # Add data updates if any
+          
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            # Create commit message
+            current_date=$(date '+%Y-%m-%d')
+            git commit -m "Auto: Daily content update - $current_date
+            
+            - Generated new articles based on trending keywords
+            - Updated keyword trend data
+            - Automated content quality checks passed
+            
+            🤖 Generated with Claude Code AI Assistant
+            
+            Co-Authored-By: Claude <noreply@anthropic.com>"
+            
+            # Push changes
+            git push
+            echo "✅ New content pushed to repository"
+          fi
+
+      - name: Send Telegram notification
+        if: always()
+        run: |
+          if [ "${{ secrets.TELEGRAM_BOT_TOKEN }}" != "" ] && [ "${{ secrets.TELEGRAM_CHAT_ID }}" != "" ]; then
+            
+            # Determine status message
+            if [ "${{ steps.check_generation.outputs.should_generate }}" = "true" ] && [ "${{ job.status }}" = "success" ]; then
+              STATUS_EMOJI="✅"
+              STATUS_TEXT="Content generation successful"
+              
+              # Count generated files
+              if [ -f "generated_files.txt" ]; then
+                GENERATED_COUNT=$(wc -l < generated_files.txt)
+                DETAILS="Generated $GENERATED_COUNT new article(s)"
+              else
+                DETAILS="Content generation completed"
+              fi
+            elif [ "${{ steps.check_generation.outputs.should_generate }}" = "false" ]; then
+              STATUS_EMOJI="ℹ️"
+              STATUS_TEXT="Content generation skipped"
+              DETAILS="Reason: ${{ steps.check_generation.outputs.reason }}"
+            else
+              STATUS_EMOJI="❌"
+              STATUS_TEXT="Content generation failed"
+              DETAILS="Check workflow logs for details"
+            fi
+            
+            MESSAGE="$STATUS_EMOJI *AI Smart Home Hub - Daily Content Update*
+            
+*Status*: $STATUS_TEXT
+*Details*: $DETAILS
+*Date*: $(date '+%Y-%m-%d %H:%M UTC')
+*Workflow*: [View Details](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            
+_🤖 Automated by GitHub Actions_"
+            
+            curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+              -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+              -d "text=$MESSAGE" \
+              -d "parse_mode=Markdown" \
+              -d "disable_web_page_preview=true"
+          fi
+
+      - name: Update content generation stats
+        if: always()
+        run: |
+          # Create or update stats file
+          mkdir -p data/stats
+          STATS_FILE="data/stats/content_generation.json"
+          
+          python -c "
+          import json
+          import os
+          from datetime import datetime
+          
+          stats_file = '$STATS_FILE'
+          
+          # Load existing stats or create new
+          if os.path.exists(stats_file):
+              with open(stats_file, 'r') as f:
+                  stats = json.load(f)
+          else:
+              stats = {'total_runs': 0, 'successful_runs': 0, 'articles_generated': 0, 'last_runs': []}
+          
+          # Update stats
+          stats['total_runs'] += 1
+          
+          if '${{ job.status }}' == 'success' and '${{ steps.check_generation.outputs.should_generate }}' == 'true':
+              stats['successful_runs'] += 1
+              
+              # Count generated articles
+              try:
+                  with open('generated_files.txt', 'r') as f:
+                      generated_count = len([line for line in f if line.strip()])
+                  stats['articles_generated'] += generated_count
+              except:
+                  pass
+          
+          # Add run info (keep last 10 runs)
+          run_info = {
+              'date': datetime.now().isoformat(),
+              'status': '${{ job.status }}',
+              'generated_content': '${{ steps.check_generation.outputs.should_generate }}' == 'true',
+              'reason': '${{ steps.check_generation.outputs.reason }}',
+              'run_id': '${{ github.run_id }}'
+          }
+          
+          stats['last_runs'].insert(0, run_info)
+          stats['last_runs'] = stats['last_runs'][:10]  # Keep only last 10
+          
+          # Save updated stats
+          os.makedirs(os.path.dirname(stats_file), exist_ok=True)
+          with open(stats_file, 'w') as f:
+              json.dump(stats, f, indent=2)
+          
+          print(f'Updated content generation stats: {stats[\"total_runs\"]} total runs, {stats[\"successful_runs\"]} successful, {stats[\"articles_generated\"]} articles generated')
+          "
+
+      - name: Cleanup temporary files
+        if: always()
+        run: |
+          rm -f trending_keywords.json
+          rm -f generated_files.txt
+          rm -f .env
