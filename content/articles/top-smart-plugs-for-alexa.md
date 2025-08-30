@@ -10,7 +10,7 @@ rating: 4.8
 price: "10"
 original_price: "15"
 discount: 33
-featured_image: "/images/smart-plugs-alexa-hero.jpg"
+featured_image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=400&fit=crop&crop=center"
 author: "Smart Home Team"
 faq:
   - question: "Do smart plugs work with Alexa without a hub?"
@@ -21,7 +21,7 @@ faq:
     answer: "Most quality smart plugs consume less than 1-2 watts in standby mode, which translates to approximately $2-4 per year in electricity costs - minimal compared to the convenience and potential energy savings they provide."
 featured_products:
   - name: "Amazon Smart Plug (Works with Alexa)"
-    image: "/images/products/amazon-smart-plug.jpg"
+    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=200&fit=crop&crop=center"
     rating: 5
     reviews: 89247
     current_price: 12.99
@@ -33,7 +33,7 @@ featured_products:
       - "Easy setup process"
       - "Reliable connectivity"
       - "Schedule and timer functions"
-    amazon_url: "https://amazon.com/dp/example1"
+    amazon_url: "https://amazon.com/dp/B089DR29T6"
     pros_cons:
       pros:
         - "Seamless Alexa integration"
@@ -45,7 +45,7 @@ featured_products:
         - "Single outlet only"
     badge: "Alexa Native"
   - name: "Kasa Smart Plug HS103P4 (4-Pack)"
-    image: "/images/products/kasa-hs103p4.jpg"
+    image: "https://images.unsplash.com/photo-1558618083-bf231be2b7be?w=300&h=200&fit=crop&crop=center"
     rating: 5
     reviews: 45632
     current_price: 27.99
@@ -57,7 +57,7 @@ featured_products:
       - "Scheduling and timers"
       - "Away mode for security"
       - "Compact design"
-    amazon_url: "https://amazon.com/dp/example2"
+    amazon_url: "https://amazon.com/dp/B07B8W2KHZ"
     pros_cons:
       pros:
         - "Excellent value for 4-pack"
@@ -69,7 +69,7 @@ featured_products:
         - "2.4GHz WiFi only"
     badge: "Best Value"
   - name: "Govee Smart Plug with Energy Monitoring"
-    image: "/images/products/govee-smart-plug.jpg"
+    image: "https://images.unsplash.com/photo-1592659762303-90081d34b277?w=300&h=200&fit=crop&crop=center"
     rating: 4
     reviews: 12847
     current_price: 8.99
@@ -81,7 +81,7 @@ featured_products:
       - "Voice control support"
       - "Scheduling features"
       - "Compact design"
-    amazon_url: "https://amazon.com/dp/example3"
+    amazon_url: "https://amazon.com/dp/B08M8CL8H1"
     pros_cons:
       pros:
         - "Excellent price point"

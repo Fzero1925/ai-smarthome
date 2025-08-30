@@ -10,7 +10,7 @@ rating: 4.5
 price: "15"
 original_price: "25"
 discount: 40
-featured_image: "/images/smart-light-bulbs-hero.jpg"
+featured_image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop&crop=center"
 author: "Smart Home Team"
 faq:
   - question: "Are smart light bulbs compatible with Alexa and Google Home?"
@@ -21,7 +21,7 @@ faq:
     answer: "Some smart bulbs can work locally via Bluetooth or Zigbee hubs, but WiFi connectivity is required for remote control and advanced features like scheduling and voice commands."
 featured_products:
   - name: "Philips Hue White and Color A19"
-    image: "/images/products/philips-hue-a19.jpg"
+    image: "https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=300&h=200&fit=crop&crop=center"
     rating: 5
     reviews: 2847
     current_price: 49.99
@@ -33,7 +33,7 @@ featured_products:
       - "2000K-6500K white range"
       - "Dimming capabilities"
       - "Hub required"
-    amazon_url: "https://amazon.com/dp/example1"
+    amazon_url: "https://amazon.com/dp/B07FZ2S6WV"
     pros_cons:
       pros:
         - "Excellent color accuracy"
@@ -45,7 +45,7 @@ featured_products:
         - "Higher initial cost"
     badge: "Editor's Choice"
   - name: "LIFX A19 WiFi Smart Bulb"
-    image: "/images/products/lifx-a19.jpg"
+    image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=300&h=200&fit=crop&crop=center"
     rating: 4
     reviews: 1523
     current_price: 39.99
@@ -57,7 +57,7 @@ featured_products:
       - "2500K-9000K range"
       - "Music sync capability"
       - "WiFi 2.4GHz only"
-    amazon_url: "https://amazon.com/dp/example2"
+    amazon_url: "https://amazon.com/dp/B073168F4Y"
     pros_cons:
       pros:
         - "No hub needed"
@@ -69,7 +69,7 @@ featured_products:
         - "Occasional connectivity issues"
     badge: "Best Value"
   - name: "Govee RGB WiFi Smart Bulbs"
-    image: "/images/products/govee-rgb.jpg"
+    image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=300&h=200&fit=crop&crop=center"
     rating: 4
     reviews: 3245
     current_price: 12.99
@@ -81,7 +81,7 @@ featured_products:
       - "Scene modes"
       - "Energy monitoring"
       - "DIY scene creation"
-    amazon_url: "https://amazon.com/dp/example3"
+    amazon_url: "https://amazon.com/dp/B08571VXK1"
     pros_cons:
       pros:
         - "Excellent value for money"
