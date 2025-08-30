@@ -1,0 +1,44 @@
+{
+  "build": {
+    "env": {
+      "HUGO_VERSION": "0.121.0"
+    }
+  },
+  "buildCommand": "hugo --minify",
+  "outputDirectory": "public",
+  "installCommand": "echo 'Hugo will be installed automatically by Vercel'",
+  "functions": {},
+  "routes": [
+    {
+      "src": "/sitemap.xml",
+      "headers": {
+        "content-type": "application/xml"
+      }
+    },
+    {
+      "src": "/robots.txt",
+      "headers": {
+        "content-type": "text/plain"
+      }
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
+    }
+  ]
+}
