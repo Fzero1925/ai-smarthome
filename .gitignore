@@ -55,3 +55,20 @@ Thumbs.db
 
 # Claude Code local settings (keep local only)
 .claude/settings.local.json
+
+# BUSINESS CRITICAL - Keep these files private
+CLAUDE.md
+BUSINESS_STRATEGY.md
+TECHNICAL_DOCS.md
+
+# Core business logic and algorithms (sensitive IP)
+modules/
+scripts/
+*.py
+
+# Sensitive configuration and deployment
+.github/workflows/
+requirements.txt
+
+# Business intelligence data
+data/

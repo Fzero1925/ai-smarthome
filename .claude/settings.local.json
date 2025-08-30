@@ -7,7 +7,9 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(gh:*)",
-      "WebFetch(domain:fzero1925.github.io)"
+      "WebFetch(domain:fzero1925.github.io)",
+      "Bash(git rm:*)",
+      "Bash(grep:*)"
     ],
     "deny": [],
     "ask": []
