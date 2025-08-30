@@ -11,7 +11,7 @@ enableGitInfo = true
   keywords = "smart home, home automation, IoT devices, smart plugs, smart speakers, security cameras"
   google_adsense_id = "ca-pub-test"
   amazon_affiliate_tag = "test-20"
-  google_analytics_id = "G-TEST123"
+  google_analytics_id = "G-8T4PY1JQRW"
 
 [markup]
   [markup.goldmark]
