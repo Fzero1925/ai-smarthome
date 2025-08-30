@@ -72,3 +72,4 @@ requirements.txt
 
 # Business intelligence data
 data/
+.vercel

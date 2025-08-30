@@ -1,0 +1,460 @@
+<!-- Search Component for AI Smart Home Hub -->
+<div class="search-container">
+    <!-- Search Input -->
+    <div class="search-input-group">
+        <input type="text" 
+               id="search-input" 
+               class="search-input" 
+               placeholder="Search articles, reviews, and guides..."
+               autocomplete="off">
+        <button type="button" id="search-clear" class="search-clear" style="display: none;">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </button>
+    </div>
+    
+    <!-- Search Results -->
+    <div id="search-results" class="search-results" style="display: none;">
+        <div class="search-results-header">
+            <span id="search-results-count">0 results</span>
+            <button type="button" id="search-close" class="search-close">Close</button>
+        </div>
+        <div id="search-results-list" class="search-results-list">
+            <!-- Results will be populated here -->
+        </div>
+    </div>
+    
+    <!-- Search Loading -->
+    <div id="search-loading" class="search-loading" style="display: none;">
+        <div class="search-spinner"></div>
+        <span>Searching...</span>
+    </div>
+</div>
+
+<!-- Lunr.js Library -->
+<script src="https://unpkg.com/lunr@2.3.9/lunr.min.js"></script>
+
+<!-- Search Functionality -->
+<script>
+class SmartHomeSearch {
+    constructor() {
+        this.index = null;
+        this.documents = [];
+        this.isLoaded = false;
+        
+        this.elements = {
+            input: document.getElementById('search-input'),
+            results: document.getElementById('search-results'),
+            resultsList: document.getElementById('search-results-list'),
+            resultsCount: document.getElementById('search-results-count'),
+            clearBtn: document.getElementById('search-clear'),
+            closeBtn: document.getElementById('search-close'),
+            loading: document.getElementById('search-loading')
+        };
+        
+        this.init();
+    }
+    
+    async init() {
+        try {
+            await this.loadSearchIndex();
+            this.bindEvents();
+            this.isLoaded = true;
+        } catch (error) {
+            console.error('Search initialization failed:', error);
+        }
+    }
+    
+    async loadSearchIndex() {
+        this.showLoading(true);
+        
+        try {
+            const response = await fetch('/search_index.json');
+            if (!response.ok) throw new Error('Failed to load search index');
+            
+            this.documents = await response.json();
+            
+            // Build Lunr index
+            this.index = lunr(function() {
+                this.ref('id');
+                this.field('title', { boost: 10 });
+                this.field('description', { boost: 5 });
+                this.field('tags', { boost: 3 });
+                this.field('categories', { boost: 2 });
+                this.field('content', { boost: 1 });
+                
+                this.documents.forEach(doc => this.add(doc));
+            }.bind({ documents: this.documents }));
+            
+            console.log(`✅ Search index loaded: ${this.documents.length} documents`);
+        } finally {
+            this.showLoading(false);
+        }
+    }
+    
+    bindEvents() {
+        let searchTimeout;
+        
+        this.elements.input.addEventListener('input', (e) => {
+            const query = e.target.value.trim();
+            
+            // Show/hide clear button
+            this.elements.clearBtn.style.display = query ? 'block' : 'none';
+            
+            // Debounced search
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                if (query.length > 2) {
+                    this.performSearch(query);
+                } else {
+                    this.hideResults();
+                }
+            }, 300);
+        });
+        
+        this.elements.input.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.hideResults();
+            }
+        });
+        
+        this.elements.clearBtn.addEventListener('click', () => {
+            this.elements.input.value = '';
+            this.elements.clearBtn.style.display = 'none';
+            this.hideResults();
+            this.elements.input.focus();
+        });
+        
+        this.elements.closeBtn.addEventListener('click', () => {
+            this.hideResults();
+        });
+        
+        // Close search when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!this.elements.results.contains(e.target) && 
+                !this.elements.input.contains(e.target)) {
+                this.hideResults();
+            }
+        });
+    }
+    
+    performSearch(query) {
+        if (!this.isLoaded || !this.index) {
+            return;
+        }
+        
+        try {
+            // Perform search with Lunr
+            const results = this.index.search(query + '~1 ' + query + '*');
+            
+            // Get full document data for results
+            const searchResults = results.map(result => {
+                const doc = this.documents.find(d => d.id === result.ref);
+                return {
+                    ...doc,
+                    score: result.score
+                };
+            }).slice(0, 8); // Limit to 8 results
+            
+            this.displayResults(searchResults, query);
+        } catch (error) {
+            console.error('Search error:', error);
+        }
+    }
+    
+    displayResults(results, query) {
+        if (results.length === 0) {
+            this.elements.resultsCount.textContent = 'No results found';
+            this.elements.resultsList.innerHTML = `
+                <div class="search-no-results">
+                    <p>No articles found for "<strong>${this.escapeHtml(query)}</strong>"</p>
+                    <p>Try searching for:</p>
+                    <ul>
+                        <li>Smart plugs, bulbs, or speakers</li>
+                        <li>Security cameras or doorbells</li>
+                        <li>Robot vacuums or thermostats</li>
+                        <li>Home automation guides</li>
+                    </ul>
+                </div>
+            `;
+        } else {
+            this.elements.resultsCount.textContent = `${results.length} result${results.length > 1 ? 's' : ''}`;
+            this.elements.resultsList.innerHTML = results.map(result => 
+                this.renderResultItem(result, query)
+            ).join('');
+        }
+        
+        this.showResults();
+    }
+    
+    renderResultItem(result, query) {
+        const highlightedTitle = this.highlightText(result.title, query);
+        const highlightedExcerpt = this.highlightText(result.excerpt || result.description || '', query);
+        
+        return `
+            <div class="search-result-item">
+                <h3 class="search-result-title">
+                    <a href="${result.url}">${highlightedTitle}</a>
+                </h3>
+                <p class="search-result-excerpt">${highlightedExcerpt}</p>
+                <div class="search-result-meta">
+                    ${result.categories ? `<span class="search-result-category">${result.categories}</span>` : ''}
+                    ${result.date ? `<span class="search-result-date">${this.formatDate(result.date)}</span>` : ''}
+                    ${result.wordCount ? `<span class="search-result-words">${result.wordCount} words</span>` : ''}
+                </div>
+            </div>
+        `;
+    }
+    
+    highlightText(text, query) {
+        if (!text || !query) return this.escapeHtml(text);
+        
+        const regex = new RegExp(`(${this.escapeRegex(query)})`, 'gi');
+        return this.escapeHtml(text).replace(regex, '<mark>$1</mark>');
+    }
+    
+    formatDate(dateStr) {
+        try {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+        } catch {
+            return dateStr;
+        }
+    }
+    
+    showResults() {
+        this.elements.results.style.display = 'block';
+    }
+    
+    hideResults() {
+        this.elements.results.style.display = 'none';
+    }
+    
+    showLoading(show) {
+        this.elements.loading.style.display = show ? 'block' : 'none';
+    }
+    
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text || '';
+        return div.innerHTML;
+    }
+    
+    escapeRegex(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+}
+
+// Initialize search when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        new SmartHomeSearch();
+    });
+} else {
+    new SmartHomeSearch();
+}
+</script>
+
+<!-- Search Styles -->
+<style>
+.search-container {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 45px 12px 16px;
+    font-size: 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.search-clear {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.search-clear:hover {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.search-results-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+}
+
+.search-results-count {
+    font-size: 14px;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.search-close {
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.search-close:hover {
+    background: #e2e8f0;
+    color: #374151;
+}
+
+.search-result-item {
+    padding: 16px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background: #f8fafc;
+}
+
+.search-result-title a {
+    color: #1e40af;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.search-result-title a:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+.search-result-excerpt {
+    color: #4b5563;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 8px 0;
+}
+
+.search-result-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.search-result-category {
+    background: #dbeafe;
+    color: #1e40af;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.search-no-results {
+    padding: 24px;
+    text-align: center;
+    color: #6b7280;
+}
+
+.search-no-results ul {
+    text-align: left;
+    margin: 16px 0;
+    padding-left: 20px;
+}
+
+.search-loading {
+    padding: 24px;
+    text-align: center;
+    color: #6b7280;
+}
+
+.search-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e5e7eb;
+    border-top: 2px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+mark {
+    background: #fef3c7;
+    color: #92400e;
+    padding: 1px 2px;
+    border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+    .search-results {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 0;
+        max-height: none;
+    }
+    
+    .search-results-header {
+        position: sticky;
+        top: 0;
+        background: #ffffff;
+        z-index: 10;
+    }
+}
+</style>
