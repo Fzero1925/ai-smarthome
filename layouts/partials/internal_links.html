@@ -1,0 +1,122 @@
+<!-- Internal Linking Helper Partial -->
+<!-- This partial automatically adds contextual internal links to content -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Internal link mapping for smart home terms
+    const internalLinks = {
+        // Product categories
+        'smart plug': '/categories/smart-plugs/',
+        'smart plugs': '/categories/smart-plugs/',
+        'smart bulb': '/categories/smart-bulbs/', 
+        'smart bulbs': '/categories/smart-bulbs/',
+        'smart speaker': '/categories/smart-speakers/',
+        'smart speakers': '/categories/smart-speakers/',
+        'security camera': '/categories/security-cameras/',
+        'security cameras': '/categories/security-cameras/',
+        'robot vacuum': '/categories/robot-vacuums/',
+        'robot vacuums': '/categories/robot-vacuums/',
+        
+        // Technology terms
+        'home automation': '/tags/home-automation/',
+        'voice control': '/tags/voice-control/',
+        'energy saving': '/tags/energy-saving/',
+        'smart home': '/',
+        
+        // Brand terms
+        'Amazon Alexa': '/tags/alexa/',
+        'Google Assistant': '/tags/google-assistant/',
+        'Apple HomeKit': '/tags/homekit/'
+    };
+
+    // Find article content container
+    const contentContainer = document.querySelector('.article-content');
+    if (!contentContainer) return;
+
+    // Get current page URL to avoid self-linking
+    const currentPath = window.location.pathname;
+
+    // Process internal linking
+    Object.keys(internalLinks).forEach(term => {
+        const targetUrl = internalLinks[term];
+        
+        // Skip if this would link to current page
+        if (currentPath.includes(targetUrl.replace(/\/$/, ''))) return;
+
+        // Create regex for case-insensitive matching
+        const regex = new RegExp(`\\b${term}\\b`, 'gi');
+        
+        // Find text nodes and replace first occurrence only
+        const walker = document.createTreeWalker(
+            contentContainer,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+        );
+
+        let node;
+        let processed = false;
+        
+        while (node = walker.nextNode() && !processed) {
+            if (node.nodeValue && regex.test(node.nodeValue)) {
+                // Check if already inside a link
+                let parent = node.parentElement;
+                let isInsideLink = false;
+                
+                while (parent && parent !== contentContainer) {
+                    if (parent.tagName === 'A') {
+                        isInsideLink = true;
+                        break;
+                    }
+                    parent = parent.parentElement;
+                }
+                
+                if (!isInsideLink) {
+                    // Replace first occurrence with link
+                    const newHTML = node.nodeValue.replace(regex, function(match) {
+                        processed = true;
+                        return `<a href="${targetUrl}" class="internal-link">${match}</a>`;
+                    });
+                    
+                    if (processed) {
+                        const wrapper = document.createElement('span');
+                        wrapper.innerHTML = newHTML;
+                        node.parentNode.replaceChild(wrapper, node);
+                        
+                        // Move children out of wrapper
+                        while (wrapper.firstChild) {
+                            wrapper.parentNode.insertBefore(wrapper.firstChild, wrapper);
+                        }
+                        wrapper.remove();
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+
+<!-- Internal Link Styling -->
+<style>
+.internal-link {
+    color: #3b82f6;
+    text-decoration: none;
+    border-bottom: 1px dotted #3b82f6;
+    transition: all 0.3s ease;
+}
+
+.internal-link:hover {
+    color: #1d4ed8;
+    border-bottom-style: solid;
+    text-decoration: none;
+}
+
+/* Ensure internal links are distinguishable from external ones */
+.internal-link::before {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-right: 0;
+}
+</style>
