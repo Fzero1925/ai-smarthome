@@ -49,6 +49,27 @@
   {{ if .Site.Params.google_adsense_id }}
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ .Site.Params.google_adsense_id }}" crossorigin="anonymous"></script>
   {{ end }}
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "{{ .Site.Title }}",
+    "url": "{{ .Site.BaseURL }}",
+    "description": "{{ .Site.Params.description }}",
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{ .Site.Params.author }}",
+      "url": "{{ .Site.BaseURL }}"
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "{{ .Site.BaseURL }}search/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
 </head>
 
 <body>

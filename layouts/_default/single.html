@@ -1,6 +1,132 @@
 {{ define "main" }}
+<!-- Article Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ .Title }}",
+  "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}",
+  "image": "{{ if .Params.featured_image }}{{ .Params.featured_image }}{{ else }}{{ .Site.BaseURL }}images/default-article.jpg{{ end }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ if .Params.author }}{{ .Params.author }}{{ else }}{{ .Site.Params.author }}{{ end }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ .Site.Params.author }}",
+    "url": "{{ .Site.BaseURL }}"
+  },
+  "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+  "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ .Permalink }}"
+  },
+  "wordCount": {{ .WordCount }},
+  {{ if .Params.categories }}
+  "articleSection": {{ .Params.categories | jsonify }},
+  {{ end }}
+  {{ if .Params.tags }}
+  "keywords": {{ .Params.tags | jsonify }},
+  {{ end }}
+  {{ if .Params.rating }}
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": {{ .Params.rating }},
+    "ratingCount": 1
+  },
+  {{ end }}
+  "url": "{{ .Permalink }}"
+}
+</script>
+
+{{ if .Params.faq }}
+<!-- FAQ Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {{ range $index, $item := .Params.faq }}
+    {{ if $index }},{{ end }}
+    {
+      "@type": "Question",
+      "name": "{{ $item.question }}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{ $item.answer }}"
+      }
+    }
+    {{ end }}
+  ]
+}
+</script>
+{{ end }}
+
+<!-- Breadcrumb Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ .Site.BaseURL }}"
+    }
+    {{ if .Params.categories }}
+      {{ range $index, $category := (first 1 .Params.categories) }}
+      ,{
+        "@type": "ListItem",
+        "position": 2,
+        "name": "{{ $category | title }}",
+        "item": "{{ $.Site.BaseURL }}categories/{{ $category | urlize }}/"
+      }
+      {{ end }}
+      ,{
+        "@type": "ListItem",
+        "position": 3,
+        "name": "{{ .Title }}",
+        "item": "{{ .Permalink }}"
+      }
+    {{ else }}
+    ,{
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{{ .Title }}",
+      "item": "{{ .Permalink }}"
+    }
+    {{ end }}
+  ]
+}
+</script>
+
 <article class="article">
   <div class="container">
+    <!-- Breadcrumb Navigation -->
+    <nav class="breadcrumb" aria-label="breadcrumb">
+      <ol class="breadcrumb-list">
+        <li class="breadcrumb-item">
+          <a href="{{ .Site.BaseURL }}">
+            <i class="fa fa-home"></i> Home
+          </a>
+        </li>
+        {{ if .Params.categories }}
+          {{ range first 1 .Params.categories }}
+          <li class="breadcrumb-item">
+            <a href="{{ "/categories/" | relLangURL }}{{ . | urlize }}">
+              {{ . | title }}
+            </a>
+          </li>
+          {{ end }}
+        {{ end }}
+        <li class="breadcrumb-item active" aria-current="page">
+          {{ .Title | truncate 50 }}
+        </li>
+      </ol>
+    </nav>
+
     <div class="article-header">
       <h1 class="article-title">{{ .Title }}</h1>
       
@@ -80,4 +206,66 @@
     {{ end }}
   </div>
 </article>
+
+<!-- Breadcrumb Styling -->
+<style>
+.breadcrumb {
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.breadcrumb-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: "›";
+  color: #6b7280;
+  font-weight: bold;
+  margin: 0 0.5rem;
+}
+
+.breadcrumb-item a {
+  color: #3b82f6;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.breadcrumb-item a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.breadcrumb-item i {
+  margin-right: 0.25rem;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+  .breadcrumb-list {
+    font-size: 0.8rem;
+  }
+  
+  .breadcrumb-item + .breadcrumb-item::before {
+    margin: 0 0.3rem;
+  }
+}
+</style>
+
 {{ end }}

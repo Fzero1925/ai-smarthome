@@ -1,0 +1,130 @@
+{{ define "main" }}
+<div class="search-page">
+  <div class="container">
+    <div class="search-page-header">
+      <h1>{{ .Title }}</h1>
+      <p class="search-description">{{ .Description }}</p>
+    </div>
+    
+    <div class="search-page-content">
+      {{ .Content }}
+    </div>
+  </div>
+</div>
+
+<style>
+.search-page {
+  min-height: 80vh;
+  padding: 2rem 0;
+}
+
+.search-page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.search-page-header h1 {
+  font-size: 2.5rem;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.search-description {
+  font-size: 1.1rem;
+  color: #6b7280;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.search-hero {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  margin: 2rem 0 3rem;
+}
+
+.search-hero p {
+  font-size: 1.1rem;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.search-page-content h2 {
+  color: #1f2937;
+  font-size: 1.5rem;
+  margin: 2rem 0 1rem;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+}
+
+.search-page-content ul {
+  list-style: none;
+  padding: 0;
+}
+
+.search-page-content li {
+  margin: 0.5rem 0;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #3b82f6;
+}
+
+.search-page-content li strong {
+  color: #1e40af;
+}
+
+.search-page-content a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.search-page-content a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .search-page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .search-hero {
+    padding: 1.5rem;
+    margin: 1.5rem 0 2rem;
+  }
+  
+  .search-page {
+    padding: 1rem 0;
+  }
+}
+</style>
+
+<!-- Auto-focus search input if query parameter exists -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Get query parameter from URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const query = urlParams.get('q');
+  
+  // If there's a query parameter, populate the search input
+  const searchInput = document.getElementById('search-input');
+  if (searchInput && query) {
+    searchInput.value = decodeURIComponent(query);
+    searchInput.focus();
+    
+    // Trigger search automatically if we have a query
+    if (window.SmartHomeSearch) {
+      setTimeout(() => {
+        const event = new Event('input', { bubbles: true });
+        searchInput.dispatchEvent(event);
+      }, 100);
+    }
+  }
+});
+</script>
+{{ end }}
