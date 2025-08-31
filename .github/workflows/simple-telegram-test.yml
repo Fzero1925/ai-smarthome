@@ -1,0 +1,50 @@
+name: Simple Telegram Test
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'simple_test_trigger.txt'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Basic Test
+        run: |
+          echo "Testing basic functionality..."
+          echo "Bot token exists: ${{ secrets.TELEGRAM_BOT_TOKEN != '' }}"
+          echo "Chat ID exists: ${{ secrets.TELEGRAM_CHAT_ID != '' }}"
+          
+      - name: API Test
+        run: |
+          if [ -n "${{ secrets.TELEGRAM_BOT_TOKEN }}" ]; then
+            response=$(curl -s "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/getMe")
+            echo "API Response: $response"
+            if echo "$response" | grep -q '"ok":true'; then
+              echo "SUCCESS: Bot API working"
+            else
+              echo "ERROR: Bot API failed"
+              exit 1
+            fi
+          else
+            echo "ERROR: No bot token"
+            exit 1
+          fi
+          
+      - name: Send Message
+        run: |
+          if [ -n "${{ secrets.TELEGRAM_BOT_TOKEN }}" ] && [ -n "${{ secrets.TELEGRAM_CHAT_ID }}" ]; then
+            message="Simple test from GitHub Actions $(date)"
+            result=$(curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" -d "text=$message")
+            echo "Send result: $result"
+            if echo "$result" | grep -q '"ok":true'; then
+              echo "SUCCESS: Message sent"
+            else
+              echo "ERROR: Message failed"
+              exit 1
+            fi
+          else
+            echo "ERROR: Missing secrets"
+            exit 1
+          fi
