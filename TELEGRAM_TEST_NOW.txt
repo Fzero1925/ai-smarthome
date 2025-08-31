@@ -1,7 +1,11 @@
 TELEGRAM通知测试触发器
 
-测试时间: 2025-08-31 13:06
+测试时间: 2025-08-31 13:09 (第二次尝试)
 测试类型: 最小化Telegram通知功能测试
 预期结果: 收到Telegram测试消息
+
+GitHub Secrets 状态: ✅ 已确认配置
+- TELEGRAM_BOT_TOKEN: 已设置
+- TELEGRAM_CHAT_ID: 已设置
 
 这个文件的更新将触发最简化的Telegram测试工作流。
