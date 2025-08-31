@@ -34,7 +34,11 @@
       "Read(D:\\Users\\Fzero\\project\\ai-smarthome\\hugo_deploy_content_refresh/**)",
       "Read(D:\\Users\\Fzero\\project\\ai-smarthome\\hugo_deploy_content_refresh\\scripts/**)",
       "Bash(python:*)",
-      "Bash(hugo:*)"
+      "Bash(hugo:*)",
+      "WebSearch",
+      "Bash(/usr/bin/python3:*)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(where python)"
     ],
     "deny": [],
     "ask": []
