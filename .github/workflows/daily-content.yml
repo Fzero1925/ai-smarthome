@@ -2,8 +2,8 @@ name: Daily Content Generation and SEO Optimization
 
 on:
   schedule:
-    # Run at 3:00 AM UTC daily (adjust for your timezone)
-    - cron: '0 3 * * *'
+    # Run at 1:00 AM UTC daily (9:00 AM China time) - optimal for global audience
+    - cron: '0 1 * * *'
   workflow_dispatch:  # Allow manual triggering
     inputs:
       article_count:
@@ -61,8 +61,19 @@ jobs:
       - name: Update keyword trends
         run: |
           echo "🔍 Updating keyword trends data..."
-          python modules/keyword_tools/keyword_analyzer.py --update-trends --cache-refresh
-        continue-on-error: true  # Don't fail if trends update fails
+          if python modules/keyword_tools/keyword_analyzer.py --update-trends --cache-refresh; then
+            echo "✅ Successfully updated keyword trends"
+          else
+            echo "⚠️ Warning: Failed to update keyword trends, using cached data"
+            # Check if we have cached data to fall back on
+            if [ -f "data/trending_keywords_cache.json" ]; then
+              echo "📄 Found cached keyword data, continuing..."
+            else
+              echo "❌ No cached data available, creating fallback trends"
+              mkdir -p data
+              echo '[{"keyword":"smart plug alexa","category":"smart_plugs","trend_score":0.8},{"keyword":"robot vacuum pet hair","category":"robot_vacuums","trend_score":0.9}]' > data/trending_keywords_cache.json
+            fi
+          fi
 
       - name: Check if content generation is needed
         id: check_generation
@@ -189,40 +200,77 @@ author: \"Smart Home Team\"
           "
 
       - name: Run content quality checks
+        id: quality_check
         if: steps.check_generation.outputs.should_generate == 'true'
         run: |
-          echo "🔍 Running content quality checks..."
+          echo "🔍 Running comprehensive content quality checks..."
+          
+          QUALITY_ISSUES=0
           
           if [ -f "generated_files.txt" ]; then
             while IFS= read -r file; do
               if [ -f "$file" ]; then
                 echo "Checking: $file"
                 
-                # Basic checks
-                word_count=$(wc -w < "$file")
-                echo "  Word count: $word_count"
+                # Word count check
+                word_count=$(wc -w < "$file" 2>/dev/null || echo "0")
+                echo "  📊 Word count: $word_count"
                 
-                if [ "$word_count" -lt 1000 ]; then
-                  echo "  ⚠️ Warning: Article may be too short"
-                fi
-                
-                # Check for required sections
-                if grep -q "## " "$file"; then
-                  echo "  ✅ Has section headings"
+                if [ "$word_count" -lt 1500 ]; then
+                  echo "  ⚠️ Quality issue: Article too short ($word_count < 1500 words)"
+                  QUALITY_ISSUES=$((QUALITY_ISSUES + 1))
+                elif [ "$word_count" -gt 4000 ]; then
+                  echo "  ⚠️ Quality issue: Article too long ($word_count > 4000 words)"
+                  QUALITY_ISSUES=$((QUALITY_ISSUES + 1))
                 else
-                  echo "  ⚠️ Warning: No section headings found"
+                  echo "  ✅ Word count acceptable"
                 fi
                 
-                # Check for FAQ section
+                # Section headings check
+                section_count=$(grep -c "^## " "$file" 2>/dev/null || echo "0")
+                if [ "$section_count" -gt 0 ]; then
+                  echo "  ✅ Has $section_count section headings"
+                else
+                  echo "  ⚠️ Quality issue: No section headings found"
+                  QUALITY_ISSUES=$((QUALITY_ISSUES + 1))
+                fi
+                
+                # FAQ section check
                 if grep -qi "faq\|frequently asked" "$file"; then
                   echo "  ✅ Has FAQ section"
+                else
+                  echo "  ℹ️ Info: No FAQ section (recommended but not required)"
                 fi
                 
+                # Front matter validation
+                if grep -q "^title:" "$file" && grep -q "^description:" "$file" && grep -q "^date:" "$file"; then
+                  echo "  ✅ Front matter complete"
+                else
+                  echo "  ⚠️ Quality issue: Incomplete front matter"
+                  QUALITY_ISSUES=$((QUALITY_ISSUES + 1))
+                fi
+                
+                echo ""
               fi
             done < generated_files.txt
+            
+            echo "📋 Quality Check Summary:"
+            echo "  Total issues found: $QUALITY_ISSUES"
+            if [ "$QUALITY_ISSUES" -eq 0 ]; then
+              echo "  ✅ All quality checks passed!"
+            elif [ "$QUALITY_ISSUES" -le 2 ]; then
+              echo "  ⚠️ Minor quality issues detected (acceptable)"
+            else
+              echo "  ❌ Multiple quality issues detected"
+              echo "  Please review generated content manually"
+            fi
+            
           else
-            echo "No files were generated"
+            echo "❌ No files were generated to check"
+            QUALITY_ISSUES=1
           fi
+          
+          echo "quality_issues=$QUALITY_ISSUES" >> $GITHUB_OUTPUT
 
       - name: Commit and push new content
         if: steps.check_generation.outputs.should_generate == 'true'
@@ -255,41 +303,131 @@ author: \"Smart Home Team\"
             echo "✅ New content pushed to repository"
           fi
 
-      - name: Send Telegram notification
+      - name: Send enhanced Telegram notification
         if: always()
         run: |
           if [ "${{ secrets.TELEGRAM_BOT_TOKEN }}" != "" ] && [ "${{ secrets.TELEGRAM_CHAT_ID }}" != "" ]; then
             
-            # Determine status message
+            # Enhanced notification with keyword information
             if [ "${{ steps.check_generation.outputs.should_generate }}" = "true" ] && [ "${{ job.status }}" = "success" ]; then
               STATUS_EMOJI="✅"
-              STATUS_TEXT="Content generation successful"
+              STATUS_TEXT="内容生成成功"
+              
+              # Generate detailed information
+              DETAILS_INFO=""
               
               # Count generated files
               if [ -f "generated_files.txt" ]; then
                 GENERATED_COUNT=$(wc -l < generated_files.txt)
-                DETAILS="Generated $GENERATED_COUNT new article(s)"
+                DETAILS_INFO="📝 生成: $GENERATED_COUNT 篇新文章"
               else
-                DETAILS="Content generation completed"
+                DETAILS_INFO="📝 内容生成完成"
               fi
+              
+              # Add quality check results
+              if [ "${{ steps.quality_check.outputs.quality_issues }}" != "" ]; then
+                QUALITY_ISSUES="${{ steps.quality_check.outputs.quality_issues }}"
+                if [ "$QUALITY_ISSUES" -eq 0 ]; then
+                  DETAILS_INFO="$DETAILS_INFO
+✅ 质量检查: 全部通过"
+                else
+                  DETAILS_INFO="$DETAILS_INFO
+⚠️ 质量检查: $QUALITY_ISSUES 个问题"
+                fi
+              fi
+              
+              # Extract trending keywords information
+              TRENDING_INFO=""
+              if [ -f "trending_keywords.json" ]; then
+                TRENDING_INFO=$(python3 -c "
+import json
+try:
+    with open('trending_keywords.json', 'r') as f:
+        trends = json.load(f)
+    
+    # Get top 3 trending keywords
+    top_trends = trends[:3]
+    trend_text = []
+    for trend in top_trends:
+        keyword = trend.get('keyword', 'N/A')
+        score = trend.get('trend_score', 0)
+        category = trend.get('category', 'N/A').replace('_', ' ').title()
+        trend_text.append(f'• {keyword} ({score:.2f}) - {category}')
+    
+    if trend_text:
+        print('\\n🔥 热门关键词:')
+        print('\\n'.join(trend_text))
+except:
+    pass
+")
+              fi
+              
+              # Extract used keywords from generated files
+              USED_KEYWORDS=""
+              if [ -f "generated_files.txt" ]; then
+                USED_KEYWORDS=$(python3 -c "
+import re
+try:
+    with open('generated_files.txt', 'r') as f:
+        files = [line.strip() for line in f if line.strip()]
+    
+    used_keywords = set()
+    for file_path in files:
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            # Extract keywords from front matter
+            if content.startswith('---'):
+                front_matter = content.split('---')[1]
+                keyword_match = re.search(r'keywords:\s*\[(.*?)\]', front_matter, re.DOTALL)
+                if keyword_match:
+                    keywords_text = keyword_match.group(1)
+                    keywords = [k.strip().strip('\"') for k in keywords_text.split(',')]
+                    # Take first 2 keywords from each article
+                    used_keywords.update(keywords[:2])
+        except:
+            continue
+    
+    if used_keywords:
+        print('\\n🎯 本次使用关键词:')
+        for keyword in list(used_keywords)[:5]:  # Show max 5 keywords
+            print(f'• {keyword}')
+except:
+    pass
+")
+              fi
+              
             elif [ "${{ steps.check_generation.outputs.should_generate }}" = "false" ]; then
               STATUS_EMOJI="ℹ️"
-              STATUS_TEXT="Content generation skipped"
-              DETAILS="Reason: ${{ steps.check_generation.outputs.reason }}"
+              STATUS_TEXT="内容生成跳过"
+              DETAILS_INFO="原因: ${{ steps.check_generation.outputs.reason }}"
             else
               STATUS_EMOJI="❌"
-              STATUS_TEXT="Content generation failed"
-              DETAILS="Check workflow logs for details"
+              STATUS_TEXT="内容生成失败"
+              DETAILS_INFO="请检查工作流日志"
             fi
             
-            MESSAGE="$STATUS_EMOJI *AI Smart Home Hub - Daily Content Update*
+            # Format China time
+            CHINA_TIME=$(python3 -c "
+from datetime import datetime
+import pytz
+china_tz = pytz.timezone('Asia/Shanghai')
+china_time = datetime.now(china_tz)
+print(china_time.strftime('%m-%d %H:%M'))
+")
             
-*Status*: $STATUS_TEXT
-*Details*: $DETAILS
-*Date*: $(date '+%Y-%m-%d %H:%M UTC')
-*Workflow*: [View Details](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-            
-_🤖 Automated by GitHub Actions_"
+            MESSAGE="$STATUS_EMOJI *AI智能家居中心* | $CHINA_TIME
+
+*状态*: $STATUS_TEXT
+
+$DETAILS_INFO$TRENDING_INFO$USED_KEYWORDS
+
+*性能*:
+🌐 [查看网站](https://ai-smarthome.vercel.app/)
+📈 [工作流详情](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+_🤖 GitHub Actions 自动化_"
             
             curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
               -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
@@ -447,64 +585,84 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
             echo "✅ All changes pushed to repository"
           fi
 
-      - name: Update enhanced Telegram notification
+      - name: Final comprehensive Telegram notification
         if: always()
         run: |
           if [ "${{ secrets.TELEGRAM_BOT_TOKEN }}" != "" ] && [ "${{ secrets.TELEGRAM_CHAT_ID }}" != "" ]; then
             
             # Determine comprehensive status
             if [ "${{ job.status }}" = "success" ]; then
-              STATUS_EMOJI="✅"
-              STATUS_TEXT="Daily automation completed successfully"
+              STATUS_EMOJI="🎉"
+              STATUS_TEXT="每日自动化完成"
             else
-              STATUS_EMOJI="❌" 
-              STATUS_TEXT="Daily automation completed with issues"
+              STATUS_EMOJI="⚠️" 
+              STATUS_TEXT="自动化完成 (有问题)"
             fi
             
-            DETAILS=""
+            # Format China time
+            CHINA_TIME=$(python3 -c "
+from datetime import datetime
+import pytz
+china_tz = pytz.timezone('Asia/Shanghai')
+china_time = datetime.now(china_tz)
+print(china_time.strftime('%m-%d %H:%M'))
+")
             
-            # Content generation details
+            SUMMARY=""
+            
+            # Content generation summary
             if [ "${{ steps.check_generation.outputs.should_generate }}" = "true" ]; then
               if [ -f "generated_files.txt" ]; then
                 GENERATED_COUNT=$(wc -l < generated_files.txt 2>/dev/null || echo "0")
-                DETAILS="$DETAILS
-📝 Generated: $GENERATED_COUNT new articles"
+                SUMMARY="$SUMMARY
+✅ 内容: 生成 $GENERATED_COUNT 篇文章"
+                
+                # Add quality info
+                if [ "${{ steps.quality_check.outputs.quality_issues }}" != "" ]; then
+                  QUALITY_ISSUES="${{ steps.quality_check.outputs.quality_issues }}"
+                  if [ "$QUALITY_ISSUES" -eq 0 ]; then
+                    SUMMARY="$SUMMARY (质量✅)"
+                  else
+                    SUMMARY="$SUMMARY (质量⚠️$QUALITY_ISSUES)"
+                  fi
+                fi
               fi
             else
-              DETAILS="$DETAILS
-📄 Content: Skipped (${{ steps.check_generation.outputs.reason }})"
+              SUMMARY="$SUMMARY
+⏭️ 内容: 跳过 (${{ steps.check_generation.outputs.reason }})"
             fi
             
-            # SEO optimization details
+            # SEO optimization summary
             if [ "${{ github.event.inputs.run_seo_optimization }}" = "true" ] || [ "${{ github.event.inputs.run_seo_optimization }}" = "" ]; then
-              DETAILS="$DETAILS
-🔗 SEO: Links optimized, search index updated"
+              SUMMARY="$SUMMARY
+✅ SEO: 链接优化、搜索索引更新"
             fi
             
-            # Content refresh details
+            # Content refresh summary
             if [ "${{ github.event.inputs.refresh_old_content }}" = "true" ] || [ "${{ github.event.inputs.refresh_old_content }}" = "" ]; then
-              DETAILS="$DETAILS
-🔄 Content: Refreshed older articles"
+              SUMMARY="$SUMMARY
+✅ 刷新: 更新旧文章"
             fi
             
-            # Google Indexing API
+            # Google Indexing API summary
             if [ "${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}" != "" ]; then
-              DETAILS="$DETAILS
-📊 Indexing: Submitted to Google API"
+              SUMMARY="$SUMMARY
+✅ 索引: 提交到Google API"
             fi
             
-            MESSAGE="$STATUS_EMOJI *AI Smart Home Hub - Daily Automation*
+            MESSAGE="$STATUS_EMOJI *AI智能家居中心 - 每日总结* | $CHINA_TIME
 
-*Status*: $STATUS_TEXT
-*Date*: $(date '+%Y-%m-%d %H:%M UTC')
+*状态*: $STATUS_TEXT
 
-*Actions Completed*:$DETAILS
+*今日完成*:$SUMMARY
 
-*Performance*:
-🎯 Site: https://ai-smarthome.vercel.app/
-📈 Workflow: [View Details](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+*网站状态*:
+🌐 [ai-smarthome.vercel.app](https://ai-smarthome.vercel.app/)
+📊 [分析面板](https://github.com/${{ github.repository }}/actions)
 
-_🤖 Automated by GitHub Actions + Claude Code_"
+*下次运行*: 明天 09:00 (中国时间)
+
+_🤖 Claude Code + GitHub Actions_"
             
             curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
               -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
