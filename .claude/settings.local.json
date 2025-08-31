@@ -38,7 +38,8 @@
       "WebSearch",
       "Bash(/usr/bin/python3:*)",
       "WebFetch(domain:api.github.com)",
-      "Bash(where python)"
+      "Bash(where python)",
+      "Bash(git ls-tree:*)"
     ],
     "deny": [],
     "ask": []
