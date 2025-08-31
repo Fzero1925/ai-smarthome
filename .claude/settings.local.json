@@ -40,7 +40,8 @@
       "WebFetch(domain:api.github.com)",
       "Bash(where python)",
       "Bash(git ls-tree:*)",
-      "Bash(where python3)"
+      "Bash(where python3)",
+      "Read(D:\\Users\\Fzero\\project\\ai-smarthome/**)"
     ],
     "deny": [],
     "ask": []
