@@ -16,6 +16,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Python timezone dependency
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytz
+
       - name: Test Telegram Bot Connection
         run: |
           echo "🔧 Testing Telegram Bot Connection"
@@ -32,9 +42,6 @@ jobs:
           fi
           
           echo "✅ Environment variables found"
-          echo "Bot Token: ${{ secrets.TELEGRAM_BOT_TOKEN }}" | head -c 20
-          echo "..."
-          echo "Chat ID: ${{ secrets.TELEGRAM_CHAT_ID }}"
 
       - name: Test Bot API
         run: |
@@ -54,14 +61,14 @@ jobs:
         run: |
           echo "📤 Sending test notification..."
           
-          # Get current time in China timezone
+          # Get current time in China timezone using Python
           CHINA_TIME=$(python3 -c "
-          from datetime import datetime
-          import pytz
-          china_tz = pytz.timezone('Asia/Shanghai')
-          china_time = datetime.now(china_tz)
-          print(china_time.strftime('%m-%d %H:%M'))
-          ")
+from datetime import datetime
+import pytz
+china_tz = pytz.timezone('Asia/Shanghai')
+china_time = datetime.now(china_tz)
+print(china_time.strftime('%m-%d %H:%M'))
+")
           
           MESSAGE="🧪 *GitHub Actions Telegram测试* | $CHINA_TIME
 
@@ -70,11 +77,11 @@ jobs:
 *系统信息*:
 • GitHub Actions 运行正常
 • Python时区处理正常
-• Markdown格式支持正常
+• Markdown格式支持正常  
 • 中文显示正常
 
 *工作流*: minimal-telegram-test.yml
-*触发方式*: 手动测试
+*触发方式*: 文件更新测试
 
 🌐 [网站地址](https://ai-smarthome.vercel.app/)
 
@@ -92,6 +99,7 @@ _🤖 Claude Code + GitHub Actions_"
             echo "✅ Test notification sent successfully!"
           else
             echo "❌ Failed to send notification"
+            echo "Error details: $RESULT"
             exit 1
           fi
 
@@ -101,7 +109,7 @@ _🤖 Claude Code + GitHub Actions_"
           echo "📋 Test Summary"
           echo "=============="
           echo "✅ Repository secrets configured"
-          echo "✅ Bot API connection working"
+          echo "✅ Bot API connection working" 
           echo "✅ Message sending successful"
           echo "✅ China timezone handling working"
           echo "✅ Markdown formatting working"
