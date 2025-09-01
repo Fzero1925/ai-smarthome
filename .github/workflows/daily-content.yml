@@ -171,7 +171,7 @@ jobs:
           ARTICLE_COUNT="${{ github.event.inputs.article_count || '1' }}"
           echo "📝 Generating $ARTICLE_COUNT new article(s)..."
           
-          python -c "
+          python -c <<'PYTHON_EOF'
           import json
           import os
           import sys
@@ -320,7 +320,7 @@ author: \"Smart Home Team\"
               f.write('\\n'.join(generated_files))
           
           print(f'Successfully generated {len(generated_files)} articles')
-          "
+PYTHON_EOF
 
       - name: Run content quality checks
         id: quality_check
