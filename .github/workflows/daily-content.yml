@@ -171,6 +171,9 @@ jobs:
           ARTICLE_COUNT="${{ github.event.inputs.article_count || '1' }}"
           echo "📝 Generating $ARTICLE_COUNT new article(s)..."
           
+          # Export as environment variable for Python access
+          export ARTICLE_COUNT
+          
           python -c <<'PYTHON_EOF'
           import json
           import os
@@ -184,7 +187,7 @@ jobs:
           except:
               trends = [{'keyword': 'smart home automation', 'category': 'general'}]
           
-          article_count = min(int('$ARTICLE_COUNT'), len(trends))
+          article_count = min(int(os.environ.get('ARTICLE_COUNT', '1')), len(trends))
           generated_files = []
           
           # Simple content generator for workflow
