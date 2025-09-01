@@ -98,7 +98,7 @@ jobs:
                   json.dump(trends, f, indent=2, default=str)
               print('✅ Successfully updated keyword trends')
           except Exception as e:
-              print(f'⚠️ Warning: Failed to update keyword trends: {str(e)}')
+              print('⚠️ Warning: Failed to update keyword trends: {}'.format(str(e)))
               print('📄 Using fallback keyword data, continuing...')
           " || echo "Using fallback data"
 
@@ -145,16 +145,16 @@ jobs:
               for i, trend in enumerate(top_trends, 1):
                   keyword = trend.get('keyword', 'N/A')
                   score = trend.get('trend_score', 0)
-                  print(f'{i}. {keyword} (score: {score:.2f})')
+                  print('{}. {} (score: {:.2f})'.format(i, keyword, score))
               
               # Save for article generation
               with open('trending_keywords.json', 'w') as f:
                   json.dump(top_trends, f, indent=2, default=str)
               
-              print(f'✅ Saved {len(top_trends)} trending keywords for content generation')
+              print('✅ Saved {} trending keywords for content generation'.format(len(top_trends)))
               
           except Exception as e:
-              print(f'❌ Error processing keywords: {str(e)}')
+              print('❌ Error processing keywords: {}'.format(str(e)))
               # Create fallback
               fallback_trends = [
                   {'keyword': 'smart home automation', 'category': 'general', 'trend_score': 0.8},
@@ -192,15 +192,15 @@ jobs:
           
           # Simple content generator for workflow
           def generate_article_content(keyword, category):
-              title = f'Best {keyword.title()} 2025: Complete Buying Guide & Reviews'
+              title = 'Best {} 2025: Complete Buying Guide & Reviews'.format(keyword.title())
               
-              content = f'''## Introduction
+              content = '''## Introduction
       
-{keyword.title()} have revolutionized modern homes with their innovative features and seamless integration capabilities. In this comprehensive guide, we'll explore the top-rated {keyword} options for 2025, helping you make an informed decision for your smart home setup.
+{} have revolutionized modern homes with their innovative features and seamless integration capabilities. In this comprehensive guide, we'll explore the top-rated {} options for 2025, helping you make an informed decision for your smart home setup.
 
 ## Top Features to Consider
 
-When choosing {keyword}, consider these essential factors:
+When choosing {}, consider these essential factors:
 
 - **Compatibility**: Works with Alexa, Google Assistant, and Apple HomeKit
 - **Easy Installation**: Simple setup process without professional help required  
@@ -208,9 +208,9 @@ When choosing {keyword}, consider these essential factors:
 - **Build Quality**: Durable construction with safety certifications
 - **User Reviews**: Consistently high ratings from verified purchasers
 
-## Best {keyword.title()} for 2025
+## Best {} for 2025
 
-### 1. Premium Choice - Advanced {keyword.title()}
+### 1. Premium Choice - Advanced {}
 
 This top-tier option offers exceptional performance with premium materials and advanced features. Perfect for users who want the best possible experience.
 
@@ -220,7 +220,7 @@ This top-tier option offers exceptional performance with premium materials and a
 - Energy monitoring and optimization
 - Professional installation support available
 
-### 2. Best Value - Budget-Friendly {keyword.title()}
+### 2. Best Value - Budget-Friendly {}
 
 An excellent balance of features and affordability, making it perfect for first-time smart home users or those on a budget.
 
@@ -230,7 +230,7 @@ An excellent balance of features and affordability, making it perfect for first-
 - Basic smart home compatibility
 - Reliable performance and safety features
 
-### 3. Feature-Rich Option - Professional {keyword.title()}
+### 3. Feature-Rich Option - Professional {}
 
 Designed for power users who want advanced customization and professional-grade features.
 
@@ -242,7 +242,7 @@ Designed for power users who want advanced customization and professional-grade 
 
 ## Installation and Setup Guide
 
-Setting up your new {keyword} is straightforward:
+Setting up your new {} is straightforward:
 
 1. **Preparation**: Ensure your WiFi network is stable and accessible
 2. **Physical Installation**: Follow the manufacturer's step-by-step guide
@@ -252,7 +252,7 @@ Setting up your new {keyword} is straightforward:
 
 ## Maintenance and Troubleshooting
 
-Keep your {keyword} performing optimally with these tips:
+Keep your {} performing optimally with these tips:
 
 - Regular firmware updates for security and new features
 - Periodic cleaning and inspection of physical components
@@ -261,16 +261,16 @@ Keep your {keyword} performing optimally with these tips:
 
 ## Conclusion
 
-{keyword.title()} represent an excellent investment in your smart home ecosystem. Whether you choose the premium, value, or feature-rich option, you'll enjoy enhanced convenience, energy efficiency, and peace of mind.
+{} represent an excellent investment in your smart home ecosystem. Whether you choose the premium, value, or feature-rich option, you'll enjoy enhanced convenience, energy efficiency, and peace of mind.
 
 Consider your specific needs, budget, and existing smart home setup when making your decision. All our recommended options offer excellent value and reliable performance for modern homes.
-'''
+'''.format(keyword.title(), keyword, keyword, keyword.title(), keyword.title(), keyword.title(), keyword.title(), keyword, keyword, keyword.title())
               
               return {
                   'title': title,
                   'content': content,
                   'metadata': {
-                      'description': f'Complete guide to the best {keyword} for 2025. Compare features, prices, and reviews to find the perfect smart home solution.',
+                      'description': 'Complete guide to the best {} for 2025. Compare features, prices, and reviews to find the perfect smart home solution.'.format(keyword),
                       'categories': [category.replace('_', '-')],
                       'tags': [keyword, 'smart home', 'automation', 'review', '2025']
                   }
@@ -281,29 +281,36 @@ Consider your specific needs, budget, and existing smart home setup when making 
               keyword = trend.get('keyword', 'smart home device')
               category = trend.get('category', 'smart-home')
               
-              print(f'Generating article {i+1}/{article_count} for: {keyword}')
+              print('Generating article {}/{} for: {}'.format(i+1, article_count, keyword))
               
               try:
                   article = generate_article_content(keyword, category)
                   
                   # Create filename
                   safe_title = keyword.lower().replace(' ', '-').replace(',', '').replace(':', '')
-                  filename = f'content/articles/{safe_title}-{datetime.now().strftime(\"%Y%m%d\")}.md'
+                  filename = 'content/articles/{}-{}.md'.format(safe_title, datetime.now().strftime(\"%Y%m%d\"))
                   
                   # Generate Hugo front matter
-                  front_matter = f'''---
-title: \"{article['title']}\"
-description: \"{article['metadata']['description']}\"
-date: {datetime.now().isoformat()}Z
-categories: {json.dumps(article['metadata']['categories'])}
-tags: {json.dumps(article['metadata']['tags'])}
-keywords: [\"{keyword}\", \"smart home\", \"automation\", \"review\"]
+                  front_matter = '''---
+title: \"{}\"
+description: \"{}\"
+date: {}Z
+categories: {}
+tags: {}
+keywords: [\"{}\", \"smart home\", \"automation\", \"review\"]
 featured: true
 rating: 4.5
 author: \"Smart Home Team\"
 ---
 
-'''
+'''.format(
+                      article['title'],
+                      article['metadata']['description'],
+                      datetime.now().isoformat(),
+                      json.dumps(article['metadata']['categories']),
+                      json.dumps(article['metadata']['tags']),
+                      keyword
+                  )
                   
                   # Write article file
                   os.makedirs('content/articles', exist_ok=True)
@@ -312,17 +319,17 @@ author: \"Smart Home Team\"
                       f.write(article['content'])
                   
                   generated_files.append(filename)
-                  print(f'✅ Generated: {filename}')
+                  print('✅ Generated: {}'.format(filename))
                   
               except Exception as e:
-                  print(f'❌ Error generating article for {keyword}: {str(e)}')
+                  print('❌ Error generating article for {}: {}'.format(keyword, str(e)))
                   continue
           
           # Save list of generated files
           with open('generated_files.txt', 'w') as f:
               f.write('\\n'.join(generated_files))
           
-          print(f'Successfully generated {len(generated_files)} articles')
+          print('Successfully generated {} articles'.format(len(generated_files)))
 PYTHON_EOF
 
       - name: Run content quality checks
@@ -478,7 +485,7 @@ try:
         keyword = trend.get('keyword', 'N/A')
         score = trend.get('trend_score', 0)
         category = trend.get('category', 'N/A').replace('_', ' ').title()
-        trend_text.append(f'• {keyword} ({score:.2f}) - {category}')
+        trend_text.append('• {} ({:.2f}) - {}'.format(keyword, score, category))
     
     if trend_text:
         print('\\n🔥 热门关键词:')
@@ -518,7 +525,7 @@ try:
     if used_keywords:
         print('\\n🎯 本次使用关键词:')
         for keyword in list(used_keywords)[:5]:  # Show max 5 keywords
-            print(f'• {keyword}')
+            print('• {}'.format(keyword))
 except:
     pass
 ")
@@ -614,7 +621,7 @@ _🤖 GitHub Actions 自动化_"
           with open(stats_file, 'w') as f:
               json.dump(stats, f, indent=2)
           
-          print(f'Updated content generation stats: {stats[\"total_runs\"]} total runs, {stats[\"successful_runs\"]} successful, {stats[\"articles_generated\"]} articles generated')
+          print('Updated content generation stats: {} total runs, {} successful, {} articles generated'.format(stats[\"total_runs\"], stats[\"successful_runs\"], stats[\"articles_generated\"]))
           "
 
       - name: Refresh old content
