@@ -195,7 +195,7 @@ jobs:
               title = 'Best {} 2025: Complete Buying Guide & Reviews'.format(keyword.title())
               
               content = '''## Introduction
-      
+
 {} have revolutionized modern homes with their innovative features and seamless integration capabilities. In this comprehensive guide, we'll explore the top-rated {} options for 2025, helping you make an informed decision for your smart home setup.
 
 ## Top Features to Consider
