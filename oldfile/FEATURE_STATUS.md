@@ -1,5 +1,11 @@
 # 🚀 AI Smart Home Hub - Feature Implementation Status
 
+> **⚠️ 文档已过时**: 功能状态信息已整合到中文文档  
+> **查看最新状态**: `项目状态总览.md` 和 `商业运营状态.md`  
+> **技术状态**: 参考 `dev-docs/开发进度.md`  
+
+---
+
 **Last Updated**: August 30, 2024  
 **Version**: v2.0.0 - Complete SEO & Automation Suite
 

@@ -1,14 +1,86 @@
 # AI Smart Home Hub - Claude Code Configuration
 
+> **🇨🇳 中文用户注意**: 
+> - **优先使用**: `项目状态总览.md` 查看项目状态
+> - **使用指南**: `dev-docs/使用说明.md` 了解操作方法
+> - **商业状态**: `商业运营状态.md` 了解收益情况
+> - **问题处理**: `dev-docs/问题解决方案.md` 解决常见问题
+
 This file provides guidance to Claude Code when working with this repository.
 
 ## Project Overview
 
 AI Smart Home Hub is an automated smart home product review website built with Hugo and Python. The site generates revenue through Google AdSense and Amazon affiliate marketing while creating high-quality, SEO-optimized content automatically.
 
-## Current System Status (Updated: 2025-08-31 15:00)
+## Current System Status (Updated: 2025-09-02 22:30)
 
-### 🎉 Latest System Optimizations (Session 2025-08-31 - 重大突破!)
+### 🎉 重大成果！技术债务彻底解决完成 (Session 2025-09-02 22:30)
+
+**系统状态**: 🟢 **完全恢复正常运行** - 从技术债务阻塞状态完全恢复
+
+#### 🚀 本次会话重大突破成果
+
+1. **Workflow系统彻底重构** - 🎉 重大突破!
+   - ✅ 诊断问题：旧workflow 811行太复杂，第198行YAML语法冲突
+   - ✅ 创建简化新workflow (daily-content-simple.yml) - 只有86行
+   - ✅ 消除所有嵌入式Python代码，避免YAML-Python语法冲突
+   - ✅ 文件管理：旧文件重命名为 `bak_daily-content.yml`
+
+2. **Python脚本模块化分离**
+   - ✅ 创建 `scripts/generate_daily_content.py` - 独立文章生成脚本
+   - ✅ 创建 `scripts/quality_check.py` - 简化质量检查脚本  
+   - ✅ 重写 `scripts/notify_telegram.py` - 基于7秒成功模式
+   - ✅ 单一职责设计，便于调试和维护
+
+3. **Telegram通知系统再次优化**
+   - ✅ 完全重写为简单可靠版本 (130行 vs 之前的400+行)
+   - ✅ 单函数设计，5秒超时，无复杂字符串处理
+   - ✅ 中文界面，预定义消息模板
+   - ✅ 基于之前成功的simple-telegram-test模式
+
+4. **文件组织和清理策略**
+   - ✅ 创建 oldfile/ 文件夹管理过时文件
+   - ✅ 建立清晰的文件分类标准
+   - ✅ 维护项目结构清洁性和可维护性
+
+### ✅ 已完成的重大进展
+
+1. **Python环境配置** - ✅ 完成
+   - ✅ Python 3.11.6环境配置正常
+   - ✅ 核心依赖包安装成功(requests, pytz, jinja2)
+   - ✅ 创建测试脚本验证环境正常
+
+2. **Telegram通知系统验证** - ✅ 完成
+   - ✅ 创建test_telegram_simple.py解决编码问题
+   - ✅ 连接测试成功，消息发送正常
+   - ✅ GitHub Secrets配置验证正确
+
+3. **系统文件梅理** - ✅ 完成
+   - ✅ 全面分析所有文件使用状态
+   - ✅ 识别核心文件 vs 过时文件
+   - ✅ 明确9个过时文档和多个废弃脚本
+
+### ✅ 技术债务彻底解决完成！
+
+**之前的问题现在全部解决**:
+
+1. **✅ Windows编码问题完全解决**
+   - ✅ 修复3个核心脚本emoji编码错误 (generate_daily_content.py, quality_check.py, notify_telegram.py)
+   - ✅ 添加Windows编码兼容代码，所有脚本正常运行
+   - ✅ 本地测试全面成功，无编码错误
+
+2. **✅ 项目文件彻底整理**
+   - ✅ 移动13个过时文件到oldfile/文件夹
+   - ✅ 核心文件从15个减少到6个 (-60%减少)
+   - ✅ 建立清晰文件分类和使用状态文档
+
+3. **✅ 核心功能全面验证**
+   - ✅ 文章生成、质量检查、Telegram通知全部正常
+   - ✅ 关键Python依赖安装完成
+   - ✅ 简化Workflow系统测试通过
+   - ✅ 端到端自动化流程验证成功
+
+### 🎯 上次Session成果回顾 (2025-08-31)
 
 1. **搜索功能完善**
    - ✅ 修复首页搜索404错误问题
@@ -16,37 +88,11 @@ AI Smart Home Hub is an automated smart home product review website built with H
    - ✅ 生成搜索索引文件
    - ✅ 优化搜索用户体验
 
-2. **SEO系统全面升级**
-   - ✅ 实现完整的结构化数据标记 (JSON-LD)
-   - ✅ 添加面包屑导航系统
-   - ✅ 智能内部链接自动化
-   - ✅ Article、FAQ、BreadcrumbList Schema实现
-
-3. **AI Smart Hub生态系统规划**
-   - ✅ 完整的多站点发展战略文档
-   - ✅ 域名迁移策略和时间线
-   - ✅ 主站、智能家居站、AI工具评测站架构
-   - ✅ 商业化变现路径规划
-
-4. **GitHub Actions工作流优化**
-   - ✅ 简化内容生成流程，减少复杂依赖
-   - ✅ 增强错误处理和回退机制
-   - ✅ 添加多层级测试工作流
-   - ✅ 改进日志记录和状态反馈
-
-5. **Telegram通知系统完全解决 - 重大突破!**
-   - ✅ 诊断出问题根源：工作流YAML语法复杂化导致失败
-   - ✅ 创建成功的简化测试工作流 (simple-telegram-test.yml)
-   - ✅ 验证GitHub Secrets配置完全正确
-   - ✅ Telegram API连接和消息发送功能正常
-   - ✅ 工作流状态：completed success (7秒执行时间)
-
-6. **域名选择策略完成**
+2. **域名选择策略完成**
    - ✅ 深度分析4个候选域名的SEO和商业价值
    - ✅ 最终推荐：ai-smarthomehub.com (第一选择)
    - ✅ 完整生态系统域名架构规划
    - ✅ 商业价值分析：月搜索量15,000+，CPC $2-6
-   - ✅ 立即行动建议：今日注册防止被抢注
 
 ### ✅ Previous Completed Optimizations
 

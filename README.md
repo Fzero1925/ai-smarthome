@@ -11,7 +11,11 @@
 
 **Production Site**: [AI Smart Home Hub](https://ai-smarthome.vercel.app/)
 
-### 📊 Current Status (2025-08-31 - Session 2 Enhanced)
+### 📊 Current Status (2025-08-31 - CHINESE DOCS AVAILABLE)
+
+> **⚠️ 注意**: 请参考中文文档获取最新状态信息  
+> **主要中文文档**: `项目状态总览.md` | `商业运营状态.md` | `dev-docs/使用说明.md`
+
 - 🎉 **Recently Enhanced** - Interface simplified, global timing optimized for EU/US users  
 - ✅ **Fully Automated** - Complete automation pipeline deployed and operational
 - 🤖 **AI Content Generation** - Daily 1-3 articles with anti-AI detection (09:00 AM China time, optimized globally)
@@ -137,11 +141,17 @@ We're proud to be a trusted resource for smart home enthusiasts, with thousands 
 - **Security**: All sensitive data encrypted and stored in GitHub Secrets
 
 ### Documentation
-For technical documentation and development guides, see:
-- `CLAUDE.md` - Development configuration and commands
-- `OPERATIONS.md` - Daily maintenance and troubleshooting
-- `PROGRESS.md` - Development timeline and milestones
-- `BUSINESS_ROADMAP.md` - Future development and monetization plans
+
+> **🇨🇳 中文文档优先**: 主要项目信息请查看中文文档
+> - `项目状态总览.md` - 项目整体状态和进展 **[推荐]**  
+> - `商业运营状态.md` - 收益和商业化状态 **[推荐]**
+> - `dev-docs/使用说明.md` - 详细使用指南 **[推荐]**
+
+~~For technical documentation and development guides, see:~~ **[过时信息]**
+- `CLAUDE.md` - Development configuration and commands **[仍然有效]**
+- ~~`OPERATIONS.md` - Daily maintenance and troubleshooting~~ **[已合并到中文文档]**
+- ~~`PROGRESS.md` - Development timeline and milestones~~ **[已合并到中文文档]**  
+- ~~`BUSINESS_ROADMAP.md` - Future development and monetization plans~~ **[已合并到AI_SMART_HUB_ECOSYSTEM_PLAN.md]**
 
 ### Next Phase Development
 🎯 **Google AdSense Integration** - Revenue optimization  

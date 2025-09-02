@@ -41,7 +41,12 @@
       "Bash(where python)",
       "Bash(git ls-tree:*)",
       "Bash(where python3)",
-      "Read(D:\\Users\\Fzero\\project\\ai-smarthome/**)"
+      "Read(D:\\Users\\Fzero\\project\\ai-smarthome/**)",
+      "Bash(mv:*)",
+      "Bash(/c/Python/python.exe --version)",
+      "Bash(pip install:*)",
+      "Bash(set TELEGRAM_BOT_TOKEN=8494031502:AAHrT6csi5COqeUgG-wk_SiaYNjiXOFB-m4)",
+      "Bash(set TELEGRAM_CHAT_ID=6041888803)"
     ],
     "deny": [],
     "ask": []

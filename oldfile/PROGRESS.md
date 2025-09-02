@@ -1,5 +1,11 @@
 # AI Smart Home Hub - Development Progress Tracking
 
+> **⚠️ 文档状态**: 此文档包含过时信息，请参考最新中文文档  
+> **最新状态**: 查看 `项目状态总览.md` 和 `dev-docs/开发进度.md`  
+> **更新时间**: 2025-08-31  
+
+---
+
 ## 项目概览
 
 **项目名称**: AI Smart Home Hub  
