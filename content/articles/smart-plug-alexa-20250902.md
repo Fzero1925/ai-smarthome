@@ -1,7 +1,7 @@
 ---
 title: "Best Smart Plug Alexa 2025: Complete Buying Guide & Reviews"
 description: "Complete guide to the best smart plug alexa for 2025. Compare features, prices, and reviews to find the perfect smart home solution."
-date: 2025-09-02T17:08:39.483919Z
+date: 2025-09-02T17:20:19.591676Z
 categories: ["smart-plugs"]
 tags: ["smart plug alexa", "smart home", "automation", "review", "2025"]
 keywords: ["smart plug alexa", "smart home", "automation", "review"]
