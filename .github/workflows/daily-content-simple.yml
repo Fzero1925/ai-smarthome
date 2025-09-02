@@ -86,14 +86,7 @@ jobs:
           
           if ! git diff --staged --quiet; then
             current_date=$(date '+%Y-%m-%d')
-            git commit -m "$(cat <<EOF
-Auto: Daily content update - $current_date
-
-Generated with Claude Code AI Assistant
-
-Co-Authored-By: Claude <noreply@anthropic.com>
-EOF
-            )"
+            git commit -m "Auto: Daily content update - $current_date - Generated with Claude Code AI Assistant - Co-Authored-By: Claude <noreply@anthropic.com>"
             git push
           fi
 
