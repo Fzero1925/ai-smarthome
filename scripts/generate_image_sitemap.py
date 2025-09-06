@@ -1,0 +1,172 @@
+#!/usr/bin/env python3
+"""
+Enhanced Image Sitemap Generator
+Automatically generates comprehensive image sitemaps for SEO optimization
+"""
+
+import os
+import sys
+import codecs
+from pathlib import Path
+from datetime import datetime
+import xml.etree.ElementTree as ET
+
+# 解决Windows编码问题
+if sys.platform == "win32":
+    sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
+
+def generate_image_sitemap():
+    """Generate comprehensive image sitemap for better SEO"""
+    
+    # Define image directories to scan
+    image_dirs = [
+        "static/images/products/smart-plugs",
+        "static/images/products/smart-bulbs", 
+        "static/images/products/smart-thermostats",
+        "static/images"  # General images
+    ]
+    
+    # Supported image formats
+    image_extensions = {'.jpg', '.jpeg', '.png', '.webp', '.gif'}
+    
+    # Create root element
+    urlset = ET.Element('urlset')
+    urlset.set('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9')
+    urlset.set('xmlns:image', 'http://www.google.com/schemas/sitemap-image/1.1')
+    
+    base_url = "https://ai-smarthome.vercel.app"
+    current_time = datetime.now().isoformat()
+    
+    # Process each image directory
+    for image_dir in image_dirs:
+        if not os.path.exists(image_dir):
+            continue
+            
+        for root, dirs, files in os.walk(image_dir):
+            for file in files:
+                if Path(file).suffix.lower() in image_extensions:
+                    # Create URL element
+                    url = ET.SubElement(urlset, 'url')
+                    
+                    # Calculate relative path and URL
+                    rel_path = os.path.relpath(os.path.join(root, file), 'static')
+                    image_url = f"{base_url}/{rel_path.replace(os.sep, '/')}"
+                    
+                    # Add location
+                    loc = ET.SubElement(url, 'loc')
+                    loc.text = image_url
+                    
+                    # Add image-specific data
+                    image = ET.SubElement(url, 'image:image')
+                    image_loc = ET.SubElement(image, 'image:loc')
+                    image_loc.text = image_url
+                    
+                    # Generate descriptive caption based on filename and path
+                    caption = generate_image_caption(file, root)
+                    if caption:
+                        image_caption = ET.SubElement(image, 'image:caption')
+                        image_caption.text = caption
+                    
+                    # Add title
+                    title = generate_image_title(file, root)
+                    if title:
+                        image_title = ET.SubElement(image, 'image:title')
+                        image_title.text = title
+                    
+                    # Add last modification date
+                    lastmod = ET.SubElement(url, 'lastmod')
+                    try:
+                        file_path = os.path.join(root, file)
+                        mod_time = datetime.fromtimestamp(os.path.getmtime(file_path))
+                        lastmod.text = mod_time.isoformat()
+                    except:
+                        lastmod.text = current_time
+                    
+                    # Set change frequency and priority
+                    changefreq = ET.SubElement(url, 'changefreq')
+                    changefreq.text = 'weekly'
+                    
+                    priority = ET.SubElement(url, 'priority')
+                    priority.text = calculate_image_priority(root, file)
+    
+    # Write XML to file with proper formatting
+    tree = ET.ElementTree(urlset)
+    ET.indent(tree, space="  ", level=0)  # Pretty formatting
+    
+    output_file = "static/sitemap-images.xml"
+    tree.write(output_file, encoding='utf-8', xml_declaration=True)
+    
+    # Count images processed
+    image_count = len(urlset.findall('url'))
+    print(f"✅ Generated image sitemap with {image_count} images")
+    print(f"📁 Output: {output_file}")
+    
+    return output_file, image_count
+
+def generate_image_caption(filename, directory):
+    """Generate SEO-optimized caption for images"""
+    
+    # Extract product category from directory path
+    if 'smart-plugs' in directory:
+        category = 'smart plug'
+    elif 'smart-bulbs' in directory:
+        category = 'smart bulb'  
+    elif 'smart-thermostats' in directory:
+        category = 'smart thermostat'
+    else:
+        category = 'smart home device'
+    
+    # Extract product name from filename
+    name = filename.replace('-', ' ').replace('_', ' ')
+    name = os.path.splitext(name)[0].title()
+    
+    # Generate descriptive caption
+    if 'amazon' in filename.lower():
+        return f"Amazon {name} - Professional {category} review and buying guide"
+    elif 'philips' in filename.lower():
+        return f"Philips {name} - Premium {category} with advanced features"
+    elif 'google' in filename.lower():
+        return f"Google {name} - Smart {category} with AI integration"
+    elif 'comparison' in filename.lower():
+        return f"{category.title()} comparison chart - Best models 2024"
+    else:
+        return f"{name} - {category.title()} review and specifications"
+
+def generate_image_title(filename, directory):
+    """Generate SEO-optimized title for images"""
+    
+    # Extract base name
+    base_name = os.path.splitext(filename)[0]
+    title = base_name.replace('-', ' ').replace('_', ' ').title()
+    
+    # Add category context
+    if 'smart-plugs' in directory:
+        return f"{title} Smart Plug"
+    elif 'smart-bulbs' in directory:
+        return f"{title} Smart Bulb"
+    elif 'smart-thermostats' in directory:
+        return f"{title} Smart Thermostat"
+    else:
+        return f"{title} Smart Home Device"
+
+def calculate_image_priority(directory, filename):
+    """Calculate SEO priority for images"""
+    
+    # Higher priority for product images
+    if any(cat in directory for cat in ['smart-plugs', 'smart-bulbs', 'smart-thermostats']):
+        if 'comparison' in filename.lower():
+            return "0.9"  # Comparison charts are high value
+        elif any(brand in filename.lower() for brand in ['amazon', 'philips', 'google']):
+            return "0.8"  # Brand products are important
+        else:
+            return "0.7"  # Other product images
+    else:
+        return "0.5"  # General images
+
+if __name__ == "__main__":
+    try:
+        output_file, count = generate_image_sitemap()
+        print(f"🎉 Success: Created {output_file} with {count} images")
+    except Exception as e:
+        print(f"❌ Error generating image sitemap: {e}")
+        sys.exit(1)

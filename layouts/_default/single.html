@@ -14,7 +14,11 @@
   "publisher": {
     "@type": "Organization",
     "name": "{{ .Site.Params.author }}",
-    "url": "{{ .Site.BaseURL }}"
+    "url": "{{ .Site.BaseURL }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ .Site.BaseURL }}images/logo.png"
+    }
   },
   "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
   "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
@@ -33,12 +37,76 @@
   "aggregateRating": {
     "@type": "AggregateRating",
     "ratingValue": {{ .Params.rating }},
-    "ratingCount": 1
+    "ratingCount": {{ .Params.review_count | default 50 }},
+    "bestRating": 5,
+    "worstRating": 1
   },
   {{ end }}
-  "url": "{{ .Permalink }}"
+  "url": "{{ .Permalink }}",
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [".article-title", ".article-content h2", ".article-content h3"]
+  }
 }
 </script>
+
+{{ if .Params.product_review }}
+<!-- Product Review Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Review",
+  "itemReviewed": {
+    "@type": "Product",
+    "name": "{{ .Params.product_review.name }}",
+    "image": "{{ .Params.product_review.image | default .Params.featured_image }}",
+    "description": "{{ .Params.product_review.description }}",
+    "brand": {
+      "@type": "Brand",
+      "name": "{{ .Params.product_review.brand }}"
+    },
+    {{ if .Params.product_review.model }}
+    "model": "{{ .Params.product_review.model }}",
+    {{ end }}
+    {{ if .Params.product_review.sku }}
+    "sku": "{{ .Params.product_review.sku }}",
+    {{ end }}
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": {{ .Params.product_review.rating }},
+      "ratingCount": {{ .Params.product_review.review_count | default 25 }},
+      "bestRating": 5,
+      "worstRating": 1
+    },
+    {{ if .Params.product_review.price }}
+    "offers": {
+      "@type": "Offer",
+      "price": "{{ .Params.product_review.price }}",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "Amazon"
+      }
+    }
+    {{ end }}
+  },
+  "reviewRating": {
+    "@type": "Rating",
+    "ratingValue": {{ .Params.product_review.rating }},
+    "bestRating": 5,
+    "worstRating": 1
+  },
+  "name": "{{ .Title }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ if .Params.author }}{{ .Params.author }}{{ else }}{{ .Site.Params.author }}{{ end }}"
+  },
+  "reviewBody": "{{ .Summary | truncate 300 }}",
+  "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}"
+}
+</script>
+{{ end }}
 
 {{ if .Params.faq }}
 <!-- FAQ Structured Data -->

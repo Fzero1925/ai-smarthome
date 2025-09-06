@@ -47,37 +47,32 @@ jobs:
           echo "AMAZON_AFFILIATE_TAG=${{ secrets.AMAZON_AFFILIATE_TAG }}" >> .env
           echo "GOOGLE_ANALYTICS_ID=${{ secrets.GOOGLE_ANALYTICS_ID }}" >> .env
 
-      - name: Check if generation needed
+      - name: Prepare content generation
         id: check_needed
         run: |
+          # Always generate content - ensure daily article creation
+          echo "should_generate=true" >> $GITHUB_OUTPUT
           if [ "${{ github.event.inputs.force_generation }}" = "true" ]; then
-            echo "should_generate=true" >> $GITHUB_OUTPUT
-            echo "reason=forced" >> $GITHUB_OUTPUT
+            echo "reason=forced_generation" >> $GITHUB_OUTPUT
           else
-            recent_count=$(find content/articles -name "*.md" -mtime -1 2>/dev/null | wc -l)
-            if [ "$recent_count" -eq 0 ]; then
-              echo "should_generate=true" >> $GITHUB_OUTPUT
-              echo "reason=no_recent_articles" >> $GITHUB_OUTPUT
-            else
-              echo "should_generate=false" >> $GITHUB_OUTPUT
-              echo "reason=recent_articles_exist" >> $GITHUB_OUTPUT
-            fi
+            echo "reason=daily_content_schedule" >> $GITHUB_OUTPUT
           fi
+          
+          # Set target article count (default 1, can be overridden)
+          article_count="${{ github.event.inputs.article_count || '1' }}"
+          echo "target_count=$article_count" >> $GITHUB_OUTPUT
 
       - name: Generate articles
-        if: steps.check_needed.outputs.should_generate == 'true'
         run: |
           python scripts/generate_daily_content.py \
-            --count "${{ github.event.inputs.article_count || '1' }}" \
+            --count "${{ steps.check_needed.outputs.target_count }}" \
             --output-dir content/articles
 
       - name: Quality check
-        if: steps.check_needed.outputs.should_generate == 'true'
         run: |
           python scripts/quality_check.py content/articles/
 
       - name: Commit new content
-        if: steps.check_needed.outputs.should_generate == 'true'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"

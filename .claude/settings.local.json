@@ -46,7 +46,11 @@
       "Bash(/c/Python/python.exe --version)",
       "Bash(pip install:*)",
       "Bash(set TELEGRAM_BOT_TOKEN=8494031502:AAHrT6csi5COqeUgG-wk_SiaYNjiXOFB-m4)",
-      "Bash(set TELEGRAM_CHAT_ID=6041888803)"
+      "Bash(set TELEGRAM_CHAT_ID=6041888803)",
+      "Bash(git pull:*)",
+      "Bash(find:*)",
+      "Read(\\/**)",
+      "Bash(move test_optimized_template.py oldfile)"
     ],
     "deny": [],
     "ask": []

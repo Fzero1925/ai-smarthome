@@ -241,11 +241,12 @@ def format_daily_content_message(status, generated, reason, article_count=0):
 🎯 *下一步*: {business['next_milestone']} ({business['domain_countdown']})"""
         
     elif status == "success" and generated == "false":
-        status_emoji = "ℹ️"
-        status_text = "内容生成跳过"
-        sub_status = "系统智能判断"
-        details = f"📋 *跳过原因*: {reason}"
-        keyword_info = "📊 关键词分析: 跳过生成，等待更好时机"
+        # This case should not occur with new workflow - always generate
+        status_emoji = "⚠️"
+        status_text = "内容生成异常"
+        sub_status = "检查工作流配置"
+        details = f"📋 *原因*: {reason} - 应该强制生成"
+        keyword_info = "🔧 系统配置需要检查，应该每天强制生成内容"
         
     else:
         status_emoji = "❌"

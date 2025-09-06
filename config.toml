@@ -63,11 +63,19 @@ defaultContentLanguage = "en"
     weight = 5
 
 [sitemap]
-  changefreq = "weekly"
-  priority = 0.5
+  changefreq = "daily"
+  priority = 0.8
   filename = "sitemap.xml"
 
 [outputs]
-  home = ["HTML", "RSS", "JSON"]
+  home = ["HTML", "RSS", "JSON", "SitemapIndex"]
   page = ["HTML"]
   section = ["HTML", "RSS"]
+
+# Enhanced sitemap configuration for better SEO
+[params.sitemap]
+  # Enable automatic sitemap generation for all content types
+  enable_images = true
+  enable_videos = false
+  include_categories = true
+  include_tags = true

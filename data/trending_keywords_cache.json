@@ -2,26 +2,51 @@
   {
     "keyword": "smart plug alexa",
     "category": "smart_plugs",
-    "trend_score": 0.85
+    "trend_score": 0.85,
+    "competition_score": 0.65,
+    "commercial_intent": 0.92,
+    "search_volume": 15000,
+    "difficulty": "Medium",
+    "reason": "High commercial intent + growing trend in voice control smart plugs"
   },
   {
     "keyword": "robot vacuum pet hair",
     "category": "robot_vacuums",
-    "trend_score": 0.9
+    "trend_score": 0.9,
+    "competition_score": 0.72,
+    "commercial_intent": 0.88,
+    "search_volume": 22000,
+    "difficulty": "Medium-High",
+    "reason": "Peak demand for pet-friendly cleaning solutions during shedding season"
   },
   {
     "keyword": "smart door locks 2025",
     "category": "smart_security",
-    "trend_score": 0.82
+    "trend_score": 0.82,
+    "competition_score": 0.58,
+    "commercial_intent": 0.94,
+    "search_volume": 12000,
+    "difficulty": "Low-Medium",
+    "reason": "Future-focused keyword with high purchase intent and low competition"
   },
   {
     "keyword": "smart light bulbs wifi",
     "category": "smart_lighting",
-    "trend_score": 0.8
+    "trend_score": 0.8,
+    "competition_score": 0.7,
+    "commercial_intent": 0.86,
+    "search_volume": 18000,
+    "difficulty": "Medium",
+    "reason": "Consistent demand for WiFi-enabled lighting automation"
   },
   {
     "keyword": "smart thermostat nest",
     "category": "smart_climate",
-    "trend_score": 0.78
+    "trend_score": 0.78,
+    "competition_score": 0.75,
+    "commercial_intent": 0.9,
+    "search_volume": 16500,
+    "difficulty": "Medium-High",
+    "reason": "Brand-specific searches indicate high purchase readiness"
   }
 ]
