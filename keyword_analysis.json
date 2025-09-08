@@ -1,15 +1,14 @@
 [
   {
     "keyword": "smart plug alexa",
-    "category": "smart-plugs",
+    "category": "smart_plugs",
     "trend_score": 0.85,
-    "commercial_intent": 0.9,
-    "search_volume": 12000,
+    "competition_score": 0.65,
+    "commercial_intent": 0.92,
+    "search_volume": 15000,
     "difficulty": "Medium",
-    "reason": "High purchase intent and growing market demand",
+    "reason": "High commercial intent + growing trend in voice control smart plugs",
     "priority": 1,
-    "quality_level": "premium",
-    "filepath": "content/articles\\smart-plug-alexa-20250909.md",
-    "word_count": 1529
+    "filepath": "content/articles\\smart-plug-alexa-20250909.md"
   }
 ]

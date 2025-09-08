@@ -1,0 +1,129 @@
+{
+  "timestamp": "2025-09-09T07:16:05.353114",
+  "summary": {
+    "total_articles": 5,
+    "total_images": 9,
+    "missing_images": 4,
+    "created_images": 0,
+    "fixed_references": 4,
+    "articles_modified": 4,
+    "errors": []
+  },
+  "detailed_analysis": {
+    "best-smart-light-bulbs-2025.md": {
+      "total_images": 1,
+      "missing_images": 1,
+      "image_details": [
+        {
+          "alt_text": "LIFX Color Smart Bulb - WiFi Connected RGB Lighting",
+          "original_path": "/images/products/smart-bulbs/lifx-color.jpg \"LIFX Color Smart Bulb - WiFi Connected RGB Lighting\"",
+          "clean_path": "/images/products/smart-bulbs/lifx-color.jpg \"LIFX Color Smart Bulb - WiFi Connected RGB Lighting\"",
+          "filename": "lifx-color.jpg \"LIFX Color Smart Bulb - WiFi Connected RGB Lighting\"",
+          "static_path": "static/images/products/smart-bulbs/lifx-color.jpg \"LIFX Color Smart Bulb - WiFi Connected RGB Lighting\"",
+          "exists": false,
+          "line_content": "![LIFX Color Smart Bulb - WiFi Connected RGB Lighting](/images/products/smart-bulbs/lifx-color.jpg \"LIFX Color Smart Bulb - WiFi Connected RGB Lighting\")"
+        }
+      ]
+    },
+    "smart-door-locks-security-2025.md": {
+      "total_images": 1,
+      "missing_images": 1,
+      "image_details": [
+        {
+          "alt_text": "Amazon Smart Plug - Voice Control with Alexa",
+          "original_path": "/images/products/smart-plugs/amazon-smart-plug.jpg \"Amazon Smart Plug - Voice Control with Alexa\"",
+          "clean_path": "/images/products/smart-plugs/amazon-smart-plug.jpg \"Amazon Smart Plug - Voice Control with Alexa\"",
+          "filename": "amazon-smart-plug.jpg \"Amazon Smart Plug - Voice Control with Alexa\"",
+          "static_path": "static/images/products/smart-plugs/amazon-smart-plug.jpg \"Amazon Smart Plug - Voice Control with Alexa\"",
+          "exists": false,
+          "line_content": "![Amazon Smart Plug - Voice Control with Alexa](/images/products/smart-plugs/amazon-smart-plug.jpg \"Amazon Smart Plug - Voice Control with Alexa\")"
+        }
+      ]
+    },
+    "smart-plug-alexa-20250909.md": {
+      "total_images": 5,
+      "missing_images": 0,
+      "image_details": [
+        {
+          "alt_text": "Best smart plug alexa 2025 - Complete buying guide and reviews",
+          "original_path": "/images/products/smart-plugs/amazon-smart-plug-hero.jpg",
+          "clean_path": "/images/products/smart-plugs/amazon-smart-plug-hero.jpg",
+          "filename": "amazon-smart-plug-hero.jpg",
+          "static_path": "static/images/products/smart-plugs/amazon-smart-plug-hero.jpg",
+          "exists": true,
+          "line_content": "![Best smart plug alexa 2025 - Complete buying guide and reviews](/images/products/smart-plugs/amazon-smart-plug-hero.jpg)"
+        },
+        {
+          "alt_text": "Top rated smart plug alexa - Premium choice for smart homes",
+          "original_path": "/images/products/smart-plugs/amazon-smart-plug-main.jpg",
+          "clean_path": "/images/products/smart-plugs/amazon-smart-plug-main.jpg",
+          "filename": "amazon-smart-plug-main.jpg",
+          "static_path": "static/images/products/smart-plugs/amazon-smart-plug-main.jpg",
+          "exists": true,
+          "line_content": "![Top rated smart plug alexa - Premium choice for smart homes](/images/products/smart-plugs/amazon-smart-plug-main.jpg)"
+        },
+        {
+          "alt_text": "Best value smart plug alexa - Budget-friendly smart home solution",
+          "original_path": "/images/products/smart-plugs/tp-link-kasa-hs103.jpg",
+          "clean_path": "/images/products/smart-plugs/tp-link-kasa-hs103.jpg",
+          "filename": "tp-link-kasa-hs103.jpg",
+          "static_path": "static/images/products/smart-plugs/tp-link-kasa-hs103.jpg",
+          "exists": true,
+          "line_content": "![Best value smart plug alexa - Budget-friendly smart home solution](/images/products/smart-plugs/tp-link-kasa-hs103.jpg)"
+        },
+        {
+          "alt_text": "Professional grade smart plug alexa - Advanced features",
+          "original_path": "/images/products/smart-plugs/govee-wifi-smart-plug.jpg",
+          "clean_path": "/images/products/smart-plugs/govee-wifi-smart-plug.jpg",
+          "filename": "govee-wifi-smart-plug.jpg",
+          "static_path": "static/images/products/smart-plugs/govee-wifi-smart-plug.jpg",
+          "exists": true,
+          "line_content": "![Professional grade smart plug alexa - Advanced features](/images/products/smart-plugs/govee-wifi-smart-plug.jpg)"
+        },
+        {
+          "alt_text": "smart plug alexa comparison chart - Features and pricing 2025",
+          "original_path": "/images/products/smart-plugs/smart-plug-comparison-2025.jpg",
+          "clean_path": "/images/products/smart-plugs/smart-plug-comparison-2025.jpg",
+          "filename": "smart-plug-comparison-2025.jpg",
+          "static_path": "static/images/products/smart-plugs/smart-plug-comparison-2025.jpg",
+          "exists": true,
+          "line_content": "![smart plug alexa comparison chart - Features and pricing 2025](/images/products/smart-plugs/smart-plug-comparison-2025.jpg)"
+        }
+      ]
+    },
+    "smart-thermostats-energy-savings-2025.md": {
+      "total_images": 1,
+      "missing_images": 1,
+      "image_details": [
+        {
+          "alt_text": "Google Nest Learning Thermostat - AI-Powered Climate Control",
+          "original_path": "/images/products/smart-thermostats/google-nest.jpg \"Google Nest Learning Thermostat - AI-Powered Climate Control\"",
+          "clean_path": "/images/products/smart-thermostats/google-nest.jpg \"Google Nest Learning Thermostat - AI-Powered Climate Control\"",
+          "filename": "google-nest.jpg \"Google Nest Learning Thermostat - AI-Powered Climate Control\"",
+          "static_path": "static/images/products/smart-thermostats/google-nest.jpg \"Google Nest Learning Thermostat - AI-Powered Climate Control\"",
+          "exists": false,
+          "line_content": "![Google Nest Learning Thermostat - AI-Powered Climate Control](/images/products/smart-thermostats/google-nest.jpg \"Google Nest Learning Thermostat - AI-Powered Climate Control\")"
+        }
+      ]
+    },
+    "top-smart-plugs-for-alexa.md": {
+      "total_images": 1,
+      "missing_images": 1,
+      "image_details": [
+        {
+          "alt_text": "Amazon Smart Plug - Voice Control with Alexa",
+          "original_path": "/images/products/smart-plugs/amazon-smart-plug.jpg \"Amazon Smart Plug - Voice Control with Alexa\"",
+          "clean_path": "/images/products/smart-plugs/amazon-smart-plug.jpg \"Amazon Smart Plug - Voice Control with Alexa\"",
+          "filename": "amazon-smart-plug.jpg \"Amazon Smart Plug - Voice Control with Alexa\"",
+          "static_path": "static/images/products/smart-plugs/amazon-smart-plug.jpg \"Amazon Smart Plug - Voice Control with Alexa\"",
+          "exists": false,
+          "line_content": "![Amazon Smart Plug - Voice Control with Alexa](/images/products/smart-plugs/amazon-smart-plug.jpg \"Amazon Smart Plug - Voice Control with Alexa\")"
+        }
+      ]
+    }
+  },
+  "recommendations": [
+    "发现 4 个缺失图片，建议上传实际产品图片替换占位符",
+    "已修复 4 个图片引用，建议验证修复后的图片显示正常"
+  ]
+}

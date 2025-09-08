@@ -1,0 +1,366 @@
+{
+  "timestamp": "20250909_0718",
+  "timing_info": {
+    "timestamp": "2025-09-08T23:18:15.847494+00:00",
+    "active_zones": [
+      [
+        "US_East",
+        19
+      ],
+      [
+        "US_West",
+        16
+      ]
+    ],
+    "analysis_weight": 0.6666666666666666,
+    "is_prime_time": true,
+    "us_east_hour": 19,
+    "us_west_hour": 16,
+    "uk_hour": 0,
+    "recommendation": "ANALYZE"
+  },
+  "topics_count": 13,
+  "topics": [
+    {
+      "keyword": "robot vacuum black friday",
+      "category": "cleaning_devices",
+      "trend_score": 1.0,
+      "commercial_value": 0.9,
+      "search_volume_est": 45000,
+      "competition_level": "Medium-High",
+      "urgency_score": 0.95,
+      "sources": [
+        "search_volume_monitor"
+      ],
+      "time_detected": "2025-09-08 23:18:15.847494+00:00",
+      "peak_regions": [
+        "US",
+        "UK"
+      ],
+      "related_terms": [],
+      "business_reasoning": "Search volume spiked 275% due to: Pre-holiday shopping surge",
+      "content_angle": "Timely buying guide capitalizing on current interest surge",
+      "estimated_revenue": "$400-800/month",
+      "social_signals": {}
+    },
+    {
+      "keyword": "smart plug energy monitoring 2025",
+      "category": "smart_plugs",
+      "trend_score": 0.9433045918081088,
+      "commercial_value": 0.9500000000000001,
+      "search_volume_est": 23789,
+      "competition_level": "Medium",
+      "urgency_score": 0.7,
+      "sources": [
+        "google_trends"
+      ],
+      "time_detected": "2025-09-08 23:18:15.847494+00:00",
+      "peak_regions": [
+        "US",
+        "UK",
+        "CA"
+      ],
+      "related_terms": [
+        "energy saving",
+        "wifi smart plug",
+        "alexa compatible"
+      ],
+      "business_reasoning": "Trending keyword with 0.94 momentum score - ideal for content creation",
+      "content_angle": "Future-focused guide with latest technology trends and predictions",
+      "estimated_revenue": "$300-600/month",
+      "social_signals": {
+        "mentions": 145,
+        "sentiment": 0.8
+      }
+    },
+    {
+      "keyword": "smart plug energy monitoring",
+      "category": "smart_plugs",
+      "trend_score": 0.67,
+      "commercial_value": 0.9,
+      "search_volume_est": 25000,
+      "competition_level": "Medium-High",
+      "urgency_score": 0.95,
+      "sources": [
+        "search_volume_monitor"
+      ],
+      "time_detected": "2025-09-08 23:18:15.847494+00:00",
+      "peak_regions": [
+        "US",
+        "UK",
+        "CA"
+      ],
+      "related_terms": [],
+      "business_reasoning": "Search volume spiked 67% due to: Energy cost concerns trending",
+      "content_angle": "Timely buying guide capitalizing on current interest surge",
+      "estimated_revenue": "$400-800/month",
+      "social_signals": {}
+    },
+    {
+      "keyword": "back to school smart home",
+      "category": "general_smart_home",
+      "trend_score": 0.75,
+      "commercial_value": 0.85,
+      "search_volume_est": 13621,
+      "competition_level": "Low-Medium",
+      "urgency_score": 0.8,
+      "sources": [
+        "seasonal_analysis"
+      ],
+      "time_detected": "2025-09-08 23:18:15.847494+00:00",
+      "peak_regions": [
+        "US",
+        "UK",
+        "CA"
+      ],
+      "related_terms": [],
+      "business_reasoning": "Seasonal opportunity for 09 month - lower competition with targeted demand",
+      "content_angle": "Seasonal buying guide with timely recommendations",
+      "estimated_revenue": "$300-600/month",
+      "social_signals": {}
+    },
+    {
+      "keyword": "dorm room automation",
+      "category": "general_smart_home",
+      "trend_score": 0.75,
+      "commercial_value": 0.85,
+      "search_volume_est": 15104,
+      "competition_level": "Low-Medium",
+      "urgency_score": 0.8,
+      "sources": [
+        "seasonal_analysis"
+      ],
+      "time_detected": "2025-09-08 23:18:15.847494+00:00",
+      "peak_regions": [
+        "US",
+        "UK",
+        "CA"
+      ],
+      "related_terms": [],
+      "business_reasoning": "Seasonal opportunity for 09 month - lower competition with targeted demand",
+      "content_angle": "Seasonal buying guide with timely recommendations",
+      "estimated_revenue": "$300-600/month",
+      "social_signals": {}
+    },
+    {
+      "keyword": "outdoor security camera wireless",
+      "category": "security_devices",
+      "trend_score": 0.6,
+      "commercial_value": 0.9,
+      "search_volume_est": 32000,
+      "competition_level": "Medium-High",
+      "urgency_score": 0.95,
+      "sources": [
+        "search_volume_monitor"
+      ],
+      "time_detected": "2025-09-08 23:18:15.847494+00:00",
+      "peak_regions": [
+        "US",
+        "CA",
+        "AU"
+      ],
+      "related_terms": [],
+      "business_reasoning": "Search volume spiked 60% due to: Home security awareness increase",
+      "content_angle": "Timely buying guide capitalizing on current interest surge",
+      "estimated_revenue": "$400-800/month",
+      "social_signals": {}
+    },
+    {
+      "keyword": "robot vacuum pet hair reviews",
+      "category": "cleaning_devices",
+      "trend_score": 0.9634265775953089,
+      "commercial_value": 0.6,
+      "search_volume_est": 32329,
+      "competition_level": "High",
+      "urgency_score": 0.7,
+      "sources": [
+        "google_trends"
+      ],
+      "time_detected": "2025-09-08 23:18:15.847494+00:00",
+      "peak_regions": [
+        "US",
+        "UK",
+        "AU"
+      ],
+      "related_terms": [
+        "pet-friendly vacuum",
+        "automatic cleaning",
+        "smart mapping"
+      ],
+      "business_reasoning": "High trend score (0.96) with 32,329 estimated searches indicates strong market interest",
+      "content_angle": "Comprehensive buying guide with honest product comparisons",
+      "estimated_revenue": "$200-400/month",
+      "social_signals": {
+        "mentions": 203,
+        "sentiment": 0.9
+      }
+    },
+    {
+      "keyword": "robot vacuum",
+      "category": "cleaning_devices",
+      "trend_score": 0.598,
+      "commercial_value": 0.5,
+      "search_volume_est": 5980,
+      "competition_level": "Medium",
+      "urgency_score": 1.0,
+      "sources": [
+        "reddit"
+      ],
+      "time_detected": "2025-09-08 23:18:15.847494+00:00",
+      "peak_regions": [
+        "US",
+        "UK",
+        "CA"
+      ],
+      "related_terms": [],
+      "business_reasoning": "Reddit engagement: 598 upvotes, 134 comments",
+      "content_angle": "In-depth product analysis with real-world testing and recommendations",
+      "estimated_revenue": "$200-500/month",
+      "social_signals": {
+        "reddit_upvotes": 598,
+        "reddit_comments": 134
+      }
+    },
+    {
+      "keyword": "wireless security camera solar",
+      "category": "security_devices",
+      "trend_score": 0.8213132795704707,
+      "commercial_value": 0.5,
+      "search_volume_est": 20687,
+      "competition_level": "Low-Medium",
+      "urgency_score": 0.7,
+      "sources": [
+        "google_trends"
+      ],
+      "time_detected": "2025-09-08 23:18:15.847494+00:00",
+      "peak_regions": [
+        "US",
+        "CA",
+        "AU"
+      ],
+      "related_terms": [
+        "outdoor camera",
+        "battery powered",
+        "wireless security"
+      ],
+      "business_reasoning": "High trend score (0.82) with 20,687 estimated searches indicates strong market interest",
+      "content_angle": "In-depth product analysis with real-world testing and recommendations",
+      "estimated_revenue": "$200-400/month",
+      "social_signals": {
+        "mentions": 87,
+        "sentiment": 0.7
+      }
+    },
+    {
+      "keyword": "smart thermostat nest vs ecobee",
+      "category": "climate_control",
+      "trend_score": 0.7314034355138141,
+      "commercial_value": 0.8,
+      "search_volume_est": 18120,
+      "competition_level": "High",
+      "urgency_score": 0.5,
+      "sources": [
+        "google_trends"
+      ],
+      "time_detected": "2025-09-08 23:18:15.847494+00:00",
+      "peak_regions": [
+        "US",
+        "CA"
+      ],
+      "related_terms": [
+        "smart climate control",
+        "energy efficiency",
+        "home automation"
+      ],
+      "business_reasoning": "Trending keyword with 0.73 momentum score - ideal for content creation",
+      "content_angle": "Head-to-head product comparison with clear winner recommendation",
+      "estimated_revenue": "$200-400/month",
+      "social_signals": {
+        "mentions": 164,
+        "sentiment": 0.8
+      }
+    },
+    {
+      "keyword": "color changing smart bulbs alexa",
+      "category": "lighting",
+      "trend_score": 0.7564614837027654,
+      "commercial_value": 0.7,
+      "search_volume_est": 19316,
+      "competition_level": "Medium",
+      "urgency_score": 0.5,
+      "sources": [
+        "google_trends"
+      ],
+      "time_detected": "2025-09-08 23:18:15.847494+00:00",
+      "peak_regions": [
+        "US",
+        "UK",
+        "DE"
+      ],
+      "related_terms": [
+        "rgb lighting",
+        "voice control",
+        "mood lighting"
+      ],
+      "business_reasoning": "Market demand signal: 19,316 searches with 0.76 trend acceleration",
+      "content_angle": "In-depth product analysis with real-world testing and recommendations",
+      "estimated_revenue": "$300-600/month",
+      "social_signals": {
+        "mentions": 119,
+        "sentiment": 0.9
+      }
+    },
+    {
+      "keyword": "smart plug",
+      "category": "smart_plugs",
+      "trend_score": 0.342,
+      "commercial_value": 1.0,
+      "search_volume_est": 3420,
+      "competition_level": "Medium",
+      "urgency_score": 0.67,
+      "sources": [
+        "reddit"
+      ],
+      "time_detected": "2025-09-08 23:18:15.847494+00:00",
+      "peak_regions": [
+        "US",
+        "UK",
+        "CA"
+      ],
+      "related_terms": [],
+      "business_reasoning": "Reddit engagement: 342 upvotes, 67 comments",
+      "content_angle": "Comprehensive buying guide with honest product comparisons",
+      "estimated_revenue": "$200-500/month",
+      "social_signals": {
+        "reddit_upvotes": 342,
+        "reddit_comments": 67
+      }
+    },
+    {
+      "keyword": "security camera",
+      "category": "security_devices",
+      "trend_score": 0.276,
+      "commercial_value": 0.7,
+      "search_volume_est": 2760,
+      "competition_level": "Medium",
+      "urgency_score": 0.45,
+      "sources": [
+        "reddit"
+      ],
+      "time_detected": "2025-09-08 23:18:15.847494+00:00",
+      "peak_regions": [
+        "US",
+        "UK",
+        "CA"
+      ],
+      "related_terms": [],
+      "business_reasoning": "Reddit engagement: 276 upvotes, 45 comments",
+      "content_angle": "Step-by-step tutorial with practical tips and troubleshooting",
+      "estimated_revenue": "$200-500/month",
+      "social_signals": {
+        "reddit_upvotes": 276,
+        "reddit_comments": 45
+      }
+    }
+  ]
+}

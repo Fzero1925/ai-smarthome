@@ -1,0 +1,347 @@
+name: Realtime Trending Monitor & Content Generator
+
+on:
+  schedule:
+    # 每30分钟检查一次热点（欧美活跃时间优化）
+    - cron: '*/30 6-22 * * *'  # UTC 6-22点每30分钟检查
+  
+  workflow_dispatch:
+    inputs:
+      force_analysis:
+        description: '强制分析（忽略时区限制）'
+        required: false
+        default: false
+        type: boolean
+      check_only:
+        description: '仅检查不生成文章'
+        required: false
+        default: false
+        type: boolean
+      max_articles:
+        description: '最大文章生成数'
+        required: false
+        default: '2'
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  trending-monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Setup environment
+        run: |
+          # 创建必要的目录
+          mkdir -p data/realtime_trends
+          mkdir -p data/generation_history
+          mkdir -p data/trending_cache
+          mkdir -p modules/trending
+          
+          # 设置环境变量
+          echo "TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}" >> $GITHUB_ENV
+          echo "TELEGRAM_CHAT_ID=${{ secrets.TELEGRAM_CHAT_ID }}" >> $GITHUB_ENV
+
+      - name: Check trending topics and trigger generation
+        id: trending_check
+        run: |
+          echo "🔥 开始实时热点检查..."
+          
+          # 设置参数
+          FORCE_ANALYSIS="${{ github.event.inputs.force_analysis || 'false' }}"
+          CHECK_ONLY="${{ github.event.inputs.check_only || 'false' }}"
+          MAX_ARTICLES="${{ github.event.inputs.max_articles || '2' }}"
+          
+          # 执行热点分析和触发检查
+          python -c "
+import asyncio
+import json
+import sys
+import os
+from datetime import datetime, timezone
+
+# 添加模块路径
+sys.path.append('.')
+
+try:
+    from modules.trending.realtime_trigger import manual_trigger_check
+    from modules.trending.realtime_analyzer import analyze_current_trends
+    
+    async def main():
+        print('🔍 分析当前热点趋势...')
+        
+        # 分析热点
+        force_analysis = '${{ github.event.inputs.force_analysis }}' == 'true'
+        trends_result = await analyze_current_trends(force_analysis=force_analysis)
+        
+        print(f'📊 发现 {trends_result[\"analysis_summary\"][\"total_topics\"]} 个热点话题')
+        print(f'📈 紧急话题: {trends_result[\"analysis_summary\"][\"urgent_topics\"]} 个')
+        print(f'💰 高商业价值: {trends_result[\"analysis_summary\"][\"high_commercial_value\"]} 个')
+        
+        # 检查是否仅分析
+        if '${{ github.event.inputs.check_only }}' == 'true':
+            print('ℹ️ 仅分析模式，不触发文章生成')
+            result = {
+                'action': 'analysis_only',
+                'trends_analyzed': trends_result['analysis_summary']['total_topics'],
+                'urgent_topics': trends_result['analysis_summary']['urgent_topics'],
+                'generated_articles': 0
+            }
+        else:
+            # 执行触发检查
+            print('🚀 检查是否需要触发文章生成...')
+            trigger_result = await manual_trigger_check(force=True)
+            
+            result = {
+                'action': 'trigger_check',
+                'trends_analyzed': trends_result['analysis_summary']['total_topics'],
+                'triggers_attempted': trigger_result['analysis_summary']['triggers_attempted'],
+                'successful_generations': trigger_result['analysis_summary']['successful_generations'],
+                'failed_generations': trigger_result['analysis_summary']['failed_generations'],
+                'generated_articles': trigger_result['analysis_summary']['successful_generations']
+            }
+        
+        # 输出结果到GitHub Actions
+        with open('trigger_result.json', 'w', encoding='utf-8') as f:
+            json.dump(result, f, indent=2, ensure_ascii=False)
+        
+        # 设置GitHub Actions输出变量
+        print(f'设置输出变量...')
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+            f.write(f'action={result[\"action\"]}\\n')
+            f.write(f'trends_analyzed={result[\"trends_analyzed\"]}\\n')
+            f.write(f'generated_articles={result.get(\"generated_articles\", 0)}\\n')
+            f.write(f'has_new_content={\"true\" if result.get(\"generated_articles\", 0) > 0 else \"false\"}\\n')
+        
+        print('✅ 热点检查完成!')
+        
+    asyncio.run(main())
+    
+except Exception as e:
+    print(f'❌ 热点检查失败: {e}')
+    import traceback
+    traceback.print_exc()
+    
+    # 设置错误状态
+    with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+        f.write('action=error\\n')
+        f.write('trends_analyzed=0\\n')
+        f.write('generated_articles=0\\n')
+        f.write('has_new_content=false\\n')
+    
+    sys.exit(1)
+"
+
+      - name: Commit new articles if generated
+        if: steps.trending_check.outputs.has_new_content == 'true'
+        run: |
+          echo "📝 检查是否有新文章需要提交..."
+          
+          # 配置Git
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action - Realtime Trending"
+          
+          # 检查是否有新文件
+          if [ -n "$(git status --porcelain content/articles/*.md 2>/dev/null)" ]; then
+            echo "✅ 发现新生成的文章，正在提交..."
+            
+            git add content/articles/*.md
+            git add data/realtime_trends/ 2>/dev/null || true
+            git add data/generation_history/ 2>/dev/null || true
+            
+            current_time=$(date '+%Y-%m-%d %H:%M:%S UTC')
+            articles_count="${{ steps.trending_check.outputs.generated_articles }}"
+            
+            git commit -m "⚡ Realtime: Generated $articles_count trending articles - $current_time
+
+🔥 Triggered by realtime trending analysis
+📊 Articles generated: $articles_count
+⏰ Generated at: $current_time
+
+🤖 Generated with Claude Code AI Assistant
+Co-Authored-By: Claude <noreply@anthropic.com>"
+            
+            echo "📤 推送到远程仓库..."
+            git push
+            
+            echo "✅ 新文章已成功提交和推送"
+          else
+            echo "ℹ️ 没有发现新文章文件"
+          fi
+
+      - name: Send comprehensive Telegram notification
+        if: always()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          # 检查Telegram配置
+          if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo "⚠️ Telegram配置不完整，跳过通知"
+            exit 0
+          fi
+          
+          # 读取分析结果
+          ACTION="${{ steps.trending_check.outputs.action }}"
+          TRENDS_COUNT="${{ steps.trending_check.outputs.trends_analyzed }}"
+          ARTICLES_COUNT="${{ steps.trending_check.outputs.generated_articles }}"
+          
+          # 获取当前北京时间
+          BEIJING_TIME=$(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S')
+          
+          # 构建通知消息
+          if [ "$ACTION" = "error" ]; then
+            MESSAGE="❌ <b>实时热点监控 - 执行失败</b>
+
+⏰ 时间: $BEIJING_TIME
+💥 状态: 系统错误
+📋 详情: 请检查工作流日志
+
+🔄 下次检查: 30分钟后"
+          
+          elif [ "$ACTION" = "analysis_only" ]; then
+            MESSAGE="🔍 <b>实时热点监控 - 仅分析模式</b>
+
+⏰ 时间: $BEIJING_TIME
+📊 分析话题: $TRENDS_COUNT 个
+ℹ️ 模式: 仅分析，未生成文章
+
+🔄 下次检查: 30分钟后"
+          
+          elif [ "$ARTICLES_COUNT" -gt 0 ]; then
+            MESSAGE="🔥 <b>实时热点触发 - 文章已生成！</b>
+
+⏰ 时间: $BEIJING_TIME
+📊 分析话题: $TRENDS_COUNT 个
+✅ 生成文章: $ARTICLES_COUNT 篇
+💰 预估月收益: \$$(($ARTICLES_COUNT * 400))-\$$(($ARTICLES_COUNT * 800))
+
+🎯 <b>触发原因</b>
+• 检测到高价值热点话题
+• 满足商业价值和紧急度阈值
+• 自动触发实时文章生成
+
+🌐 网站: https://ai-smarthomehub.com
+🔄 下次检查: 30分钟后"
+          
+          else
+            MESSAGE="📊 <b>实时热点监控 - 常规检查</b>
+
+⏰ 时间: $BEIJING_TIME  
+📈 分析话题: $TRENDS_COUNT 个
+⏳ 生成文章: 0 篇（无符合条件的热点）
+
+💡 <b>监控状态</b>
+• 持续监控欧美时区热点趋势
+• 智能评估商业价值和竞争度
+• 自动触发高价值内容生成
+
+🔄 下次检查: 30分钟后"
+          fi
+          
+          # 发送Telegram通知
+          curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+               -H "Content-Type: application/json" \
+               -d "{
+                 \"chat_id\": \"$TELEGRAM_CHAT_ID\",
+                 \"text\": \"$MESSAGE\",
+                 \"parse_mode\": \"HTML\",
+                 \"disable_web_page_preview\": true
+               }" > /dev/null
+          
+          echo "📱 Telegram通知已发送"
+
+      - name: Update monitoring statistics
+        if: always()
+        run: |
+          # 更新监控统计
+          echo "📊 更新监控统计数据..."
+          
+          STATS_FILE="data/monitoring_stats.json"
+          CURRENT_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          
+          # 创建或更新统计文件
+          python -c "
+import json
+import os
+from datetime import datetime
+
+stats_file = '$STATS_FILE'
+current_time = '$CURRENT_TIME'
+action = '${{ steps.trending_check.outputs.action }}'
+trends_count = int('${{ steps.trending_check.outputs.trends_analyzed }}' or '0')
+articles_count = int('${{ steps.trending_check.outputs.generated_articles }}' or '0')
+
+# 读取现有统计
+if os.path.exists(stats_file):
+    with open(stats_file, 'r', encoding='utf-8') as f:
+        stats = json.load(f)
+else:
+    stats = {
+        'total_checks': 0,
+        'total_articles_generated': 0,
+        'last_successful_generation': None,
+        'daily_stats': {},
+        'recent_checks': []
+    }
+
+# 更新统计
+stats['total_checks'] += 1
+stats['total_articles_generated'] += articles_count
+stats['last_check'] = current_time
+
+if articles_count > 0:
+    stats['last_successful_generation'] = current_time
+
+# 更新每日统计
+date_key = current_time[:10]
+if date_key not in stats['daily_stats']:
+    stats['daily_stats'][date_key] = {'checks': 0, 'articles': 0}
+
+stats['daily_stats'][date_key]['checks'] += 1
+stats['daily_stats'][date_key]['articles'] += articles_count
+
+# 记录最近检查
+check_record = {
+    'time': current_time,
+    'action': action,
+    'trends_analyzed': trends_count,
+    'articles_generated': articles_count
+}
+
+stats['recent_checks'].append(check_record)
+
+# 保持最近50条记录
+if len(stats['recent_checks']) > 50:
+    stats['recent_checks'] = stats['recent_checks'][-50:]
+
+# 保存统计
+os.makedirs(os.path.dirname(stats_file), exist_ok=True)
+with open(stats_file, 'w', encoding='utf-8') as f:
+    json.dump(stats, f, indent=2, ensure_ascii=False)
+
+print(f'✅ 监控统计已更新')
+print(f'📈 总检查次数: {stats[\"total_checks\"]}')
+print(f'📝 总生成文章: {stats[\"total_articles_generated\"]}')
+"
+          
+          echo "✅ 监控统计更新完成"

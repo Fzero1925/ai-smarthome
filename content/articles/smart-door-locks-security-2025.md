@@ -73,7 +73,7 @@ featured_products:
 ## Introduction
 
 
-![Amazon Smart Plug - Voice Control with Alexa](/images/products/smart-plugs/amazon-smart-plug.jpg "Amazon Smart Plug - Voice Control with Alexa")
+![Amazon Smart Plug - Voice Control with Alexa](/images/products/smart-plugs/amazon-smart-plug.jpg)
 
 *Featured: Professional review and buying guide for smart door locks 2025*
 In 2025, smart door locks have evolved from novelty gadgets to essential home security components, offering keyless convenience without compromising safety. Modern smart locks combine traditional deadbolt strength with cutting-edge technology, featuring biometric readers, encrypted wireless communication, and intelligent access management that learns your daily routines.

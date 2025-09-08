@@ -3,7 +3,7 @@
 
 baseURL: 'https://ai-smarthomehub.com'
 languageCode: 'en-us'
-title: 'AI Smart Home Hub - Expert Reviews & Buying Guides 2025'
+title: 'AI Smart Home Hub'
 
 # Pagination Configuration
 pagination:
@@ -12,7 +12,7 @@ pagination:
 # SEO and Performance Configuration
 params:
   # Site Identity
-  description: 'Expert reviews and buying guides for smart home devices. Find the best smart plugs, bulbs, cameras, and automation systems for 2025.'
+  description: 'Expert reviews and buying guides for smart home devices. Find the best smart plugs, bulbs, cameras, and automation systems.'
   author: 'AI Smart Home Team'
   keywords: ['smart home', 'home automation', 'smart devices', 'IoT', 'reviews', 'buying guides']
   

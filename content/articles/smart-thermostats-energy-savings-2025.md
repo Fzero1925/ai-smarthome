@@ -98,7 +98,7 @@ featured_products:
 ## Introduction
 
 
-![Google Nest Learning Thermostat - AI-Powered Climate Control](/images/products/smart-thermostats/google-nest.jpg "Google Nest Learning Thermostat - AI-Powered Climate Control")
+![Google Nest Learning Thermostat - AI-Powered Climate Control](/images/products/smart-thermostats/google-nest.jpg)
 
 *Featured: Professional review and buying guide for smart thermostats 2025*
 Smart thermostats represent one of the most impactful investments you can make in home automation, offering substantial energy savings while dramatically improving comfort and convenience. In 2025, the smart thermostat market has matured significantly, bringing us more sophisticated learning algorithms, better integration with smart home ecosystems, and enhanced energy optimization features that can reduce your heating and cooling costs by up to 23%.

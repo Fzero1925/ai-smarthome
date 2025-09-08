@@ -228,7 +228,8 @@ def _add_alt_tags(image_dict, keyword, context):
     }
     
     # 为每个图片添加alt标签
-    for key in enhanced_dict.keys():
+    keys_to_process = list(enhanced_dict.keys())  # 创建键的副本避免迭代时修改字典
+    for key in keys_to_process:
         if key in alt_templates:
             enhanced_dict[f"{key}_alt"] = alt_templates[key]
         else:
@@ -328,63 +329,213 @@ def create_image_directory_structure():
     
     return True
 
-def load_trending_keywords():
-    """Load trending keywords, with fallback data"""
-    trending_file = "data/trending_keywords_cache.json"
+def get_used_keywords_history():
+    """获取最近30天内使用过的关键词，避免重复"""
+    import os
+    import re
+    from datetime import datetime, timedelta
     
-    # Create fallback data if file doesn't exist - Enhanced with detailed analysis info
-    fallback_data = [
+    used_keywords = set()
+    articles_dir = "content/articles"
+    
+    if not os.path.exists(articles_dir):
+        return used_keywords
+    
+    # 检查最近30天的文章
+    cutoff_date = datetime.now() - timedelta(days=30)
+    
+    try:
+        for filename in os.listdir(articles_dir):
+            if filename.endswith('.md'):
+                filepath = os.path.join(articles_dir, filename)
+                # 从文件创建时间判断
+                file_time = datetime.fromtimestamp(os.path.getctime(filepath))
+                
+                if file_time > cutoff_date:
+                    # 从文件名提取关键词（格式：keyword-YYYYMMDD.md）
+                    base_name = filename.replace('.md', '')
+                    # 移除日期后缀
+                    keyword_part = re.sub(r'-\d{8}$', '', base_name)
+                    # 将连字符替换为空格
+                    keyword = keyword_part.replace('-', ' ')
+                    used_keywords.add(keyword)
+    except Exception as e:
+        print(f"⚠️ Warning: Could not check keyword history: {e}")
+    
+    return used_keywords
+
+def get_diverse_keyword_pool():
+    """获取多样化的关键词池，包含15个不同类别的关键词"""
+    import random
+    
+    # 扩展关键词池 - 15个不同类别，确保多样性
+    diverse_keywords = [
+        # Smart Plugs
         {
             "keyword": "smart plug alexa", 
             "category": "smart_plugs", 
             "trend_score": 0.85,
-            "competition_score": 0.65,
             "commercial_intent": 0.92,
             "search_volume": 15000,
             "difficulty": "Medium",
             "reason": "High commercial intent + growing trend in voice control smart plugs"
         },
         {
+            "keyword": "wifi smart outlet outdoor", 
+            "category": "smart_plugs", 
+            "trend_score": 0.79,
+            "commercial_intent": 0.88,
+            "search_volume": 12000,
+            "difficulty": "Low-Medium",
+            "reason": "Seasonal demand for outdoor smart automation solutions"
+        },
+        
+        # Robot Vacuums
+        {
             "keyword": "robot vacuum pet hair", 
             "category": "robot_vacuums", 
             "trend_score": 0.90,
-            "competition_score": 0.72,
             "commercial_intent": 0.88,
             "search_volume": 22000,
             "difficulty": "Medium-High",
-            "reason": "Peak demand for pet-friendly cleaning solutions during shedding season"
+            "reason": "Peak demand for pet-friendly cleaning solutions"
         },
+        {
+            "keyword": "self emptying robot vacuum", 
+            "category": "robot_vacuums", 
+            "trend_score": 0.84,
+            "commercial_intent": 0.91,
+            "search_volume": 18500,
+            "difficulty": "Medium",
+            "reason": "Premium feature becoming mainstream expectation"
+        },
+        
+        # Smart Security
         {
             "keyword": "smart door locks 2025", 
             "category": "smart_security", 
             "trend_score": 0.82,
-            "competition_score": 0.58,
             "commercial_intent": 0.94,
             "search_volume": 12000,
             "difficulty": "Low-Medium",
-            "reason": "Future-focused keyword with high purchase intent and low competition"
+            "reason": "Future-focused keyword with high purchase intent"
         },
+        {
+            "keyword": "video doorbell wireless", 
+            "category": "smart_security", 
+            "trend_score": 0.87,
+            "commercial_intent": 0.89,
+            "search_volume": 16000,
+            "difficulty": "Medium",
+            "reason": "Growing home security awareness driving demand"
+        },
+        
+        # Smart Lighting
         {
             "keyword": "smart light bulbs wifi", 
             "category": "smart_lighting", 
             "trend_score": 0.80,
-            "competition_score": 0.70,
             "commercial_intent": 0.86,
             "search_volume": 18000,
             "difficulty": "Medium",
-            "reason": "Consistent demand for WiFi-enabled lighting automation"
+            "reason": "Consistent demand for WiFi-enabled lighting"
         },
+        {
+            "keyword": "color changing smart bulbs", 
+            "category": "smart_lighting", 
+            "trend_score": 0.83,
+            "commercial_intent": 0.85,
+            "search_volume": 14500,
+            "difficulty": "Low-Medium",
+            "reason": "Entertainment and mood lighting trending"
+        },
+        
+        # Smart Climate Control
         {
             "keyword": "smart thermostat nest", 
             "category": "smart_climate", 
             "trend_score": 0.78,
-            "competition_score": 0.75,
             "commercial_intent": 0.90,
             "search_volume": 16500,
             "difficulty": "Medium-High",
-            "reason": "Brand-specific searches indicate high purchase readiness"
+            "reason": "Brand-specific searches indicate purchase readiness"
+        },
+        {
+            "keyword": "wifi thermostat programmable", 
+            "category": "smart_climate", 
+            "trend_score": 0.75,
+            "commercial_intent": 0.87,
+            "search_volume": 11000,
+            "difficulty": "Low-Medium",
+            "reason": "Energy savings focus driving upgrade decisions"
+        },
+        
+        # Smart Speakers & Displays
+        {
+            "keyword": "smart display alexa", 
+            "category": "smart_speakers", 
+            "trend_score": 0.81,
+            "commercial_intent": 0.83,
+            "search_volume": 13500,
+            "difficulty": "Medium",
+            "reason": "Visual interface demand for smart home control"
+        },
+        {
+            "keyword": "google nest hub max", 
+            "category": "smart_speakers", 
+            "trend_score": 0.77,
+            "commercial_intent": 0.86,
+            "search_volume": 9500,
+            "difficulty": "Medium-High",
+            "reason": "Premium smart display market growth"
+        },
+        
+        # Home Security Cameras
+        {
+            "keyword": "wireless security camera outdoor", 
+            "category": "security_cameras", 
+            "trend_score": 0.89,
+            "commercial_intent": 0.92,
+            "search_volume": 21000,
+            "difficulty": "Medium",
+            "reason": "Home security priority increasing post-pandemic"
+        },
+        {
+            "keyword": "solar powered security camera", 
+            "category": "security_cameras", 
+            "trend_score": 0.86,
+            "commercial_intent": 0.90,
+            "search_volume": 14000,
+            "difficulty": "Low-Medium",
+            "reason": "Eco-friendly security solutions trending"
+        },
+        
+        # Smart Home Hubs
+        {
+            "keyword": "smart home hub 2025", 
+            "category": "smart_hubs", 
+            "trend_score": 0.74,
+            "commercial_intent": 0.88,
+            "search_volume": 8500,
+            "difficulty": "Low",
+            "reason": "Centralized control becoming essential for complex setups"
         }
     ]
+    
+    # 随机打乱顺序，避免总是从同一个开始
+    random.shuffle(diverse_keywords)
+    return diverse_keywords
+
+def load_trending_keywords():
+    """Load trending keywords with smart deduplication and diversity"""
+    trending_file = "data/trending_keywords_cache.json"
+    
+    # 获取已使用的关键词历史
+    used_keywords = get_used_keywords_history()
+    print(f"📚 Found {len(used_keywords)} recently used keywords: {', '.join(list(used_keywords)[:5])}")
+    
+    # 获取多样化关键词池
+    diverse_pool = get_diverse_keyword_pool()
     
     try:
         if os.path.exists(trending_file):
@@ -865,24 +1016,43 @@ def main():
     parser = argparse.ArgumentParser(description='Generate daily content articles')
     parser.add_argument('--count', type=int, default=1, help='Number of articles to generate')
     parser.add_argument('--output-dir', default='content/articles', help='Output directory for articles')
+    parser.add_argument('--keyword', type=str, help='Specific keyword to generate article for')
+    parser.add_argument('--category', type=str, help='Category for the keyword')
+    parser.add_argument('--priority', type=str, help='Priority level (urgent, normal)')
     
     args = parser.parse_args()
     
     print(f"🚀 Starting daily content generation...")
     print(f"📊 Target: {args.count} articles")
     
-    # Load trending keywords (including multi-source data)
-    trends = load_trending_keywords()
-    
-    # Enhance with multi-source analysis if keyword analyzer is available
-    try:
-        from modules.keyword_tools.keyword_analyzer import SmartHomeKeywordAnalyzer
-        analyzer = SmartHomeKeywordAnalyzer()
-        enhanced_analysis = analyzer.get_enhanced_trending_analysis()
-        print(f"📊 Multi-source analysis complete: {len(enhanced_analysis.get('sources_used', []))} sources")
-    except Exception as e:
-        print(f"⚠️ Multi-source analysis not available: {e}")
-        enhanced_analysis = {}
+    # 如果指定了特定关键词，直接使用
+    if args.keyword and args.category:
+        trends = [{
+            'keyword': args.keyword,
+            'category': args.category,
+            'trend_score': 0.9,
+            'competition_score': 0.5,
+            'commercial_intent': 0.8,
+            'search_volume': 15000,
+            'difficulty': "Medium",
+            'reason': f"实时触发生成 - {args.priority or 'normal'} 优先级"
+        }]
+        print(f"[TARGETED] 使用指定关键词: {args.keyword}")
+    else:
+        # Load trending keywords (including multi-source data)
+        trends = load_trending_keywords()
+        
+        # Enhance with multi-source analysis if keyword analyzer is available
+        try:
+            import sys
+            sys.path.append('.')
+            from modules.keyword_tools.keyword_analyzer import SmartHomeKeywordAnalyzer
+            analyzer = SmartHomeKeywordAnalyzer()
+            enhanced_analysis = analyzer.get_enhanced_trending_analysis()
+            print(f"📊 Multi-source analysis complete: {len(enhanced_analysis.get('sources_used', []))} sources")
+        except Exception as e:
+            print(f"⚠️ Multi-source analysis not available: {e}")
+            enhanced_analysis = {}
     
     # Generate articles
     generated_files = []
