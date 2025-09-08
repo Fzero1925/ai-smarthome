@@ -71,7 +71,7 @@ params:
   # Analytics and Monetization
   analytics:
     google_analytics: 'G-XXXXXXXXXX'  # Replace with your actual GA4 ID
-    google_tag_manager: 'GTM-XXXXXXX'  # Replace with your actual GTM ID
+    google_tag_manager: 'GTM-XXXXXXXXXX'  # Replace with your actual GTM ID
     
   advertising:
     google_adsense:

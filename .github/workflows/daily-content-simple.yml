@@ -41,11 +41,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Create environment file
+      - name: Create environment file and setup analytics
         run: |
           echo "GOOGLE_ADSENSE_ID=${{ secrets.GOOGLE_ADSENSE_ID }}" >> .env
           echo "AMAZON_AFFILIATE_TAG=${{ secrets.AMAZON_AFFILIATE_TAG }}" >> .env
           echo "GOOGLE_ANALYTICS_ID=${{ secrets.GOOGLE_ANALYTICS_ID }}" >> .env
+          
+          # Export environment variables for analytics setup
+          export GOOGLE_ADSENSE_ID="${{ secrets.GOOGLE_ADSENSE_ID }}"
+          export AMAZON_AFFILIATE_TAG="${{ secrets.AMAZON_AFFILIATE_TAG }}"
+          export GOOGLE_ANALYTICS_ID="${{ secrets.GOOGLE_ANALYTICS_ID }}"
+          
+          # Setup analytics configuration
+          python scripts/setup_analytics.py
 
       - name: Prepare content generation
         id: check_needed
@@ -64,8 +72,9 @@ jobs:
 
       - name: Generate articles
         run: |
-          python scripts/generate_daily_content.py \
+          python scripts/generate_quality_content_enhanced.py \
             --count "${{ steps.check_needed.outputs.target_count }}" \
+            --quality-level premium \
             --output-dir content/articles
 
       - name: Quality check
