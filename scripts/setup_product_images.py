@@ -96,9 +96,9 @@ def create_image_sitemap():
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://ai-smarthome.vercel.app/smart-plugs/</loc>
+    <loc>https://ai-smarthomehub.com/smart-plugs/</loc>
     <image:image>
-      <image:loc>https://ai-smarthome.vercel.app/images/products/smart-plugs/amazon-smart-plug.jpg</image:loc>
+      <image:loc>https://ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug.jpg</image:loc>
       <image:caption>Amazon Smart Plug with Alexa Voice Control</image:caption>
       <image:title>Best Smart Plug for Alexa 2025</image:title>
     </image:image>

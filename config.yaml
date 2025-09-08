@@ -1,0 +1,270 @@
+# AI Smart Home Hub - Hugo Configuration with SEO Optimization
+# 针对Google AdSense和SEO优化的完整配置
+
+baseURL: 'https://ai-smarthomehub.com'
+languageCode: 'en-us'
+title: 'AI Smart Home Hub - Expert Reviews & Buying Guides 2025'
+theme: 'smart-home-theme'
+
+# SEO and Performance Configuration
+params:
+  # Site Identity
+  description: 'Expert reviews and buying guides for smart home devices. Find the best smart plugs, bulbs, cameras, and automation systems for 2025.'
+  author: 'AI Smart Home Team'
+  keywords: ['smart home', 'home automation', 'smart devices', 'IoT', 'reviews', 'buying guides']
+  
+  # SEO Meta Tags
+  seo:
+    title_separator: ' | '
+    meta_description_length: 160
+    meta_keywords_max: 10
+    canonical_url: true
+    
+  # Open Graph / Social Media
+  opengraph:
+    enabled: true
+    site_name: 'AI Smart Home Hub'
+    locale: 'en_US'
+    type: 'website'
+    
+  # Twitter Cards
+  twitter:
+    enabled: true
+    card: 'summary_large_image'
+    site: '@aismarthomehub'
+    creator: '@aismarthomehub'
+    
+  # Schema.org Structured Data
+  schema:
+    enabled: true
+    organization:
+      name: 'AI Smart Home Hub'
+      url: 'https://ai-smarthomehub.com'
+      logo: '/images/logo.png'
+      description: 'Expert smart home device reviews and buying guides'
+    website:
+      name: 'AI Smart Home Hub'
+      url: 'https://ai-smarthomehub.com'
+      description: 'Expert reviews and buying guides for smart home devices'
+    
+  # Core Web Vitals Optimization  
+  performance:
+    # Image optimization
+    images:
+      lazy_loading: true
+      webp_format: true
+      responsive: true
+      compression: 85
+      
+    # CSS/JS optimization
+    assets:
+      minify: true
+      bundle: true
+      inline_critical: true
+      
+    # Loading optimization
+    loading:
+      preload_fonts: true
+      dns_prefetch: ['//fonts.googleapis.com', '//www.google-analytics.com', '//www.googletagmanager.com']
+      preconnect: ['//fonts.gstatic.com', '//www.google-analytics.com']
+      
+  # Analytics and Monetization
+  analytics:
+    google_analytics: 'G-XXXXXXXXXX'  # Replace with your actual GA4 ID
+    google_tag_manager: 'GTM-XXXXXXX'  # Replace with your actual GTM ID
+    
+  advertising:
+    google_adsense:
+      client_id: 'ca-pub-XXXXXXXXXXXXXXXX'
+      enabled: true
+      auto_ads: true
+      
+  affiliate:
+    amazon:
+      tracking_id: 'yourtag-20'
+      
+  # Content Configuration
+  content:
+    # Article defaults
+    article:
+      reading_time: true
+      word_count: true
+      estimated_time: true
+      last_modified: true
+      
+    # Review system
+    reviews:
+      rating_system: true
+      pros_cons: true
+      verdict: true
+      
+    # Product information
+    products:
+      affiliate_disclosure: true
+      price_tracking: true
+      availability: true
+
+# Menu Configuration
+menu:
+  main:
+    - name: 'Reviews'
+      url: '/reviews/'
+      weight: 10
+    - name: 'Buying Guides'
+      url: '/guides/'
+      weight: 20
+    - name: 'Smart Plugs'
+      url: '/categories/smart-plugs/'
+      weight: 30
+    - name: 'Security Cameras'
+      url: '/categories/security-cameras/'
+      weight: 40
+    - name: 'Robot Vacuums' 
+      url: '/categories/robot-vacuums/'
+      weight: 50
+    - name: 'About'
+      url: '/about/'
+      weight: 90
+    - name: 'Contact'
+      url: '/contact/'
+      weight: 100
+
+# Taxonomy Configuration
+taxonomies:
+  category: 'categories'
+  tag: 'tags'
+  product: 'products'
+  brand: 'brands'
+
+# Permalink Configuration
+permalinks:
+  posts: '/:year/:month/:slug/'
+  articles: '/reviews/:slug/'
+  guides: '/guides/:slug/'
+
+# Markup Configuration
+markup:
+  goldmark:
+    renderer:
+      unsafe: true # Allow HTML in markdown
+      hardWraps: false
+    parser:
+      attribute:
+        block: true
+        title: true
+    extensions:
+      linkify: true
+      strikethrough: true
+      table: true
+      taskList: true
+      
+  tableOfContents:
+    startLevel: 2
+    endLevel: 4
+    ordered: false
+
+  highlight:
+    codeFences: true
+    guessSyntax: false
+    lineNos: false
+    lineNumbersInTable: true
+    noClasses: true
+    style: 'github'
+    tabWidth: 4
+
+# Output Formats for SEO
+outputFormats:
+  RSS:
+    mediaType: 'application/rss+xml'
+    baseName: 'feed'
+    
+outputs:
+  home: ['HTML', 'RSS', 'JSON']
+  section: ['HTML', 'RSS']
+  page: ['HTML']
+
+# Sitemap Configuration
+sitemap:
+  changefreq: 'weekly'
+  priority: 0.8
+  filename: 'sitemap.xml'
+
+# Robots.txt
+enableRobotsTXT: true
+
+# Security Headers
+security:
+  funcs:
+    getenv: ['^HUGO_', '^CI$']
+
+# Build Configuration
+build:
+  publishDir: 'public'
+  writeStats: true
+  
+# Minification for Performance
+minify:
+  disableCSS: false
+  disableHTML: false
+  disableJS: false
+  disableJSON: false
+  disableSVG: false
+  disableXML: false
+  
+  minifyOutput: true
+  
+  tdewolff:
+    css:
+      keepCSS2: true
+      precision: 0
+    html:
+      keepComments: false
+      keepConditionalComments: true
+      keepDefaultAttrVals: true
+      keepDocumentTags: true
+      keepEndTags: true
+      keepQuotes: false
+      keepWhitespace: false
+    js:
+      precision: 0
+      keepVarNames: false
+      noNullishOperator: false
+
+# Related Content Configuration
+related:
+  includeNewer: true
+  indices:
+    - name: 'keywords'
+      weight: 100
+    - name: 'tags'
+      weight: 80
+    - name: 'categories'
+      weight: 60
+    - name: 'date'
+      weight: 10
+  threshold: 80
+  toLower: true
+
+# Privacy Configuration
+privacy:
+  disqus:
+    disable: false
+  googleAnalytics:
+    anonymizeIP: true
+    disable: false
+    respectDoNotTrack: true
+    useSessionStorage: true
+  instagram:
+    disable: false
+    simple: true
+  twitter:
+    disable: false
+    enableDNT: true
+    simple: true
+  vimeo:
+    disable: false
+    enableDNT: true
+    simple: true
+  youtube:
+    disable: false
+    privacyEnhanced: true

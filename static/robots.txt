@@ -44,11 +44,11 @@ Allow: /articles/
 Allow: /categories/
 
 # Sitemap location
-Sitemap: https://ai-smarthome.vercel.app/sitemap.xml
-Sitemap: https://ai-smarthome.vercel.app/sitemap-images.xml
+Sitemap: https://ai-smarthomehub.com/sitemap.xml
+Sitemap: https://ai-smarthomehub.com/sitemap-images.xml
 
 # Crawl delay for respectful crawling
 Crawl-delay: 1
 
-# Cache optimization
-# Host: ai-smarthome.vercel.app (will update when domain changes)
+# Cache optimization  
+# Host: ai-smarthomehub.com

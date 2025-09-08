@@ -1,54 +1,5 @@
 {{ define "main" }}
-<!-- Article Structured Data -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "{{ .Title }}",
-  "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}",
-  "image": "{{ if .Params.featured_image }}{{ .Params.featured_image }}{{ else }}{{ .Site.BaseURL }}images/default-article.jpg{{ end }}",
-  "author": {
-    "@type": "Person",
-    "name": "{{ if .Params.author }}{{ .Params.author }}{{ else }}{{ .Site.Params.author }}{{ end }}"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "{{ .Site.Params.author }}",
-    "url": "{{ .Site.BaseURL }}",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "{{ .Site.BaseURL }}images/logo.png"
-    }
-  },
-  "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
-  "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "{{ .Permalink }}"
-  },
-  "wordCount": {{ .WordCount }},
-  {{ if .Params.categories }}
-  "articleSection": {{ .Params.categories | jsonify }},
-  {{ end }}
-  {{ if .Params.tags }}
-  "keywords": {{ .Params.tags | jsonify }},
-  {{ end }}
-  {{ if .Params.rating }}
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": {{ .Params.rating }},
-    "ratingCount": {{ .Params.review_count | default 50 }},
-    "bestRating": 5,
-    "worstRating": 1
-  },
-  {{ end }}
-  "url": "{{ .Permalink }}",
-  "speakable": {
-    "@type": "SpeakableSpecification",
-    "cssSelector": [".article-title", ".article-content h2", ".article-content h3"]
-  }
-}
-</script>
+<!-- SEO Enhancements: Structured data is now handled in baseof.html for better performance -->
 
 {{ if .Params.product_review }}
 <!-- Product Review Structured Data -->
@@ -195,13 +146,50 @@
       </ol>
     </nav>
 
-    <div class="article-header">
+    <!-- Enhanced Article Header with Core Web Vitals Optimization -->
+    <header class="article-header">
       <h1 class="article-title">{{ .Title }}</h1>
+      
+      <!-- Featured Image with Core Web Vitals Optimization -->
+      {{ if .Params.featured_image }}
+      <div class="featured-image-container">
+        <img src="{{ .Params.featured_image }}" 
+             alt="{{ if .Params.featured_image_alt }}{{ .Params.featured_image_alt }}{{ else }}{{ .Title }}{{ end }}"
+             class="featured-image"
+             loading="eager"
+             decoding="async"
+             width="1200"
+             height="630"
+             fetchpriority="high">
+      </div>
+      {{ end }}
       
       <div class="article-meta">
         <time class="published" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
           <i class="fa fa-calendar"></i> {{ .Date.Format "January 2, 2006" }}
         </time>
+        
+        <!-- Reading Time Calculation -->
+        {{ if .Site.Params.content.article.reading_time }}
+        <span class="reading-time">
+          <i class="fa fa-clock"></i> {{ math.Ceil (div (countwords .Content) 200.0) }} min read
+        </span>
+        {{ end }}
+        
+        <!-- Word Count -->
+        {{ if .Site.Params.content.article.word_count }}
+        <span class="word-count">
+          <i class="fa fa-file-text"></i> {{ .WordCount }} words
+        </span>
+        {{ end }}
+        
+        <!-- Last Modified -->
+        {{ if and .Site.Params.content.article.last_modified (ne .Date .Lastmod) }}
+        <time class="modified" datetime="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">
+          <i class="fa fa-edit"></i> Updated {{ .Lastmod.Format "January 2, 2006" }}
+        </time>
+        {{ end }}
+        
         {{ if .Params.categories }}
         <span class="categories">
           <i class="fa fa-folder"></i>
@@ -218,14 +206,61 @@
           {{ end }}
         </span>
         {{ end }}
+        
+        <!-- Review Rating Display -->
+        {{ if .Params.review_rating }}
+        <div class="review-rating">
+          <i class="fa fa-star"></i> {{ .Params.review_rating }}/5
+          {{ if .Params.review_count }}({{ .Params.review_count }} reviews){{ end }}
+        </div>
+        {{ end }}
       </div>
-    </div>
+    </header>
 
     <!-- Top AdSense Slot -->
     {{ partial "adsense.html" . }}
     
+    <!-- Enhanced Article Content with SEO and Performance Optimization -->
     <div class="article-content">
-      {{ .Content }}
+      <!-- Table of Contents (if enabled) -->
+      {{ if .Site.Params.content.table_of_contents }}
+      <div class="table-of-contents">
+        <h3><i class="fa fa-list"></i> Table of Contents</h3>
+        {{ .TableOfContents }}
+      </div>
+      {{ end }}
+      
+      <!-- Article Summary/Introduction -->
+      {{ if .Summary }}
+      <div class="article-summary">
+        <strong>TL;DR:</strong> {{ .Summary | truncate 200 }}
+      </div>
+      {{ end }}
+      
+      <!-- Enhanced Content with Performance Optimization -->
+      <div class="content-body">
+        {{ .Content | replaceRE `<img([^>]+)src="([^"]+)"([^>]*)>` `<img$1src="$2" loading="lazy" decoding="async"$3>` | safeHTML }}
+      </div>
+      
+      <!-- Content Quality Indicators -->
+      {{ if .Site.Params.content.quality_indicators }}
+      <div class="content-stats">
+        <div class="stat-item">
+          <i class="fa fa-clock"></i>
+          <span>{{ math.Ceil (div (countwords .Content) 200.0) }} min read</span>
+        </div>
+        <div class="stat-item">
+          <i class="fa fa-file-text"></i>
+          <span>{{ .WordCount }} words</span>
+        </div>
+        {{ if .Params.review_rating }}
+        <div class="stat-item">
+          <i class="fa fa-star"></i>
+          <span>{{ .Params.review_rating }}/5 rating</span>
+        </div>
+        {{ end }}
+      </div>
+      {{ end }}
     </div>
     
     <!-- Middle AdSense Slot -->

@@ -1,0 +1,37 @@
+
+{{ define "ad-container" }}
+  {{ $type := .type | default "display" }}
+  {{ $size := .size | default "medium" }}
+  
+  {{ $heights := dict "small" "200px" "medium" "250px" "large" "300px" }}
+  {{ $height := index $heights $size }}
+  
+  <div class="ad-container ad-{{ $type }}" 
+       style="min-height: {{ $height }}; 
+              background: #f9f9f9; 
+              border: 1px dashed #ddd;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin: 20px 0;
+              position: relative;">
+    
+    {{ if .Site.Params.adsense_publisher_id }}
+      <!-- AdSense ad unit -->
+      <ins class="adsbygoogle"
+           style="display: block; width: 100%; height: {{ $height }};"
+           data-ad-client="{{ .Site.Params.adsense_publisher_id }}"
+           data-ad-slot="1234567890"
+           data-ad-format="auto"
+           data-full-width-responsive="true">
+      </ins>
+      
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    {{ else }}
+      <!-- Placeholder for development -->
+      <span style="color: #999;">Advertisement Space ({{ $size }})</span>
+    {{ end }}
+  </div>
+{{ end }}

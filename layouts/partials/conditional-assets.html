@@ -1,0 +1,12 @@
+
+{{ if eq .Section "articles" }}
+  <link rel="stylesheet" href="/css/article.css">
+{{ end }}
+
+{{ if .Params.enable_search }}
+  <script defer src="/js/search.js"></script>
+{{ end }}
+
+{{ if .Params.enable_comments }}
+  <script defer src="/js/comments.js"></script>
+{{ end }}

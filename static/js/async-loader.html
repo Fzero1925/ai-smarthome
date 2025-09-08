@@ -1,0 +1,25 @@
+
+<script>
+// Async script loader for non-critical JavaScript
+function loadScript(src, callback) {
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.async = true;
+    script.src = src;
+    script.onload = callback || function() {};
+    document.head.appendChild(script);
+}
+
+// Load non-critical scripts after page load
+window.addEventListener('load', function() {
+    // Load analytics after main content
+    setTimeout(function() {
+        {{ if .Site.Params.google_analytics }}
+        loadScript('https://www.googletagmanager.com/gtag/js?id={{ .Site.Params.google_analytics }}');
+        {{ end }}
+        
+        // Load other non-critical scripts
+        loadScript('/js/app.js');
+    }, 1000);
+});
+</script>

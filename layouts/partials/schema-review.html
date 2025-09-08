@@ -1,0 +1,30 @@
+
+{{ define "schema-review" }}
+{{ if .Params.rating }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Review",
+  "itemReviewed": {
+    "@type": "Product",
+    "name": "{{ .Params.product_name | default .Title }}",
+    "description": "{{ .Description }}",
+    "brand": {
+      "@type": "Brand",
+      "name": "{{ .Params.brand | default "Various" }}"
+    }
+  },
+  "reviewRating": {
+    "@type": "Rating",
+    "ratingValue": "{{ .Params.rating }}",
+    "bestRating": "5"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "{{ .Site.Title }}"
+  },
+  "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z" }}"
+}
+</script>
+{{ end }}
+{{ end }}

@@ -1,26 +1,76 @@
 <!DOCTYPE html>
 <html lang="{{ .Site.LanguageCode }}">
 <head>
+  <!-- DNS Prefetch for external domains -->
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <link rel="dns-prefetch" href="//fonts.gstatic.com">
+  <link rel="dns-prefetch" href="//www.googletagmanager.com">
+  <link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+  
+  <!-- Preconnect to critical origins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Preload critical resources -->
+  <link rel="preload" href="/css/critical.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/css/critical.css"></noscript>
+  
+  <!-- Preload key images -->
+  {{ if .Params.featured_image }}
+  <link rel="preload" href="{{ .Params.featured_image }}" as="image">
+  {{ end }}
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
-  <title>{{ if .Title }}{{ .Title }} - {{ .Site.Title }}{{ else }}{{ .Site.Title }}{{ end }}</title>
+  <!-- Core Web Vitals Optimization - DNS Prefetch & Preconnect -->
+  {{ range .Site.Params.performance.loading.dns_prefetch }}
+  <link rel="dns-prefetch" href="{{ . }}">
+  {{ end }}
+  {{ range .Site.Params.performance.loading.preconnect }}
+  <link rel="preconnect" href="{{ . }}">
+  {{ end }}
   
-  <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
-  <meta name="keywords" content="{{ if .Params.keywords }}{{ delimit .Params.keywords ", " }}{{ else }}{{ .Site.Params.keywords }}{{ end }}">
+  <!-- SEO Title Optimization -->
+  <title>{{ if .Title }}{{ .Title }}{{ .Site.Params.seo.title_separator }}{{ .Site.Title }}{{ else }}{{ .Site.Title }}{{ end }}</title>
+  
+  <!-- Enhanced Meta Tags -->
+  <meta name="description" content="{{ if .Description }}{{ .Description | truncate 160 }}{{ else }}{{ .Site.Params.description | truncate 160 }}{{ end }}">
+  <meta name="keywords" content="{{ if .Params.keywords }}{{ delimit .Params.keywords ", " }}{{ else }}{{ delimit .Site.Params.keywords ", " }}{{ end }}">
   <meta name="author" content="{{ .Site.Params.author }}">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  {{ if .Params.last_modified }}<meta name="article:modified_time" content="{{ .Params.last_modified }}">{{ end }}
+  {{ if .PublishDate }}<meta name="article:published_time" content="{{ .PublishDate.Format "2006-01-02T15:04:05Z07:00" }}">{{ end }}
   
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
+  <!-- Enhanced Open Graph / Facebook -->
+  {{ if .Site.Params.opengraph.enabled }}
+  <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
   <meta property="og:url" content="{{ .Permalink }}">
-  <meta property="og:title" content="{{ .Title }}">
-  <meta property="og:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  <meta property="og:title" content="{{ if .Title }}{{ .Title }}{{ else }}{{ .Site.Title }}{{ end }}">
+  <meta property="og:description" content="{{ if .Description }}{{ .Description | truncate 160 }}{{ else }}{{ .Site.Params.description | truncate 160 }}{{ end }}">
+  <meta property="og:site_name" content="{{ .Site.Params.opengraph.site_name }}">
+  <meta property="og:locale" content="{{ .Site.Params.opengraph.locale }}">
+  {{ if .Params.featured_image }}<meta property="og:image" content="{{ .Site.BaseURL }}{{ .Params.featured_image }}">{{ else }}<meta property="og:image" content="{{ .Site.BaseURL }}images/default-og-image.jpg">{{ end }}
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  {{ if .IsPage }}
+  <meta property="article:author" content="{{ .Site.Params.author }}">
+  <meta property="article:section" content="{{ .Section }}">
+  {{ if .Params.category }}<meta property="article:section" content="{{ .Params.category }}">{{ end }}
+  {{ range .Params.tags }}<meta property="article:tag" content="{{ . }}">{{ end }}
+  {{ end }}
+  {{ end }}
   
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="{{ .Permalink }}">
-  <meta property="twitter:title" content="{{ .Title }}">
-  <meta property="twitter:description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+  <!-- Enhanced Twitter Cards -->
+  {{ if .Site.Params.twitter.enabled }}
+  <meta name="twitter:card" content="{{ .Site.Params.twitter.card }}">
+  <meta name="twitter:site" content="{{ .Site.Params.twitter.site }}">
+  <meta name="twitter:creator" content="{{ .Site.Params.twitter.creator }}">
+  <meta name="twitter:title" content="{{ if .Title }}{{ .Title }}{{ else }}{{ .Site.Title }}{{ end }}">
+  <meta name="twitter:description" content="{{ if .Description }}{{ .Description | truncate 160 }}{{ else }}{{ .Site.Params.description | truncate 160 }}{{ end }}">
+  {{ if .Params.featured_image }}<meta name="twitter:image" content="{{ .Site.BaseURL }}{{ .Params.featured_image }}">{{ else }}<meta name="twitter:image" content="{{ .Site.BaseURL }}images/default-twitter-image.jpg">{{ end }}
+  <meta name="twitter:image:alt" content="{{ if .Title }}{{ .Title }}{{ else }}{{ .Site.Title }}{{ end }}">
+  {{ end }}
   
   <!-- Canonical URL -->
   <link rel="canonical" href="{{ .Permalink }}">
@@ -30,38 +80,96 @@
     <link rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" href="{{ .Permalink }}">
   {{ end }}
   
-  <!-- CSS -->
-  <link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Core Web Vitals - Resource Hints & Critical CSS -->
+  {{ if .Site.Params.performance.loading.preload_fonts }}
+  <link rel="preload" href="/fonts/main-font.woff2" as="font" type="font/woff2" crossorigin>
+  {{ end }}
   
-  <!-- Google Analytics -->
-  {{ if .Site.Params.google_analytics_id }}
-  <script async src="https://www.googletagmanager.com/gtag/js?id={{ .Site.Params.google_analytics_id }}"></script>
+  <!-- Critical CSS (inline for above-the-fold content) -->
+  {{ if .Site.Params.performance.assets.inline_critical }}
+  <style>
+    /* Critical CSS for above-the-fold content */
+    body{font-family:system-ui,-apple-system,sans-serif;margin:0;line-height:1.6}
+    header{background:#fff;border-bottom:1px solid #eee;position:sticky;top:0;z-index:100}
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+    main{min-height:70vh}
+  </style>
+  {{ end }}
+  
+  <!-- Non-critical CSS with media attribute for faster loading -->
+  <link rel="preload" href="{{ "css/main.css" | relURL }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="{{ "css/main.css" | relURL }}"></noscript>
+  
+  <!-- Font Awesome with performance optimization -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"></noscript>
+  
+  <!-- Enhanced Analytics with Privacy & Performance -->
+  {{ if .Site.Params.analytics.google_analytics }}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ .Site.Params.analytics.google_analytics }}"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', '{{ .Site.Params.google_analytics_id }}');
+    gtag('config', '{{ .Site.Params.analytics.google_analytics }}', {
+      'anonymize_ip': true,
+      'cookie_flags': 'max-age=7200;secure;samesite=none'
+    });
   </script>
   {{ end }}
   
-  <!-- AdSense -->
-  {{ if .Site.Params.google_adsense_id }}
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ .Site.Params.google_adsense_id }}" crossorigin="anonymous"></script>
+  <!-- Google Tag Manager -->
+  {{ if .Site.Params.analytics.google_tag_manager }}
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','{{ .Site.Params.analytics.google_tag_manager }}');</script>
   {{ end }}
   
-  <!-- Structured Data -->
+  <!-- Google AdSense with Performance Optimization -->
+  {{ if .Site.Params.advertising.google_adsense.enabled }}
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ .Site.Params.advertising.google_adsense.client_id }}" crossorigin="anonymous"></script>
+  {{ if .Site.Params.advertising.google_adsense.auto_ads }}
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "{{ .Site.Params.advertising.google_adsense.client_id }}",
+      enable_page_level_ads: true
+    });
+  </script>
+  {{ end }}
+  {{ end }}
+  
+  <!-- Enhanced Structured Data with Schema.org -->
+  {{ if .Site.Params.schema.enabled }}
+  
+  <!-- Organization Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "{{ .Site.Params.schema.organization.name }}",
+    "url": "{{ .Site.Params.schema.organization.url }}",
+    "logo": "{{ .Site.BaseURL }}{{ .Site.Params.schema.organization.logo }}",
+    "description": "{{ .Site.Params.schema.organization.description }}",
+    "sameAs": [
+      "{{ .Site.BaseURL }}"
+    ]
+  }
+  </script>
+  
+  <!-- Website Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "{{ .Site.Title }}",
-    "url": "{{ .Site.BaseURL }}",
-    "description": "{{ .Site.Params.description }}",
+    "name": "{{ .Site.Params.schema.website.name }}",
+    "url": "{{ .Site.Params.schema.website.url }}",
+    "description": "{{ .Site.Params.schema.website.description }}",
     "publisher": {
       "@type": "Organization",
-      "name": "{{ .Site.Params.author }}",
-      "url": "{{ .Site.BaseURL }}"
+      "name": "{{ .Site.Params.schema.organization.name }}",
+      "url": "{{ .Site.Params.schema.organization.url }}"
     },
     "potentialAction": {
       "@type": "SearchAction",
@@ -70,9 +178,90 @@
     }
   }
   </script>
+  
+  <!-- Article Schema (for individual pages) -->
+  {{ if .IsPage }}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{{ .Title }}",
+    "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Summary | truncate 160 }}{{ end }}",
+    "url": "{{ .Permalink }}",
+    "datePublished": "{{ .PublishDate.Format "2006-01-02T15:04:05Z07:00" }}",
+    {{ if .Params.last_modified }}"dateModified": "{{ .Params.last_modified }}",{{ else }}"dateModified": "{{ .PublishDate.Format "2006-01-02T15:04:05Z07:00" }}",{{ end }}
+    "author": {
+      "@type": "Person",
+      "name": "{{ .Site.Params.author }}"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{ .Site.Params.schema.organization.name }}",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "{{ .Site.BaseURL }}{{ .Site.Params.schema.organization.logo }}"
+      }
+    },
+    {{ if .Params.featured_image }}"image": "{{ .Site.BaseURL }}{{ .Params.featured_image }}",{{ end }}
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "{{ .Permalink }}"
+    }
+    {{ if .Params.review_rating }},
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "{{ .Params.review_rating }}",
+      "bestRating": "5",
+      "worstRating": "1",
+      "ratingCount": "1"
+    }{{ end }}
+  }
+  </script>
+  {{ end }}
+  
+  <!-- Product Review Schema (for review pages) -->
+  {{ if and .IsPage (eq .Section "reviews") }}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    "itemReviewed": {
+      "@type": "Product",
+      "name": "{{ .Params.product_name | default .Title }}",
+      {{ if .Params.product_brand }}"brand": "{{ .Params.product_brand }}",{{ end }}
+      {{ if .Params.product_model }}"model": "{{ .Params.product_model }}",{{ end }}
+      {{ if .Params.featured_image }}"image": "{{ .Site.BaseURL }}{{ .Params.featured_image }}",{{ end }}
+      "description": "{{ if .Description }}{{ .Description }}{{ else }}{{ .Summary | truncate 160 }}{{ end }}"
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": "{{ .Params.review_rating | default "4" }}",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "{{ .Site.Params.author }}"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "{{ .Site.Params.schema.organization.name }}"
+    },
+    "datePublished": "{{ .PublishDate.Format "2006-01-02T15:04:05Z07:00" }}"
+  }
+  </script>
+  {{ end }}
+  
+  {{ end }}
 </head>
 
 <body>
+  <!-- Google Tag Manager (noscript) -->
+  {{ if .Site.Params.analytics.google_tag_manager }}
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ .Site.Params.analytics.google_tag_manager }}"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  {{ end }}
+  
   <header>
     {{ partial "header.html" . }}
   </header>
@@ -85,7 +274,63 @@
     {{ partial "footer.html" . }}
   </footer>
   
-  <!-- JavaScript -->
-  <script src="{{ "js/main.js" | relURL }}"></script>
+  <!-- Core Web Vitals Optimized JavaScript Loading -->
+  {{ if .Site.Params.performance.assets.bundle }}
+  <script defer src="{{ "js/main.min.js" | relURL }}"></script>
+  {{ else }}
+  <script defer src="{{ "js/main.js" | relURL }}"></script>
+  {{ end }}
+  
+  <!-- Service Worker for Performance (if enabled) -->
+  {{ if .Site.Params.performance.service_worker }}
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js').then(function(registration) {
+          console.log('SW registered: ', registration);
+        }).catch(function(registrationError) {
+          console.log('SW registration failed: ', registrationError);
+        });
+      });
+    }
+  </script>
+  {{ end }}
+  
+  <!-- Critical JavaScript for Core Web Vitals -->
+  <script>
+    // Web Vitals measurement
+    function getCLS(onPerfEntry) {
+      if (onPerfEntry && typeof onPerfEntry === 'function') {
+        new PerformanceObserver((list) => {
+          list.getEntries().forEach((entry) => {
+            if (!entry.hadRecentInput) {
+              onPerfEntry(entry);
+            }
+          });
+        }).observe({type: 'layout-shift', buffered: true});
+      }
+    }
+    
+    // Lazy loading images for better performance
+    if ('IntersectionObserver' in window) {
+      let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            let lazyImage = entry.target;
+            lazyImage.src = lazyImage.dataset.src;
+            lazyImage.classList.remove("lazy");
+            lazyImageObserver.unobserve(lazyImage);
+          }
+        });
+      });
+      
+      document.addEventListener("DOMContentLoaded", function() {
+        let lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
+        lazyImages.forEach(function(lazyImage) {
+          lazyImageObserver.observe(lazyImage);
+        });
+      });
+    }
+  </script>
 </body>
 </html>

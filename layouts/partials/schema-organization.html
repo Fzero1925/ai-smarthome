@@ -1,0 +1,24 @@
+
+{{ define "schema-organization" }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "{{ .Site.Title }}",
+  "url": "{{ .Site.BaseURL }}",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "{{ .Site.BaseURL }}/images/logo.png"
+  },
+  "sameAs": [
+    "https://twitter.com/aismarthomehub",
+    "https://facebook.com/aismarthomehub"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer service",
+    "email": "contact@ai-smarthomehub.com"
+  }
+}
+</script>
+{{ end }}

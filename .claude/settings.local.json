@@ -50,7 +50,9 @@
       "Bash(git pull:*)",
       "Bash(find:*)",
       "Read(\\/**)",
-      "Bash(move test_optimized_template.py oldfile)"
+      "Bash(move test_optimized_template.py oldfile)",
+      "WebFetch(domain:ai-smarthomehub.com)",
+      "Bash(nslookup:*)"
     ],
     "deny": [],
     "ask": []

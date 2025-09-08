@@ -34,7 +34,7 @@ def generate_image_sitemap():
     urlset.set('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9')
     urlset.set('xmlns:image', 'http://www.google.com/schemas/sitemap-image/1.1')
     
-    base_url = "https://ai-smarthome.vercel.app"
+    base_url = "https://ai-smarthomehub.com"
     current_time = datetime.now().isoformat()
     
     # Process each image directory

@@ -1,0 +1,30 @@
+
+<!-- Google Analytics with optimized loading -->
+{{ if .Site.Params.google_analytics }}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ .Site.Params.google_analytics }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{{ .Site.Params.google_analytics }}', {
+    send_page_view: false,
+    transport_type: 'beacon'
+  });
+  
+  // Send page view after critical rendering
+  setTimeout(function() {
+    gtag('event', 'page_view', {
+      page_title: document.title,
+      page_location: window.location.href
+    });
+  }, 1000);
+</script>
+{{ end }}
+
+<!-- AdSense with optimized loading -->
+{{ if .Site.Params.adsense_publisher_id }}
+<script async 
+  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ .Site.Params.adsense_publisher_id }}"
+  crossorigin="anonymous">
+</script>
+{{ end }}

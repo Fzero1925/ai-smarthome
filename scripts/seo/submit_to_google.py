@@ -10,7 +10,7 @@ Usage:
 
 Environment Variables:
     GOOGLE_SERVICE_ACCOUNT_JSON: Base64 encoded service account JSON
-    SITE_DOMAIN: Your website domain (default: https://ai-smarthome.vercel.app)
+    SITE_DOMAIN: Your website domain (default: https://ai-smarthomehub.com)
 """
 
 import json
@@ -23,7 +23,7 @@ import tempfile
 from pathlib import Path
 
 # Configuration
-SITE_DOMAIN = os.getenv("SITE_DOMAIN", "https://ai-smarthome.vercel.app")
+SITE_DOMAIN = os.getenv("SITE_DOMAIN", "https://ai-smarthomehub.com")
 CONTENT_DIR = "content/articles"
 SCOPES = ["https://www.googleapis.com/auth/indexing"]
 

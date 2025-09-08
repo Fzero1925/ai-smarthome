@@ -1,0 +1,46 @@
+
+# Performance and SEO optimization
+params:
+  # Core Web Vitals optimization
+  enable_critical_css: true
+  enable_lazy_loading: true
+  enable_preload_hints: true
+  
+  # Resource optimization
+  minify_css: true
+  minify_js: true
+  compress_images: true
+  
+  # Caching configuration
+  cache_control_max_age: 31536000  # 1 year for static assets
+  
+  # CDN configuration
+  cdn_url: ""  # Add your CDN URL here when available
+
+# Build configuration for optimization
+build:
+  writeStats: true
+  useResourceCacheWhen: "always"
+
+# Markup configuration
+markup:
+  goldmark:
+    renderer:
+      unsafe: true  # Allows HTML in markdown for structured data
+  
+# Output formats for different content types
+outputFormats:
+  RSS:
+    mediaType: "application/rss+xml"
+    baseName: "feed"
+    
+# Related content configuration for better internal linking
+related:
+  includeNewer: true
+  indices:
+  - name: "tags"
+    weight: 100
+  - name: "categories"  
+    weight: 200
+  threshold: 80
+  toLower: false

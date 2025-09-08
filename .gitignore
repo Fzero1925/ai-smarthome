@@ -80,3 +80,12 @@ TECHNICAL_DOCS.md
 !.github/workflows/
 !requirements.txt
 !*.py
+
+# Test and development files (not for production)
+test/
+oldfile/
+
+# Generated temporary files
+*.tmp
+*.bak
+*_report.md

@@ -17,47 +17,316 @@ if sys.platform == "win32":
     sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
 
 def get_product_images(keyword, category):
-    """获取与关键词相关的产品图片路径"""
+    """智能获取与关键词相关的产品图片路径，支持完整的产品数据库映射"""
     base_url = "/images/products/"
     
-    # 根据关键词和分类映射到具体的产品图片
-    image_mapping = {
+    # 扩展的产品图片映射 - 基于真实Amazon产品
+    comprehensive_image_mapping = {
+        # Smart Plugs类别
         "smart plug": {
-            "hero_image": f"{base_url}smart-plugs/amazon-smart-plug.jpg",
-            "product_1": f"{base_url}smart-plugs/amazon-smart-plug.jpg",
-            "product_2": f"{base_url}smart-plugs/tp-link-kasa.jpg",
-            "product_3": f"{base_url}smart-plugs/govee-smart-plug.jpg",
-            "comparison": f"{base_url}smart-plugs/comparison-chart.jpg"
+            "hero_image": f"{base_url}smart-plugs/amazon-smart-plug-hero.jpg",
+            "product_1": f"{base_url}smart-plugs/amazon-smart-plug-main.jpg",
+            "product_2": f"{base_url}smart-plugs/tp-link-kasa-hs103.jpg",
+            "product_3": f"{base_url}smart-plugs/govee-wifi-smart-plug.jpg",
+            "comparison": f"{base_url}smart-plugs/smart-plug-comparison-2025.jpg",
+            "installation": f"{base_url}smart-plugs/smart-plug-setup-guide.jpg",
+            "app_screenshot": f"{base_url}smart-plugs/alexa-app-smart-plug.jpg",
+            "energy_monitoring": f"{base_url}smart-plugs/energy-monitoring-dashboard.jpg"
         },
+        "alexa plug": {
+            "hero_image": f"{base_url}smart-plugs/amazon-smart-plug-alexa.jpg",
+            "product_1": f"{base_url}smart-plugs/amazon-smart-plug-main.jpg",
+            "product_2": f"{base_url}smart-plugs/echo-flex-built-in-plug.jpg",
+            "comparison": f"{base_url}smart-plugs/alexa-compatible-plugs.jpg",
+            "voice_control": f"{base_url}smart-plugs/alexa-voice-control-demo.jpg"
+        },
+        "wifi plug": {
+            "hero_image": f"{base_url}smart-plugs/wifi-smart-plug-collection.jpg",
+            "product_1": f"{base_url}smart-plugs/tp-link-kasa-hs103.jpg",
+            "product_2": f"{base_url}smart-plugs/wyze-plug-outdoor.jpg",
+            "network_setup": f"{base_url}smart-plugs/wifi-setup-guide.jpg"
+        },
+        
+        # Smart Bulbs类别
         "smart bulb": {
-            "hero_image": f"{base_url}smart-bulbs/philips-hue-white.jpg",
-            "product_1": f"{base_url}smart-bulbs/philips-hue-white.jpg",
-            "product_2": f"{base_url}smart-bulbs/lifx-color.jpg",
-            "comparison": f"{base_url}smart-bulbs/comparison-chart.jpg"
+            "hero_image": f"{base_url}smart-bulbs/philips-hue-white-color-hero.jpg",
+            "product_1": f"{base_url}smart-bulbs/philips-hue-a19-white-color.jpg",
+            "product_2": f"{base_url}smart-bulbs/lifx-a19-wifi-smart-bulb.jpg",
+            "product_3": f"{base_url}smart-bulbs/wyze-color-bulb.jpg",
+            "comparison": f"{base_url}smart-bulbs/smart-bulb-comparison-chart.jpg",
+            "color_demo": f"{base_url}smart-bulbs/color-changing-demo.jpg",
+            "app_control": f"{base_url}smart-bulbs/hue-app-interface.jpg"
         },
+        "color bulb": {
+            "hero_image": f"{base_url}smart-bulbs/color-changing-bulbs-showcase.jpg",
+            "product_1": f"{base_url}smart-bulbs/philips-hue-a19-white-color.jpg",
+            "product_2": f"{base_url}smart-bulbs/lifx-a19-wifi-smart-bulb.jpg",
+            "color_scenes": f"{base_url}smart-bulbs/color-scenes-living-room.jpg"
+        },
+        "led bulb": {
+            "hero_image": f"{base_url}smart-bulbs/led-smart-bulbs-energy-efficient.jpg",
+            "product_1": f"{base_url}smart-bulbs/sengled-wifi-led-bulb.jpg",
+            "product_2": f"{base_url}smart-bulbs/ge-cync-led-bulb.jpg",
+            "energy_comparison": f"{base_url}smart-bulbs/led-energy-savings-chart.jpg"
+        },
+        
+        # Security Cameras类别
+        "security camera": {
+            "hero_image": f"{base_url}security-cameras/outdoor-security-camera-hero.jpg",
+            "product_1": f"{base_url}security-cameras/arlo-pro-4-outdoor.jpg",
+            "product_2": f"{base_url}security-cameras/ring-spotlight-cam-battery.jpg",
+            "product_3": f"{base_url}security-cameras/wyze-cam-v3-outdoor.jpg",
+            "comparison": f"{base_url}security-cameras/security-camera-comparison-2025.jpg",
+            "installation": f"{base_url}security-cameras/outdoor-camera-mounting-guide.jpg",
+            "night_vision": f"{base_url}security-cameras/night-vision-comparison.jpg"
+        },
+        "outdoor camera": {
+            "hero_image": f"{base_url}security-cameras/outdoor-wireless-cameras.jpg",
+            "product_1": f"{base_url}security-cameras/arlo-pro-4-outdoor.jpg",
+            "product_2": f"{base_url}security-cameras/reolink-argus-3-solar.jpg",
+            "weather_resistance": f"{base_url}security-cameras/weatherproof-rating-guide.jpg"
+        },
+        "doorbell camera": {
+            "hero_image": f"{base_url}security-cameras/video-doorbell-collection.jpg",
+            "product_1": f"{base_url}security-cameras/ring-video-doorbell-pro-2.jpg",
+            "product_2": f"{base_url}security-cameras/arlo-video-doorbell.jpg",
+            "installation": f"{base_url}security-cameras/doorbell-wiring-guide.jpg"
+        },
+        
+        # Robot Vacuums类别
+        "robot vacuum": {
+            "hero_image": f"{base_url}robot-vacuums/robot-vacuum-cleaning-hero.jpg",
+            "product_1": f"{base_url}robot-vacuums/roomba-j7-plus-self-emptying.jpg",
+            "product_2": f"{base_url}robot-vacuums/roborock-s7-maxv-ultra.jpg",
+            "product_3": f"{base_url}robot-vacuums/shark-iq-robot-xl.jpg",
+            "comparison": f"{base_url}robot-vacuums/robot-vacuum-comparison-2025.jpg",
+            "mapping": f"{base_url}robot-vacuums/smart-mapping-technology.jpg",
+            "pet_hair": f"{base_url}robot-vacuums/pet-hair-cleaning-test.jpg"
+        },
+        "roomba": {
+            "hero_image": f"{base_url}robot-vacuums/irobot-roomba-collection.jpg",
+            "product_1": f"{base_url}robot-vacuums/roomba-j7-plus-self-emptying.jpg",
+            "product_2": f"{base_url}robot-vacuums/roomba-i7-plus.jpg",
+            "app_control": f"{base_url}robot-vacuums/irobot-app-interface.jpg"
+        },
+        
+        # Smart Thermostats类别
         "smart thermostat": {
-            "hero_image": f"{base_url}smart-thermostats/google-nest.jpg",
-            "product_1": f"{base_url}smart-thermostats/google-nest.jpg", 
-            "product_2": f"{base_url}smart-thermostats/ecobee-smart.jpg",
-            "comparison": f"{base_url}smart-thermostats/comparison-chart.jpg"
+            "hero_image": f"{base_url}smart-thermostats/smart-thermostat-hero.jpg",
+            "product_1": f"{base_url}smart-thermostats/google-nest-learning-thermostat.jpg",
+            "product_2": f"{base_url}smart-thermostats/ecobee-smartthermostat-voice.jpg",
+            "product_3": f"{base_url}smart-thermostats/honeywell-t9-wifi-thermostat.jpg",
+            "comparison": f"{base_url}smart-thermostats/thermostat-comparison-chart.jpg",
+            "installation": f"{base_url}smart-thermostats/thermostat-wiring-guide.jpg",
+            "energy_savings": f"{base_url}smart-thermostats/energy-savings-report.jpg"
+        },
+        "nest thermostat": {
+            "hero_image": f"{base_url}smart-thermostats/google-nest-thermostat-family.jpg",
+            "product_1": f"{base_url}smart-thermostats/google-nest-learning-thermostat.jpg",
+            "product_2": f"{base_url}smart-thermostats/nest-thermostat-e.jpg",
+            "learning_features": f"{base_url}smart-thermostats/nest-learning-algorithm.jpg"
+        },
+        
+        # Smart Speakers类别
+        "smart speaker": {
+            "hero_image": f"{base_url}smart-speakers/smart-speaker-collection.jpg",
+            "product_1": f"{base_url}smart-speakers/amazon-echo-dot-5th-gen.jpg",
+            "product_2": f"{base_url}smart-speakers/google-nest-audio.jpg",
+            "product_3": f"{base_url}smart-speakers/apple-homepod-mini.jpg",
+            "comparison": f"{base_url}smart-speakers/smart-speaker-comparison.jpg"
+        },
+        "alexa echo": {
+            "hero_image": f"{base_url}smart-speakers/amazon-echo-family.jpg",
+            "product_1": f"{base_url}smart-speakers/amazon-echo-dot-5th-gen.jpg",
+            "product_2": f"{base_url}smart-speakers/amazon-echo-show-8.jpg",
+            "skills": f"{base_url}smart-speakers/alexa-skills-showcase.jpg"
         }
     }
     
-    # 默认图片设置
-    default_images = {
-        "hero_image": f"{base_url}default-article.jpg",
-        "product_1": f"{base_url}default-article.jpg",
-        "product_2": f"{base_url}default-article.jpg", 
-        "product_3": f"{base_url}default-article.jpg",
-        "comparison": f"{base_url}default-article.jpg"
+    # 增强的默认图片设置 - 按分类提供
+    category_defaults = {
+        "smart_plugs": {
+            "hero_image": f"{base_url}smart-plugs/generic-smart-plug.jpg",
+            "product_1": f"{base_url}smart-plugs/generic-smart-plug.jpg",
+            "product_2": f"{base_url}smart-plugs/smart-plug-variety.jpg",
+            "comparison": f"{base_url}smart-plugs/plug-comparison-generic.jpg"
+        },
+        "smart_bulbs": {
+            "hero_image": f"{base_url}smart-bulbs/generic-smart-bulb.jpg",
+            "product_1": f"{base_url}smart-bulbs/generic-smart-bulb.jpg",
+            "product_2": f"{base_url}smart-bulbs/smart-bulb-variety.jpg",
+            "comparison": f"{base_url}smart-bulbs/bulb-comparison-generic.jpg"
+        },
+        "security_cameras": {
+            "hero_image": f"{base_url}security-cameras/generic-security-camera.jpg",
+            "product_1": f"{base_url}security-cameras/generic-security-camera.jpg",
+            "product_2": f"{base_url}security-cameras/camera-variety.jpg",
+            "comparison": f"{base_url}security-cameras/camera-comparison-generic.jpg"
+        },
+        "robot_vacuums": {
+            "hero_image": f"{base_url}robot-vacuums/generic-robot-vacuum.jpg",
+            "product_1": f"{base_url}robot-vacuums/generic-robot-vacuum.jpg",
+            "product_2": f"{base_url}robot-vacuums/vacuum-variety.jpg",
+            "comparison": f"{base_url}robot-vacuums/vacuum-comparison-generic.jpg"
+        },
+        "smart_thermostats": {
+            "hero_image": f"{base_url}smart-thermostats/generic-smart-thermostat.jpg",
+            "product_1": f"{base_url}smart-thermostats/generic-smart-thermostat.jpg",
+            "product_2": f"{base_url}smart-thermostats/thermostat-variety.jpg",
+            "comparison": f"{base_url}smart-thermostats/thermostat-comparison-generic.jpg"
+        },
+        "smart_speakers": {
+            "hero_image": f"{base_url}smart-speakers/generic-smart-speaker.jpg",
+            "product_1": f"{base_url}smart-speakers/generic-smart-speaker.jpg",
+            "product_2": f"{base_url}smart-speakers/speaker-variety.jpg",
+            "comparison": f"{base_url}smart-speakers/speaker-comparison-generic.jpg"
+        }
     }
     
-    # 匹配关键词到图片集合
-    for key_pattern, images in image_mapping.items():
-        if key_pattern in keyword.lower():
-            return images
+    # 通用默认图片（最后备选）
+    universal_default = {
+        "hero_image": f"{base_url}general/smart-home-hero.jpg",
+        "product_1": f"{base_url}general/smart-home-devices.jpg",
+        "product_2": f"{base_url}general/home-automation.jpg",
+        "product_3": f"{base_url}general/connected-home.jpg",
+        "comparison": f"{base_url}general/smart-home-comparison.jpg"
+    }
     
-    return default_images
+    # 智能匹配算法
+    keyword_lower = keyword.lower()
+    
+    # 1. 精确匹配关键词
+    for key_pattern, images in comprehensive_image_mapping.items():
+        if key_pattern in keyword_lower:
+            return _add_alt_tags(images, keyword, key_pattern)
+    
+    # 2. 基于分类的默认图片
+    if category in category_defaults:
+        return _add_alt_tags(category_defaults[category], keyword, category)
+    
+    # 3. 通用默认图片
+    return _add_alt_tags(universal_default, keyword, "smart home")
+
+def _add_alt_tags(image_dict, keyword, context):
+    """为图片字典添加SEO优化的Alt标签"""
+    enhanced_dict = image_dict.copy()
+    
+    # Alt标签模板
+    alt_templates = {
+        "hero_image": f"Best {keyword} 2025 - Complete buying guide and reviews",
+        "product_1": f"Top rated {keyword} - Premium choice for smart homes",
+        "product_2": f"Best value {keyword} - Budget-friendly smart home solution",
+        "product_3": f"Professional grade {keyword} - Advanced features",
+        "comparison": f"{keyword} comparison chart - Features and pricing 2025",
+        "installation": f"{keyword} installation guide - Step by step setup",
+        "app_screenshot": f"{keyword} app interface - Mobile control features",
+        "energy_monitoring": f"{keyword} energy monitoring - Power usage tracking",
+        "color_demo": f"{keyword} color changing demonstration",
+        "night_vision": f"{keyword} night vision comparison",
+        "mapping": f"{keyword} smart mapping technology",
+        "pet_hair": f"{keyword} pet hair cleaning performance"
+    }
+    
+    # 为每个图片添加alt标签
+    for key in enhanced_dict.keys():
+        if key in alt_templates:
+            enhanced_dict[f"{key}_alt"] = alt_templates[key]
+        else:
+            enhanced_dict[f"{key}_alt"] = f"{keyword} - {context} smart home device"
+    
+    return enhanced_dict
+
+def create_image_directory_structure():
+    """创建完整的产品图片目录结构"""
+    import os
+    
+    base_dir = "static/images/products"
+    
+    # 定义所有需要的目录
+    directories = [
+        "smart-plugs",
+        "smart-bulbs", 
+        "security-cameras",
+        "robot-vacuums",
+        "smart-thermostats",
+        "smart-speakers",
+        "general"
+    ]
+    
+    # 创建目录结构
+    for directory in directories:
+        dir_path = os.path.join(base_dir, directory)
+        os.makedirs(dir_path, exist_ok=True)
+        print(f"✅ Created directory: {dir_path}")
+    
+    # 创建示例图片占位符文件（实际部署时需要替换为真实图片）
+    placeholder_files = {
+        "smart-plugs": [
+            "amazon-smart-plug-hero.jpg",
+            "amazon-smart-plug-main.jpg", 
+            "tp-link-kasa-hs103.jpg",
+            "govee-wifi-smart-plug.jpg",
+            "smart-plug-comparison-2025.jpg",
+            "generic-smart-plug.jpg"
+        ],
+        "smart-bulbs": [
+            "philips-hue-white-color-hero.jpg",
+            "philips-hue-a19-white-color.jpg",
+            "lifx-a19-wifi-smart-bulb.jpg",
+            "smart-bulb-comparison-chart.jpg",
+            "generic-smart-bulb.jpg"
+        ],
+        "security-cameras": [
+            "outdoor-security-camera-hero.jpg",
+            "arlo-pro-4-outdoor.jpg",
+            "ring-spotlight-cam-battery.jpg",
+            "security-camera-comparison-2025.jpg",
+            "generic-security-camera.jpg"
+        ],
+        "robot-vacuums": [
+            "robot-vacuum-cleaning-hero.jpg",
+            "roomba-j7-plus-self-emptying.jpg",
+            "roborock-s7-maxv-ultra.jpg",
+            "robot-vacuum-comparison-2025.jpg",
+            "generic-robot-vacuum.jpg"
+        ],
+        "smart-thermostats": [
+            "smart-thermostat-hero.jpg",
+            "google-nest-learning-thermostat.jpg",
+            "ecobee-smartthermostat-voice.jpg",
+            "thermostat-comparison-chart.jpg",
+            "generic-smart-thermostat.jpg"
+        ],
+        "smart-speakers": [
+            "smart-speaker-collection.jpg",
+            "amazon-echo-dot-5th-gen.jpg",
+            "google-nest-audio.jpg",
+            "smart-speaker-comparison.jpg",
+            "generic-smart-speaker.jpg"
+        ],
+        "general": [
+            "smart-home-hero.jpg",
+            "smart-home-devices.jpg",
+            "home-automation.jpg",
+            "connected-home.jpg",
+            "smart-home-comparison.jpg"
+        ]
+    }
+    
+    # 创建占位符图片文件
+    for category, files in placeholder_files.items():
+        for filename in files:
+            file_path = os.path.join(base_dir, category, filename)
+            if not os.path.exists(file_path):
+                # 创建空文件作为占位符
+                with open(file_path, 'w') as f:
+                    f.write(f"# Placeholder for {filename}\n# Replace with actual product image")
+    
+    print(f"\n🎉 Image directory structure created successfully!")
+    print(f"📁 Total directories: {len(directories)}")
+    print(f"📄 Total placeholder files: {sum(len(files) for files in placeholder_files.values())}")
+    
+    return True
 
 def load_trending_keywords():
     """Load trending keywords, with fallback data"""
@@ -146,8 +415,14 @@ def generate_article_content(keyword, category):
     ]
     title = random.choice(title_patterns)
     
-    # 根据关键词确定相关图片
+    # 获取智能匹配的产品图片（包含Alt标签）
     product_images = get_product_images(keyword, category)
+    
+    # 确保图片目录结构存在
+    try:
+        create_image_directory_structure()
+    except Exception as e:
+        print(f"⚠️ Warning: Could not create image directories: {e}")
     
     # Introduction variations for more natural content
     intro_hooks = [
@@ -248,7 +523,7 @@ def generate_article_content(keyword, category):
 
 {random.choice(intro_hooks)} {random.choice(intro_context)} {random.choice(intro_promise)}
 
-![Best {keyword.title()} 2025]({product_images['hero_image']} "{keyword.title()} - Complete Buying Guide and Reviews")
+![{product_images.get('hero_image_alt', f'Best {keyword.title()} 2025')}]({product_images['hero_image']})
 
 *Featured: Top-rated {keyword} models for smart home automation in 2025*
 
@@ -296,7 +571,7 @@ When choosing {keyword}, consider these essential factors that distinguish premi
 
 {random.choice(premium_titles)}
 
-![Premium {keyword.title()} Model]({product_images['product_1']} "Premium {keyword.title()} - Advanced Features and Performance")
+![{product_images.get('product_1_alt', f'Premium {keyword.title()} - Advanced Features and Performance')}]({product_images['product_1']})
 
 {random.choice(premium_descriptions)} {random.choice(premium_users)}
 
@@ -320,7 +595,7 @@ During our extensive 6-month testing period, this premium model consistently del
 
 ### 2. Best Value - Budget-Friendly {keyword.title()}
 
-![Budget-Friendly {keyword.title()} Model]({product_images['product_2']} "Best Value {keyword.title()} - Affordable Smart Home Solution")
+![{product_images.get('product_2_alt', f'Best Value {keyword.title()} - Affordable Smart Home Solution')}]({product_images['product_2']})
 
 This exceptional mid-range option strikes the perfect balance between comprehensive features and affordability. Ideal for first-time smart home users or those working with budget constraints, this model proves that you don't need to spend a fortune to enjoy the benefits of smart home technology.
 
@@ -596,8 +871,18 @@ def main():
     print(f"🚀 Starting daily content generation...")
     print(f"📊 Target: {args.count} articles")
     
-    # Load trending keywords
+    # Load trending keywords (including multi-source data)
     trends = load_trending_keywords()
+    
+    # Enhance with multi-source analysis if keyword analyzer is available
+    try:
+        from modules.keyword_tools.keyword_analyzer import SmartHomeKeywordAnalyzer
+        analyzer = SmartHomeKeywordAnalyzer()
+        enhanced_analysis = analyzer.get_enhanced_trending_analysis()
+        print(f"📊 Multi-source analysis complete: {len(enhanced_analysis.get('sources_used', []))} sources")
+    except Exception as e:
+        print(f"⚠️ Multi-source analysis not available: {e}")
+        enhanced_analysis = {}
     
     # Generate articles
     generated_files = []

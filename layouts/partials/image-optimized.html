@@ -1,0 +1,21 @@
+
+{{ define "image-optimized" }}
+  {{ $src := .src }}
+  {{ $alt := .alt | default "" }}
+  {{ $width := .width | default 800 }}
+  {{ $height := .height | default 600 }}
+  {{ $loading := .loading | default "lazy" }}
+  
+  <picture>
+    <!-- WebP for modern browsers -->
+    <source type="image/webp" srcset="{{ $src | replace ".jpg" ".webp" | replace ".png" ".webp" }}">
+    
+    <!-- Fallback for older browsers -->
+    <img src="{{ $src }}" 
+         alt="{{ $alt }}" 
+         width="{{ $width }}" 
+         height="{{ $height }}"
+         loading="{{ $loading }}"
+         style="max-width: 100%; height: auto;">
+  </picture>
+{{ end }}
