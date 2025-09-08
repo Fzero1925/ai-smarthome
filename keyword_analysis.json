@@ -1,44 +1,15 @@
 [
   {
-    "keyword": "smart plug energy monitoring wifi",
+    "keyword": "smart plug alexa",
     "category": "smart-plugs",
-    "trend_score": 0.94,
-    "source": "amazon",
-    "rank": 1,
-    "price_range": "$15-25",
-    "avg_rating": 4.5,
-    "total_reviews": 12847,
-    "reason": "#1 Best Seller in Smart Plugs category - energy monitoring becoming essential feature",
-    "commercial_intent": 0.96,
-    "search_volume": 21000,
-    "difficulty": "Low-Medium",
-    "competition_analysis": {
-      "top_competitors": ["TP-Link Kasa", "Amazon Smart Plug", "Govee"],
-      "content_gaps": ["Setup troubleshooting", "Energy bill calculations"],
-      "user_pain_points": ["WiFi connectivity", "App functionality"]
-    },
-    "revenue_potential": {
-      "estimated_cpc": 2.15,
-      "monthly_revenue_estimate": "$450-900",
-      "conversion_rate": "Very High (4.5%)"
-    }
-  },
-  {
-    "keyword": "robot vacuum pet hair reviews",
-    "category": "robot_vacuums", 
-    "trend_score": 0.92,
-    "source": "reddit",
-    "subreddit": "homeautomation",
-    "upvotes": 567,
-    "comments": 89,
-    "reason": "Seasonal spike in pet hair cleaning discussions, especially for long-haired cats and shedding dogs",
-    "commercial_intent": 0.88,
-    "search_volume": 22000,
-    "difficulty": "Medium-High",
-    "competition_analysis": {
-      "top_competitors": ["Roomba", "Shark", "Bissell", "Eufy"],
-      "content_gaps": ["Multi-pet household reviews", "Hair tangle prevention"],
-      "user_pain_points": ["Hair wrapping around brushes", "Frequent emptying needed"]
-    }
+    "trend_score": 0.85,
+    "commercial_intent": 0.9,
+    "search_volume": 12000,
+    "difficulty": "Medium",
+    "reason": "High purchase intent and growing market demand",
+    "priority": 1,
+    "quality_level": "premium",
+    "filepath": "content/articles\\smart-plug-alexa-20250909.md",
+    "word_count": 1529
   }
 ]

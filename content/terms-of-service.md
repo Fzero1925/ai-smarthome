@@ -14,7 +14,7 @@ noindex: true
 
 ## Agreement to Terms
 
-By accessing and using AI Smart Home Hub (the "Site") located at https://fzero1925.github.io/ai-smarthome/, you agree to be bound by these Terms of Service ("Terms") and our Privacy Policy. If you do not agree with any part of these terms, you may not access the Site.
+By accessing and using AI Smart Home Hub (the "Site") located at https://www.ai-smarthomehub.com, you agree to be bound by these Terms of Service ("Terms") and our Privacy Policy. If you do not agree with any part of these terms, you may not access the Site.
 
 ## Description of Service
 
@@ -84,9 +84,9 @@ You are responsible for:
 ## Affiliate Marketing and Advertising
 
 ### Affiliate Relationships
-AI Smart Home Hub participates in affiliate marketing programs, including:
-- **Amazon Associates Program**: We earn commissions from qualifying purchases made through our Amazon links
-- **Other Affiliate Programs**: We may participate in additional affiliate programs with various retailers and manufacturers
+AI Smart Home Hub may participate in affiliate marketing programs, including:
+- **Amazon Associates Program**: When approved, we may earn commissions from qualifying purchases made through our Amazon links
+- **Other Affiliate Programs**: We may participate in additional affiliate programs with various retailers and manufacturers when appropriate partnerships are established
 
 ### Advertising
 We display advertisements through:
@@ -158,7 +158,7 @@ Submit a written notice containing:
 - Your physical or electronic signature
 
 ### Contact Information
-Send DMCA notices to: dmca@ai-smarthome-hub.com
+Send DMCA notices to: aismarthomehub@gmail.com
 
 ## Termination
 
@@ -215,7 +215,7 @@ These Terms, together with our Privacy Policy, constitute the entire agreement b
 
 If you have questions about these Terms of Service, please contact us:
 
-**Email**: legal@ai-smarthome-hub.com  
+**Email**: aismarthomehub@gmail.com  
 **Subject Line**: Terms of Service Inquiry
 
 We will respond to your inquiry within 30 days of receipt.

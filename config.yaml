@@ -122,6 +122,9 @@ menu:
     - name: 'Robot Vacuums' 
       url: '/categories/robot-vacuums/'
       weight: 50
+    - name: 'Methodology'
+      url: '/our-methodology/'
+      weight: 80
     - name: 'About'
       url: '/about/'
       weight: 90

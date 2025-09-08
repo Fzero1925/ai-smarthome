@@ -14,20 +14,20 @@ We love hearing from our readers! Whether you have questions about smart home te
 ## 📧 Get In Touch
 
 ### General Inquiries
-**Email**: contact@ai-smarthomehub.com  
+**Email**: aismarthomehub@gmail.com  
 **Response Time**: Within 24 hours during business days  
 **Business Hours**: Monday-Friday, 9:00 AM - 6:00 PM EST
 
 ### Product Questions & Recommendations
-**Email**: help@ai-smarthomehub.com  
+**Email**: aismarthomehub@gmail.com  
 **What to Include**: Your home setup, budget, specific needs, and any compatibility requirements
 
 ### Review Requests & Product Suggestions
-**Email**: reviews@ai-smarthomehub.com  
+**Email**: aismarthomehub@gmail.com  
 **What to Include**: Product name, why you think we should review it, and where to find it
 
 ### Partnership & Business Inquiries
-**Email**: partnerships@ai-smarthomehub.com  
+**Email**: aismarthomehub@gmail.com  
 **For**: Manufacturers, PR agencies, and potential collaboration partners
 
 ## 🤔 How We Can Help
@@ -176,7 +176,7 @@ If you have an urgent question about a product you're about to purchase, try:
 - **Clear your browser cache** and try again
 - **Check your internet connection**
 - **Try a different browser** or device
-- **Email us** at contact@ai-smarthomehub.com with details about the issue
+- **Email us** at aismarthomehub@gmail.com with details about the issue
 
 ---
 

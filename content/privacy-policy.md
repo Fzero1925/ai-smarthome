@@ -14,7 +14,7 @@ noindex: true
 
 ## Introduction
 
-AI Smart Home Hub ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website https://fzero1925.github.io/ai-smarthome/ (the "Site").
+AI Smart Home Hub ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website https://www.ai-smarthomehub.com (the "Site").
 
 Please read this privacy policy carefully. By using our Site, you agree to the collection and use of information in accordance with this policy.
 
@@ -86,7 +86,7 @@ You can control cookies through your browser settings. However, disabling certai
 ## Affiliate Marketing Disclosure
 
 ### Amazon Associates Program
-AI Smart Home Hub is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com.
+AI Smart Home Hub may participate in affiliate advertising programs, including the Amazon Services LLC Associates Program, which is designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.com. We will clearly disclose any affiliate relationships when they are established.
 
 ### How Affiliate Links Work
 - We may receive a commission when you purchase products through our affiliate links
@@ -168,14 +168,14 @@ We may update this Privacy Policy from time to time to reflect changes in our pr
 
 If you have questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:
 
-**Email**: privacy@ai-smarthome-hub.com  
+**Email**: aismarthomehub@gmail.com  
 **Subject Line**: Privacy Policy Inquiry
 
 For GDPR-related inquiries (EU residents):
-**Email**: gdpr@ai-smarthome-hub.com
+**Email**: aismarthomehub@gmail.com
 
 For CCPA-related inquiries (California residents):  
-**Email**: ccpa@ai-smarthome-hub.com
+**Email**: aismarthomehub@gmail.com
 
 We will respond to your inquiry within 30 days of receipt.
 
