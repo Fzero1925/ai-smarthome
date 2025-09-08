@@ -4,7 +4,6 @@
 baseURL: 'https://ai-smarthomehub.com'
 languageCode: 'en-us'
 title: 'AI Smart Home Hub - Expert Reviews & Buying Guides 2025'
-theme: 'smart-home-theme'
 
 # Pagination Configuration
 pagination:
@@ -264,7 +263,7 @@ privacy:
   instagram:
     disable: false
     simple: true
-  twitter:
+  x:
     disable: false
     enableDNT: true
     simple: true
