@@ -71,85 +71,17 @@ jobs:
           CHECK_ONLY="${{ github.event.inputs.check_only || 'false' }}"
           MAX_ARTICLES="${{ github.event.inputs.max_articles || '2' }}"
           
+          # 构建参数
+          ARGS=""
+          if [ "$FORCE_ANALYSIS" = "true" ]; then
+            ARGS="$ARGS --force-analysis"
+          fi
+          if [ "$CHECK_ONLY" = "true" ]; then
+            ARGS="$ARGS --check-only"
+          fi
+          
           # 执行热点分析和触发检查
-          python -c "
-import asyncio
-import json
-import sys
-import os
-from datetime import datetime, timezone
-
-# 添加模块路径
-sys.path.append('.')
-
-try:
-    from modules.trending.realtime_trigger import manual_trigger_check
-    from modules.trending.realtime_analyzer import analyze_current_trends
-    
-    async def main():
-        print('🔍 分析当前热点趋势...')
-        
-        # 分析热点
-        force_analysis = '${{ github.event.inputs.force_analysis }}' == 'true'
-        trends_result = await analyze_current_trends(force_analysis=force_analysis)
-        
-        print(f'📊 发现 {trends_result[\"analysis_summary\"][\"total_topics\"]} 个热点话题')
-        print(f'📈 紧急话题: {trends_result[\"analysis_summary\"][\"urgent_topics\"]} 个')
-        print(f'💰 高商业价值: {trends_result[\"analysis_summary\"][\"high_commercial_value\"]} 个')
-        
-        # 检查是否仅分析
-        if '${{ github.event.inputs.check_only }}' == 'true':
-            print('ℹ️ 仅分析模式，不触发文章生成')
-            result = {
-                'action': 'analysis_only',
-                'trends_analyzed': trends_result['analysis_summary']['total_topics'],
-                'urgent_topics': trends_result['analysis_summary']['urgent_topics'],
-                'generated_articles': 0
-            }
-        else:
-            # 执行触发检查
-            print('🚀 检查是否需要触发文章生成...')
-            trigger_result = await manual_trigger_check(force=True)
-            
-            result = {
-                'action': 'trigger_check',
-                'trends_analyzed': trends_result['analysis_summary']['total_topics'],
-                'triggers_attempted': trigger_result['analysis_summary']['triggers_attempted'],
-                'successful_generations': trigger_result['analysis_summary']['successful_generations'],
-                'failed_generations': trigger_result['analysis_summary']['failed_generations'],
-                'generated_articles': trigger_result['analysis_summary']['successful_generations']
-            }
-        
-        # 输出结果到GitHub Actions
-        with open('trigger_result.json', 'w', encoding='utf-8') as f:
-            json.dump(result, f, indent=2, ensure_ascii=False)
-        
-        # 设置GitHub Actions输出变量
-        print(f'设置输出变量...')
-        with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-            f.write(f'action={result[\"action\"]}\\n')
-            f.write(f'trends_analyzed={result[\"trends_analyzed\"]}\\n')
-            f.write(f'generated_articles={result.get(\"generated_articles\", 0)}\\n')
-            f.write(f'has_new_content={\"true\" if result.get(\"generated_articles\", 0) > 0 else \"false\"}\\n')
-        
-        print('✅ 热点检查完成!')
-        
-    asyncio.run(main())
-    
-except Exception as e:
-    print(f'❌ 热点检查失败: {e}')
-    import traceback
-    traceback.print_exc()
-    
-    # 设置错误状态
-    with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-        f.write('action=error\\n')
-        f.write('trends_analyzed=0\\n')
-        f.write('generated_articles=0\\n')
-        f.write('has_new_content=false\\n')
-    
-    sys.exit(1)
-"
+          python scripts/realtime_workflow.py $ARGS --max-articles $MAX_ARTICLES
 
       - name: Commit new articles if generated
         if: steps.trending_check.outputs.has_new_content == 'true'
