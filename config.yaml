@@ -6,6 +6,10 @@ languageCode: 'en-us'
 title: 'AI Smart Home Hub - Expert Reviews & Buying Guides 2025'
 theme: 'smart-home-theme'
 
+# Pagination Configuration
+pagination:
+  pagerSize: 12
+
 # SEO and Performance Configuration
 params:
   # Site Identity
