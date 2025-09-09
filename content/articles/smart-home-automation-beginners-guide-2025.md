@@ -9,8 +9,9 @@ tags: ["smart home", "home automation", "beginner guide", "smart plugs", "smart 
 keywords: ["smart home automation beginners", "how to start smart home", "smart home for beginners", "home automation guide"]
 author: "AI Smart Home Team"
 authorImage: "/images/team/smart-home-expert.jpg"
-image: "/images/articles/smart-home-automation-beginners-2025.jpg"
+image: "/images/products/general/smart-home-hero.jpg"
 imageAlt: "Beginner-friendly smart home setup showing smart plugs, lights, and voice assistant in modern living room"
+featured_image: "/images/products/general/smart-home-hero.jpg"
 featured: true
 toc: true
 affiliate: true

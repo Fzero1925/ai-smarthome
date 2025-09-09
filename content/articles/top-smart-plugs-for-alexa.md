@@ -10,7 +10,7 @@ rating: 4.8
 price: "10"
 original_price: "15"
 discount: 33
-featured_image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=400&fit=crop&crop=center"
+featured_image: "/images/products/smart-plugs/smart-plug-comparison-2025.jpg"
 author: "Smart Home Team"
 faq:
   - question: "Do smart plugs work with Alexa without a hub?"

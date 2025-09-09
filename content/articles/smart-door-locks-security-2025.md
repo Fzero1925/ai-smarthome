@@ -10,7 +10,7 @@ rating: 4.7
 price: "129"
 original_price: "199"
 discount: 35
-featured_image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&h=400&fit=crop&crop=center"
+featured_image: "/images/products/general/smart-home-devices.jpg"
 author: "Smart Home Security Team"
 faq:
   - question: "Are smart door locks secure against hacking?"

@@ -10,7 +10,7 @@ rating: 4.5
 price: "15"
 original_price: "25"
 discount: 40
-featured_image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=400&fit=crop&crop=center"
+featured_image: "/images/products/smart-bulbs/smart-bulb-comparison-chart.jpg"
 author: "Smart Home Team"
 faq:
   - question: "Are smart light bulbs compatible with Alexa and Google Home?"

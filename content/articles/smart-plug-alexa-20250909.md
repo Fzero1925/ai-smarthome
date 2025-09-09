@@ -6,6 +6,7 @@ categories: ["smart-plugs"]
 tags: ["smart plug alexa", "smart home", "buying guide", "reviews", "2025"]
 keywords: ["smart plug alexa", "smart home", "buying guide", "reviews"]
 featured: true
+featured_image: "/images/products/smart-plugs/amazon-smart-plug-hero.jpg"
 rating: 4.5
 author: "Smart Home Research Team"
 authorBio: "Our research team analyzes smart home products through specification review, user feedback analysis, and market research to provide honest, helpful buying guidance."

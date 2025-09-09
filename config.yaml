@@ -113,27 +113,24 @@ menu:
     - name: 'Reviews'
       url: '/reviews/'
       weight: 10
-    - name: 'Buying Guides'
+    - name: 'Guides'
       url: '/guides/'
       weight: 20
     - name: 'Smart Plugs'
       url: '/categories/smart-plugs/'
       weight: 30
-    - name: 'Security Cameras'
+    - name: 'Cameras'
       url: '/categories/security-cameras/'
       weight: 40
-    - name: 'Robot Vacuums' 
+    - name: 'Vacuums' 
       url: '/categories/robot-vacuums/'
       weight: 50
-    - name: 'Methodology'
-      url: '/our-methodology/'
-      weight: 80
     - name: 'About'
       url: '/about/'
-      weight: 90
+      weight: 80
     - name: 'Contact'
       url: '/contact/'
-      weight: 100
+      weight: 90
 
 # Taxonomy Configuration
 taxonomies:

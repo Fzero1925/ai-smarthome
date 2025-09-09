@@ -9,8 +9,9 @@ tags: ["smart thermostat", "energy savings", "nest thermostat", "ecobee", "honey
 keywords: ["best smart thermostat 2025", "smart thermostat energy savings", "nest vs ecobee", "smart thermostat installation"]
 author: "AI Smart Home Team"
 authorImage: "/images/team/smart-home-expert.jpg"
-image: "/images/products/smart-thermostats/best-smart-thermostats-2025.jpg"
+image: "/images/products/smart-thermostats/thermostat-comparison-chart.jpg"
 imageAlt: "Comparison of top smart thermostats 2025 showing Nest, Ecobee, and Honeywell models"
+featured_image: "/images/products/smart-thermostats/thermostat-comparison-chart.jpg"
 featured: true
 toc: true
 affiliate: true

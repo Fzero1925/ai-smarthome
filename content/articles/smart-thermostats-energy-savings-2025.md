@@ -11,7 +11,7 @@ rating: 4.7
 price: "249"
 original_price: "349"
 discount: 29
-featured_image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=400&fit=crop&crop=center"
+featured_image: "/images/products/smart-thermostats/smart-thermostat-hero.jpg"
 author: "Smart Home Team"
 faq:
   - question: "How much can a smart thermostat save on energy bills?"
