@@ -116,16 +116,16 @@ menu:
     - name: 'Guides'
       url: '/guides/'
       weight: 20
-    - name: 'Smart Plugs'
+    - name: 'Smart Hub'
       url: '/categories/smart-plugs/'
       weight: 30
-    - name: 'Cameras'
+    - name: 'Security'
       url: '/categories/security-cameras/'
       weight: 40
-    - name: 'Vacuums' 
+    - name: 'Cleaning' 
       url: '/categories/robot-vacuums/'
       weight: 50
-    - name: 'About'
+    - name: 'About Us'
       url: '/about/'
       weight: 80
     - name: 'Contact'

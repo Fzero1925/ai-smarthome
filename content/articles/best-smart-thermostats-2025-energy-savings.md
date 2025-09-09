@@ -11,10 +11,10 @@ author: "AI Smart Home Team"
 authorImage: "/images/team/smart-home-expert.jpg"
 image: "/images/products/smart-thermostats/thermostat-comparison-chart.jpg"
 imageAlt: "Comparison of top smart thermostats 2025 showing Nest, Ecobee, and Honeywell models"
-featured_image: "/images/products/smart-thermostats/thermostat-comparison-chart.jpg"
 featured: true
 toc: true
 affiliate: true
+featured_image: "/images/products/smart-thermostats/ecobee-smartthermostat.jpg"
 ---
 
 # Best Smart Thermostats 2025: The Ultimate Guide to Comfort and Savings

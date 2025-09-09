@@ -3,7 +3,8 @@
     <div class="navbar-brand">
       <a href="{{ .Site.BaseURL }}" class="brand-link">
         <i class="fa fa-home"></i>
-        <span>{{ .Site.Title }}</span>
+        <span class="brand-full">{{ .Site.Title }}</span>
+        <span class="brand-short">Smart Hub</span>
       </a>
     </div>
     
@@ -70,6 +71,15 @@
 .navbar-brand .brand-link:hover {
   text-decoration: none;
   color: #0056b3;
+}
+
+/* Responsive Brand Title */
+.brand-short {
+  display: none;
+}
+
+.brand-full {
+  display: inline;
 }
 
 .navbar-toggle {
@@ -191,6 +201,15 @@
   .navbar .container {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
+  }
+  
+  /* Mobile Brand Title Optimization */
+  .brand-full {
+    display: none;
+  }
+  
+  .brand-short {
+    display: inline;
   }
 }
 </style>

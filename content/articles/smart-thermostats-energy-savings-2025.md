@@ -11,7 +11,6 @@ rating: 4.7
 price: "249"
 original_price: "349"
 discount: 29
-featured_image: "/images/products/smart-thermostats/smart-thermostat-hero.jpg"
 author: "Smart Home Team"
 faq:
   - question: "How much can a smart thermostat save on energy bills?"
@@ -93,6 +92,7 @@ featured_products:
         - "Less advanced learning features"
         - "Fewer premium features than competitors"
     badge: "Budget Pick"
+featured_image: "/images/products/smart-thermostats/ecobee-smartthermostat.jpg"
 ---
 
 ## Introduction

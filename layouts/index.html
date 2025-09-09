@@ -720,13 +720,23 @@
   border-radius: 25px;
   outline: none;
   font-size: 1rem;
-  background: transparent;
-  color: #495057;
+  background: rgba(255, 255, 255, 0.95);
+  color: #2c3e50;
+  border: 2px solid rgba(255,255,255,0.3);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
 }
 
 .newsletter-form input[type="email"]::placeholder {
   color: #6c757d;
   opacity: 0.8;
+}
+
+.newsletter-form input[type="email"]:focus {
+  background: rgba(255, 255, 255, 1.0);
+  border-color: rgba(40, 167, 69, 0.5);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15), 0 0 0 3px rgba(40, 167, 69, 0.1);
+  transform: translateY(-1px);
 }
 
 .newsletter-btn {

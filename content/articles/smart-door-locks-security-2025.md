@@ -10,7 +10,6 @@ rating: 4.7
 price: "129"
 original_price: "199"
 discount: 35
-featured_image: "/images/products/general/smart-home-devices.jpg"
 author: "Smart Home Security Team"
 faq:
   - question: "Are smart door locks secure against hacking?"
@@ -68,6 +67,7 @@ featured_products:
         - "Battery life could be better"
         - "Limited smart assistant support"
     badge: "Best Security"
+featured_image: "/images/products/smart-plugs/amazon-smart-plug-hero.jpg"
 ---
 
 ## Introduction

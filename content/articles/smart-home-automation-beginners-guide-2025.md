@@ -11,10 +11,10 @@ author: "AI Smart Home Team"
 authorImage: "/images/team/smart-home-expert.jpg"
 image: "/images/products/general/smart-home-hero.jpg"
 imageAlt: "Beginner-friendly smart home setup showing smart plugs, lights, and voice assistant in modern living room"
-featured_image: "/images/products/general/smart-home-hero.jpg"
 featured: true
 toc: true
 affiliate: true
+featured_image: "/images/products/smart-plugs/amazon-smart-plug-hero.jpg"
 ---
 
 # Smart Home Automation for Beginners: Your Complete 2025 Starter Guide

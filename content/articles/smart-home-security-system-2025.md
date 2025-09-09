@@ -11,10 +11,10 @@ author: "AI Smart Home Team"
 authorImage: "/images/team/smart-home-expert.jpg"
 image: "/images/products/security-cameras/security-camera-comparison-2025.jpg"
 imageAlt: "Complete smart home security system with cameras, sensors, and control panel in modern home"
-featured_image: "/images/products/security-cameras/security-camera-comparison-2025.jpg"
 featured: true
 toc: true
 affiliate: true
+featured_image: "/images/products/security-cameras/security-system-setup.jpg"
 ---
 
 # Complete Smart Home Security System Guide 2025: Protect Your Home Like a Pro

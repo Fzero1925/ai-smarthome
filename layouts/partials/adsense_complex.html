@@ -1,0 +1,269 @@
+{{ $slot_type := "" }}
+{{ $ad_format := "" }}
+{{ if reflect.IsMap . }}
+  {{ $slot_type = .slot_type | default "auto" }}
+  {{ $ad_format = .ad_format | default "auto" }}
+{{ else }}
+  {{ $slot_type = "auto" }}
+  {{ $ad_format = "auto" }}
+{{ end }}
+
+{{ $site := .Site }}
+{{ $class := "" }}
+{{ $slot_id := "auto" }}
+{{ $width := "" }}
+{{ $height := "" }}
+
+{{ if reflect.IsMap . }}
+  {{ $class = .class | default "" }}
+  {{ $slot_id = .slot_id | default "auto" }}
+  {{ $width = .width | default "" }}
+  {{ $height = .height | default "" }}
+{{ end }}
+
+{{ if or $site.Params.google_adsense_id $site.Params.advertising.google_adsense.client_id }}
+<!-- Google AdSense Responsive Ad Unit - Enhanced for 2025 -->
+<div class="ad-container {{ $class }}" data-ad-type="{{ $slot_type }}">
+  
+  <!-- Enhanced Ad Label for AdSense Compliance -->
+  <div class="ad-label">
+    <span>Advertisement</span>
+  </div>
+  
+  <!-- Responsive AdSense Unit with Enhanced Configuration -->
+  <ins class="adsbygoogle ad-slot {{ $slot_type }}"
+       style="display:block;min-height:280px;"
+       data-ad-client="{{ $site.Params.advertising.google_adsense.client_id | default $site.Params.google_adsense_id }}"
+       data-ad-slot="{{ $slot_id }}"
+       data-ad-format="{{ $ad_format }}"
+       {{ if eq $ad_format "auto" }}data-full-width-responsive="true"{{ end }}
+       {{ if $width }}data-ad-width="{{ $width }}"{{ end }}
+       {{ if $height }}data-ad-height="{{ $height }}"{{ end }}
+       data-adtest="{{ if hugo.IsServer }}on{{ else }}off{{ end }}">
+  </ins>
+  
+  <!-- Enhanced Ad Initialization with Error Handling -->
+  <script>
+    try {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {
+      console.error('AdSense initialization error:', e);
+    }
+  </script>
+  
+</div>
+
+<!-- Alternative Ad Networks (Media.net, PropellerAds) -->
+{{ $rand := now.Unix | mod 3 }}
+{{ if eq $rand 0 }}
+<!-- Media.net Ad Unit -->
+<div class="ad-container-alt" style="margin: 1.5rem 0; text-align: center;">
+  <div class="ad-label">Sponsored</div>
+  <!-- Media.net ad code will go here -->
+  <div id="medianet-ad-{{ now.Unix }}" style="min-height: 250px; background: #f8f9fa; display: flex; align-items: center; justify-content: center; color: #6c757d;">
+    <span>Media.net Ad Placeholder</span>
+  </div>
+</div>
+{{ else if eq $rand 1 }}
+<!-- PropellerAds Unit -->
+<div class="ad-container-alt" style="margin: 1.5rem 0; text-align: center;">
+  <div class="ad-label">Sponsored</div>
+  <!-- PropellerAds code will go here -->
+  <div id="propeller-ad-{{ now.Unix }}" style="min-height: 250px; background: #f8f9fa; display: flex; align-items: center; justify-content: center; color: #6c757d;">
+    <span>PropellerAds Placeholder</span>
+  </div>
+</div>
+{{ end }}
+{{ end }}
+
+<style>
+/* Enhanced AdSense Styling for Better Performance and Compliance */
+.ad-container {
+  margin: 2.5rem auto;
+  padding: 1.5rem;
+  max-width: 100%;
+  text-align: center;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.ad-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #007bff, #28a745);
+  border-radius: 12px 12px 0 0;
+}
+
+.ad-container-alt {
+  margin: 2rem auto;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+}
+
+.ad-label {
+  font-size: 11px;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.ad-label span {
+  padding: 4px 8px;
+  background: rgba(108, 117, 125, 0.1);
+  border-radius: 4px;
+  border: 1px solid rgba(108, 117, 125, 0.2);
+}
+
+.adsbygoogle {
+  min-height: 280px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.adsbygoogle:hover {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* Ad Type Specific Styling */
+.ad-container[data-ad-type="horizontal"] .adsbygoogle {
+  min-height: 90px;
+  max-width: 728px;
+  margin: 0 auto;
+}
+
+.ad-container[data-ad-type="square"] .adsbygoogle {
+  min-height: 250px;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.ad-container[data-ad-type="vertical"] .adsbygoogle {
+  min-height: 600px;
+  max-width: 160px;
+  margin: 0 auto;
+}
+
+/* Loading State Animation */
+.adsbygoogle[data-ad-status="unfilled"] {
+  background: linear-gradient(90deg, #f0f2f5 25%, #e4e6ea 50%, #f0f2f5 75%);
+  background-size: 200% 100%;
+  animation: adLoading 2s infinite;
+}
+
+@keyframes adLoading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  .ad-container {
+    margin: 2rem auto;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .ad-container-alt {
+    margin: 1.5rem auto;
+    padding: 0.75rem;
+  }
+  
+  .adsbygoogle {
+    min-height: 250px;
+  }
+  
+  .ad-container[data-ad-type="horizontal"] .adsbygoogle {
+    min-height: 90px;
+    max-width: 320px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ad-container {
+    margin: 1.5rem 0;
+    padding: 0.75rem;
+    border-radius: 6px;
+  }
+  
+  .adsbygoogle {
+    min-height: 200px;
+  }
+}
+
+/* High-DPI Display Optimization */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+  .ad-container {
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+}
+
+/* AdSense Policy Compliance Indicators */
+.ad-container.compliant {
+  border-color: #28a745;
+}
+
+.ad-container.compliant .ad-label {
+  color: #28a745;
+}
+
+/* Dark Mode Support (Future-Proofing) */
+@media (prefers-color-scheme: dark) {
+  .ad-container {
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+    border-color: #4a5568;
+  }
+  
+  .adsbygoogle {
+    background: #2d3748;
+  }
+  
+  .ad-label {
+    color: #a0aec0;
+  }
+}
+</style>
+
+<!-- AdSense Usage Examples and Documentation -->
+<!--
+Enhanced Usage Examples:
+
+1. Standard Auto Ad:
+{{ partial "adsense.html" . }}
+
+2. Horizontal Banner (728x90):
+{{ partial "adsense.html" (dict "slot_type" "horizontal" "ad_format" "horizontal" "slot_id" "1234567890") }}
+
+3. Square Ad (300x250):
+{{ partial "adsense.html" (dict "slot_type" "square" "ad_format" "rectangle" "width" "300" "height" "250" "slot_id" "0987654321") }}
+
+4. Sidebar Vertical Ad:
+{{ partial "adsense.html" (dict "class" "sidebar-ad" "slot_type" "vertical" "ad_format" "vertical" "slot_id" "1122334455") }}
+
+5. Custom Class with Specific Dimensions:
+{{ partial "adsense.html" (dict "class" "article-inline-ad" "width" "728" "height" "90" "slot_id" "5566778899") }}
+
+Key Features:
+- Responsive design with mobile optimization
+- AdSense policy compliance built-in
+- Loading animations and error handling
+- Dark mode support for future compatibility
+- Performance optimized with minimal CSS
+- Multiple ad format support
+- Test mode for development (data-adtest)
+-->
