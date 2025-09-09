@@ -19,6 +19,31 @@ import asyncio
 import aiohttp
 from urllib.parse import quote
 import logging
+import yaml
+
+# Import v2 scoring functions
+try:
+    from .scoring import opportunity_score, estimate_value, estimate_adsense, estimate_amazon, explain_selection, make_revenue_range
+except ImportError:
+    # Fallback implementation
+    def opportunity_score(T, I, S, F, D, d_penalty=0.6):
+        base = 0.35*T + 0.30*I + 0.15*S + 0.20*F
+        return max(0, min(100, 100*base*(1-0.6*D)))
+    
+    def estimate_value(search_volume, opp, ads_params=None, aff_params=None, mode='max'):
+        ads_params = ads_params or {"ctr_serp":0.25, "click_share_rank":0.35, "rpm_usd":10}
+        aff_params = aff_params or {"ctr_to_amazon":0.12, "cr":0.04, "aov_usd":80, "commission":0.03}
+        pv = search_volume * ads_params["ctr_serp"] * ads_params["click_share_rank"]
+        ra = (pv/1000.0) * ads_params["rpm_usd"]
+        rf = (search_volume*aff_params["ctr_to_amazon"])*aff_params["cr"]*aff_params["aov_usd"]*aff_params["commission"]
+        base = max(ra, rf)
+        return base * (0.6 + 0.4*opp/100.0)
+    
+    def explain_selection(trend_pct, intent_hits, difficulty_label):
+        return {"trend": f"Trend: {trend_pct:+.0f}%", "intent": f"Intent: {intent_hits}", "difficulty": difficulty_label}
+    
+    def make_revenue_range(v):
+        return {"point": v, "range": f"${v*0.75:.0f}–${v*1.25:.0f}/mo"}
 
 try:
     from pytrends.request import TrendReq
@@ -55,6 +80,14 @@ class KeywordMetrics:
     related_queries: List[str]
     seasonal_pattern: Dict[str, float]
     last_updated: datetime
+    
+    # Keyword Engine v2 enhancements
+    opportunity_score: Optional[float] = None      # 0-100 scale (higher = better opportunity)
+    est_value_usd: Optional[float] = None          # Estimated monthly revenue in USD
+    why_selected: Optional[Dict[str, str]] = None  # Explanation of selection reasons
+    revenue_breakdown: Optional[Dict[str, float]] = None  # AdSense vs Amazon breakdown
+    site_fit_score: Optional[float] = None         # 0-1 scale (higher = better fit)
+    seasonality_score: Optional[float] = None      # 0-1 scale (higher = more seasonal)
 
 
 class SmartHomeKeywordAnalyzer:
@@ -71,6 +104,9 @@ class SmartHomeKeywordAnalyzer:
         self.cache_dir = "data/keyword_cache"
         self.cache_expiry = timedelta(hours=24)
         self.multi_source_cache = "data/multi_source_cache"
+        
+        # Load Keyword Engine v2 configuration
+        self.v2_config = self._load_v2_config()
         
         # Setup logging
         logging.basicConfig(level=logging.INFO)
@@ -181,6 +217,36 @@ class SmartHomeKeywordAnalyzer:
             self.logger.warning(f"YouTube API initialization failed: {e}")
             self.youtube = None
     
+    def _load_v2_config(self) -> Dict:
+        """Load Keyword Engine v2 configuration from YAML file"""
+        config_path = "keyword_engine.yml"
+        default_config = {
+            "window_recent_ratio": 0.3,
+            "thresholds": {"opportunity": 70, "search_volume": 10000, "urgency": 0.8},
+            "weights": {"T": 0.35, "I": 0.30, "S": 0.15, "F": 0.20, "D_penalty": 0.6},
+            "adsense": {"ctr_serp": 0.25, "click_share_rank": 0.35, "rpm_usd": 10},
+            "amazon": {"ctr_to_amazon": 0.12, "cr": 0.04, "aov_usd": 80, "commission": 0.03},
+            "mode": "max"
+        }
+        
+        try:
+            if os.path.exists(config_path):
+                with open(config_path, 'r', encoding='utf-8') as f:
+                    config = yaml.safe_load(f)
+                    # Merge with defaults
+                    for key, value in default_config.items():
+                        if key not in config:
+                            config[key] = value
+                        elif isinstance(value, dict):
+                            for subkey, subvalue in value.items():
+                                if subkey not in config[key]:
+                                    config[key][subkey] = subvalue
+                    return config
+        except Exception as e:
+            self.logger.warning(f"Could not load v2 config: {e}, using defaults")
+        
+        return default_config
+
     def _get_default_config(self) -> Dict:
         """Get default configuration settings"""
         return {
@@ -370,18 +436,61 @@ class SmartHomeKeywordAnalyzer:
                 related_queries = self._get_related_queries(keyword)
                 seasonal_pattern = self._analyze_seasonal_pattern(keyword)
                 
+                # Calculate v2 enhanced features
+                trend_score = self._calculate_trend_score(keyword)
+                site_fit_score = self._calculate_site_fit_score(keyword)
+                seasonality_score = self._calculate_seasonality_score(keyword, seasonal_pattern)
+                
+                # Calculate opportunity score using v2 algorithm
+                opp_score = opportunity_score(
+                    T=trend_score,
+                    I=commercial_intent,
+                    S=seasonality_score,
+                    F=site_fit_score,
+                    D=difficulty_score,
+                    d_penalty=self.v2_config['weights']['D_penalty']
+                )
+                
+                # Calculate estimated value
+                est_value = estimate_value(
+                    search_volume=search_volume,
+                    opp_score=opp_score,
+                    ads_params=self.v2_config['adsense'],
+                    aff_params=self.v2_config['amazon'],
+                    mode=self.v2_config['mode']
+                )
+                
+                # Generate revenue breakdown
+                revenue_breakdown = {
+                    'adsense': estimate_adsense(search_volume, **self.v2_config['adsense']),
+                    'amazon': estimate_amazon(search_volume, **self.v2_config['amazon'])
+                }
+                
+                # Generate explanation
+                trend_pct = (trend_score - 0.5) * 100  # Convert to percentage change
+                intent_hits = self._identify_intent_words(keyword)
+                difficulty_label = self._get_difficulty_label(difficulty_score)
+                why_selected = explain_selection(trend_pct, intent_hits, difficulty_label)
+                
                 # Create metrics object
                 metrics = KeywordMetrics(
                     keyword=keyword,
                     search_volume=search_volume,
                     competition_score=competition_score,
-                    trend_score=0.5,  # Will be updated by trend analysis
+                    trend_score=trend_score,
                     difficulty_score=difficulty_score,
                     commercial_intent=commercial_intent,
                     suggested_topics=suggested_topics,
                     related_queries=related_queries,
                     seasonal_pattern=seasonal_pattern,
-                    last_updated=datetime.now()
+                    last_updated=datetime.now(),
+                    # v2 enhancements
+                    opportunity_score=opp_score,
+                    est_value_usd=est_value,
+                    why_selected=why_selected,
+                    revenue_breakdown=revenue_breakdown,
+                    site_fit_score=site_fit_score,
+                    seasonality_score=seasonality_score
                 )
                 
                 metrics_list.append(metrics)
@@ -935,6 +1044,112 @@ class SmartHomeKeywordAnalyzer:
                     'amazon': True
                 }
             }
+    
+    # === Keyword Engine v2 Helper Methods ===
+    
+    def _calculate_trend_score(self, keyword: str) -> float:
+        """Calculate normalized trend score (0-1) for v2 algorithm"""
+        try:
+            if not PYTRENDS_AVAILABLE:
+                return 0.5  # Neutral default
+            
+            # Use existing trend analysis but normalize to 0-1
+            self.pytrends.build_payload([keyword], cat=0, timeframe='today 3-m', geo='US', gprop='')
+            interest_data = self.pytrends.interest_over_time()
+            
+            if interest_data.empty:
+                return 0.5
+            
+            # Calculate recent vs overall trend
+            recent_window = int(len(interest_data) * self.v2_config['window_recent_ratio'])
+            recent_mean = interest_data[keyword].tail(recent_window).mean()
+            overall_mean = interest_data[keyword].mean()
+            
+            if overall_mean == 0:
+                return 0.5
+            
+            trend_ratio = recent_mean / overall_mean
+            # Normalize to 0-1 scale, clamped
+            return max(0.0, min(1.0, (trend_ratio - 0.5) + 0.5))
+            
+        except Exception as e:
+            self.logger.warning(f"Trend calculation failed for {keyword}: {e}")
+            return 0.5
+
+    def _calculate_site_fit_score(self, keyword: str) -> float:
+        """Calculate how well keyword fits our smart home site (0-1)"""
+        keyword_lower = keyword.lower()
+        
+        # Smart home category keywords
+        smart_home_terms = [
+            'smart', 'home', 'alexa', 'google home', 'automation', 'iot', 'connected',
+            'plug', 'bulb', 'camera', 'thermostat', 'security', 'doorbell', 'lock',
+            'vacuum', 'robot', 'speaker', 'hub', 'sensor', 'switch', 'outlet'
+        ]
+        
+        # Product-specific terms
+        product_terms = [
+            'best', 'review', 'compare', 'vs', '2025', 'guide', 'setup',
+            'installation', 'price', 'cheap', 'affordable', 'premium'
+        ]
+        
+        score = 0.0
+        
+        # Check for smart home terms (70% weight)
+        smart_hits = sum(1 for term in smart_home_terms if term in keyword_lower)
+        score += (smart_hits / len(smart_home_terms)) * 0.7
+        
+        # Check for product terms (30% weight)  
+        product_hits = sum(1 for term in product_terms if term in keyword_lower)
+        score += (product_hits / len(product_terms)) * 0.3
+        
+        return min(1.0, score)
+
+    def _calculate_seasonality_score(self, keyword: str, seasonal_pattern: Dict[str, float]) -> float:
+        """Calculate seasonality relevance score (0-1)"""
+        if not seasonal_pattern:
+            return 0.0
+        
+        current_month = datetime.now().month
+        month_names = ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
+                       'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
+        
+        current_month_name = month_names[current_month - 1]
+        
+        # Check if current month has elevated interest
+        current_score = seasonal_pattern.get(current_month_name, 0.5)
+        overall_avg = sum(seasonal_pattern.values()) / len(seasonal_pattern)
+        
+        if overall_avg == 0:
+            return 0.0
+        
+        # Normalize relative to average
+        seasonality = current_score / overall_avg
+        
+        # Add boost for holiday/seasonal keywords
+        keyword_lower = keyword.lower()
+        seasonal_terms = ['christmas', 'holiday', 'winter', 'summer', 'black friday', 'cyber monday']
+        if any(term in keyword_lower for term in seasonal_terms):
+            seasonality += 0.2
+        
+        return min(1.0, max(0.0, seasonality))
+
+    def _identify_intent_words(self, keyword: str) -> List[str]:
+        """Identify commercial intent words in the keyword"""
+        keyword_lower = keyword.lower()
+        intent_words = ['best', 'review', 'price', 'cheap', 'buy', 'deal', 'vs', 
+                        'compare', 'guide', 'recommendation', '2025', 'top']
+        
+        return [word for word in intent_words if word in keyword_lower]
+
+    def _get_difficulty_label(self, difficulty_score: float) -> str:
+        """Convert difficulty score to human-readable label"""
+        if difficulty_score < 0.3:
+            return "Easy"
+        elif difficulty_score < 0.6:
+            return "Medium"
+        else:
+            return "Hard"
 
 
 # Example usage and testing

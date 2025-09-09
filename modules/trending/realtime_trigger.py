@@ -12,6 +12,7 @@
 """
 
 import os
+import sys
 import json
 import asyncio
 import subprocess
@@ -21,6 +22,15 @@ from typing import Dict, List, Optional, Any
 from pathlib import Path
 import pytz
 import requests
+import yaml
+
+# Import v2 enhancements
+try:
+    sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'keyword_tools'))
+    from scoring import make_revenue_range
+except ImportError:
+    def make_revenue_range(v):
+        return {"point": v, "range": f"${v*0.75:.0f}–${v*1.25:.0f}/mo"}
 
 # 导入实时分析器
 from modules.trending.realtime_analyzer import RealtimeTrendingAnalyzer, TrendingTopic, analyze_current_trends
@@ -35,16 +45,20 @@ class RealtimeContentTrigger:
         self.generation_history = "data/generation_history"
         self.monitoring_active = False
         
+        # Load v2 configuration
+        self.v2_config = self._load_v2_config()
+        
         # 创建必要目录
         os.makedirs(self.data_dir, exist_ok=True)
         os.makedirs(self.generation_history, exist_ok=True)
         
-        # 触发条件配置
+        # 触发条件配置 - 与v2配置整合
         self.trigger_thresholds = {
+            'min_opportunity_score': self.v2_config['thresholds']['opportunity'],  # v2机会评分优先
             'min_trend_score': 0.75,        # 最低趋势评分
             'min_commercial_value': 0.70,    # 最低商业价值
-            'min_urgency_score': 0.80,       # 最低紧急度
-            'min_search_volume': 10000,      # 最低搜索量
+            'min_urgency_score': self.v2_config['thresholds']['urgency'],  # 来自v2配置
+            'min_search_volume': self.v2_config['thresholds']['search_volume'],  # 来自v2配置
             'max_competition_level': 'Medium-High'  # 最高竞争度
         }
         
@@ -55,6 +69,37 @@ class RealtimeContentTrigger:
         # Telegram配置
         self.telegram_token = os.getenv('TELEGRAM_BOT_TOKEN')
         self.telegram_chat_id = os.getenv('TELEGRAM_CHAT_ID')
+    
+    def _load_v2_config(self) -> Dict:
+        """Load Keyword Engine v2 configuration from YAML file"""
+        config_path = "keyword_engine.yml"
+        default_config = {
+            "window_recent_ratio": 0.3,
+            "thresholds": {"opportunity": 70, "search_volume": 10000, "urgency": 0.8},
+            "weights": {"T": 0.35, "I": 0.30, "S": 0.15, "F": 0.20, "D_penalty": 0.6},
+            "adsense": {"ctr_serp": 0.25, "click_share_rank": 0.35, "rpm_usd": 10},
+            "amazon": {"ctr_to_amazon": 0.12, "cr": 0.04, "aov_usd": 80, "commission": 0.03},
+            "mode": "max"
+        }
+        
+        try:
+            if os.path.exists(config_path):
+                with open(config_path, 'r', encoding='utf-8') as f:
+                    config = yaml.safe_load(f)
+                    # Merge with defaults
+                    for key, value in default_config.items():
+                        if key not in config:
+                            config[key] = value
+                        elif isinstance(value, dict):
+                            for subkey, subvalue in value.items():
+                                if subkey not in config[key]:
+                                    config[key][subkey] = subvalue
+                    return config
+        except Exception as e:
+            if hasattr(self, 'logger'):
+                self.logger.warning(f"Could not load v2 config: {e}, using defaults")
+        
+        return default_config
         
     def _setup_logging(self) -> logging.Logger:
         """设置日志系统"""
@@ -383,28 +428,52 @@ class RealtimeContentTrigger:
         return summary
     
     def _analyze_why_not_triggered(self, topic: TrendingTopic) -> str:
-        """分析为什么话题未被触发"""
+        """分析为什么话题未被触发 - v2增强版本"""
         reasons = []
+        gaps = []  # 记录与阈值的具体差距
         
+        # 优先检查opportunity_score (如果话题有这个字段)
+        if hasattr(topic, 'opportunity_score') and topic.opportunity_score is not None:
+            min_opp = self.trigger_thresholds['min_opportunity_score']
+            if topic.opportunity_score < min_opp:
+                gap = min_opp - topic.opportunity_score
+                reasons.append(f"机会评分不足 ({topic.opportunity_score:.1f}/100)")
+                gaps.append(f"opportunity_score gap: {gap:.1f}")
+        
+        # 传统检查项
         if topic.trend_score < self.trigger_thresholds['min_trend_score']:
+            gap = self.trigger_thresholds['min_trend_score'] - topic.trend_score
             reasons.append(f"趋势评分过低 ({topic.trend_score:.2f})")
+            gaps.append(f"trend_score gap: {gap:.2f}")
         
         if topic.commercial_value < self.trigger_thresholds['min_commercial_value']:
+            gap = self.trigger_thresholds['min_commercial_value'] - topic.commercial_value
             reasons.append(f"商业价值不足 ({topic.commercial_value:.2f})")
+            gaps.append(f"commercial_value gap: {gap:.2f}")
         
         if topic.urgency_score < self.trigger_thresholds['min_urgency_score']:
+            gap = self.trigger_thresholds['min_urgency_score'] - topic.urgency_score
             reasons.append(f"紧急度不够 ({topic.urgency_score:.2f})")
+            gaps.append(f"urgency_score gap: {gap:.2f}")
         
         if topic.search_volume_est < self.trigger_thresholds['min_search_volume']:
+            gap = self.trigger_thresholds['min_search_volume'] - topic.search_volume_est
             reasons.append(f"搜索量偏低 ({topic.search_volume_est:,})")
+            gaps.append(f"search_volume gap: {gap:,}")
         
         if not self._check_competition_level(topic.competition_level):
             reasons.append(f"竞争过于激烈 ({topic.competition_level})")
+            gaps.append("competition_level: too high")
         
         if self._check_recent_generation(topic.keyword):
             reasons.append("最近已生成相似内容")
+            gaps.append("recent_generation: within cooldown")
         
-        return "; ".join(reasons) if reasons else "未知原因"
+        # 返回结合原因和差距的详细分析
+        main_reason = "; ".join(reasons) if reasons else "未知原因"
+        gap_details = " | ".join(gaps) if gaps else ""
+        
+        return f"{main_reason} [{gap_details}]" if gap_details else main_reason
     
     async def _send_trigger_notification(self, summary: Dict):
         """发送Telegram触发通知"""

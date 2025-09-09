@@ -26,6 +26,25 @@ import logging
 from dataclasses import dataclass, asdict
 import pytz
 import random
+import yaml
+
+# Import v2 scoring functions
+try:
+    sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'keyword_tools'))
+    from scoring import opportunity_score, estimate_value, estimate_adsense, estimate_amazon, make_revenue_range
+except ImportError:
+    # Fallback implementation
+    def estimate_value(search_volume, opp, ads_params=None, aff_params=None, mode='max'):
+        ads_params = ads_params or {"ctr_serp":0.25, "click_share_rank":0.35, "rpm_usd":10}
+        aff_params = aff_params or {"ctr_to_amazon":0.12, "cr":0.04, "aov_usd":80, "commission":0.03}
+        pv = search_volume * ads_params["ctr_serp"] * ads_params["click_share_rank"]
+        ra = (pv/1000.0) * ads_params["rpm_usd"]
+        rf = (search_volume*aff_params["ctr_to_amazon"])*aff_params["cr"]*aff_params["aov_usd"]*aff_params["commission"]
+        base = max(ra, rf)
+        return base * (0.6 + 0.4*opp/100.0)
+    
+    def make_revenue_range(v):
+        return {"point": v, "range": f"${v*0.75:.0f}–${v*1.25:.0f}/mo"}
 
 # 解决Windows编码问题
 if sys.platform == "win32":
@@ -77,6 +96,9 @@ class RealtimeTrendingAnalyzer:
         self.data_dir = "data/realtime_trends"
         self.cache_dir = "data/trend_cache"
         self.trends_history = "data/trends_history"
+        
+        # Load v2 configuration
+        self.v2_config = self._load_v2_config()
         
         # 创建必要的目录
         for directory in [self.data_dir, self.cache_dir, self.trends_history]:
@@ -132,6 +154,36 @@ class RealtimeTrendingAnalyzer:
             'rising': 0.8
         }
         
+    def _load_v2_config(self) -> Dict:
+        """Load Keyword Engine v2 configuration from YAML file"""
+        config_path = "keyword_engine.yml"
+        default_config = {
+            "window_recent_ratio": 0.3,
+            "thresholds": {"opportunity": 70, "search_volume": 10000, "urgency": 0.8},
+            "weights": {"T": 0.35, "I": 0.30, "S": 0.15, "F": 0.20, "D_penalty": 0.6},
+            "adsense": {"ctr_serp": 0.25, "click_share_rank": 0.35, "rpm_usd": 10},
+            "amazon": {"ctr_to_amazon": 0.12, "cr": 0.04, "aov_usd": 80, "commission": 0.03},
+            "mode": "max"
+        }
+        
+        try:
+            if os.path.exists(config_path):
+                with open(config_path, 'r', encoding='utf-8') as f:
+                    config = yaml.safe_load(f)
+                    # Merge with defaults
+                    for key, value in default_config.items():
+                        if key not in config:
+                            config[key] = value
+                        elif isinstance(value, dict):
+                            for subkey, subvalue in value.items():
+                                if subkey not in config[key]:
+                                    config[key][subkey] = subvalue
+                    return config
+        except Exception as e:
+            self.logger.warning(f"Could not load v2 config: {e}, using defaults")
+        
+        return default_config
+
     def _setup_logging(self) -> logging.Logger:
         """设置日志系统"""
         logging.basicConfig(
@@ -483,18 +535,43 @@ class RealtimeTrendingAnalyzer:
             return "In-depth product analysis with real-world testing and recommendations"
     
     def _estimate_revenue_potential(self, trend_data: Dict) -> str:
-        """估算收益潜力"""
-        volume = trend_data['volume']
-        competition = trend_data['competition']
+        """估算收益潜力 - 使用v2精确模型"""
+        volume = trend_data.get('volume', 0)
+        competition = trend_data.get('competition', 'Medium')
         
-        if volume > 20000 and competition == 'Low':
-            return "$500-1000/month"
-        elif volume > 15000 and competition == 'Medium':
-            return "$300-600/month"
-        elif volume > 10000:
-            return "$200-400/month"
-        else:
-            return "$100-250/month"
+        # Calculate difficulty score from competition level
+        difficulty_map = {'Low': 0.2, 'Medium': 0.5, 'High': 0.8}
+        difficulty = difficulty_map.get(competition, 0.5)
+        
+        # Estimate basic opportunity score for revenue calculation
+        # For trending analysis, assume moderate values for other factors
+        estimated_opp_score = 100 * (1 - 0.6 * difficulty)  # Simplified calculation
+        
+        try:
+            # Use v2 precise revenue estimation
+            est_value = estimate_value(
+                search_volume=volume,
+                opp_score=estimated_opp_score,
+                ads_params=self.v2_config['adsense'],
+                aff_params=self.v2_config['amazon'],
+                mode=self.v2_config['mode']
+            )
+            
+            # Generate human-friendly range
+            revenue_range = make_revenue_range(est_value)
+            return revenue_range['range']
+            
+        except Exception as e:
+            self.logger.warning(f"v2 revenue calculation failed: {e}, using fallback")
+            # Fallback to original logic
+            if volume > 20000 and competition == 'Low':
+                return "$500-1000/month"
+            elif volume > 15000 and competition == 'Medium':
+                return "$300-600/month"
+            elif volume > 10000:
+                return "$200-400/month"
+            else:
+                return "$100-250/month"
     
     def _extract_keyword_from_title(self, title: str) -> str:
         """从标题中提取关键词"""

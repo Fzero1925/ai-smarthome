@@ -560,6 +560,8 @@ class AntiAIContentGenerator:
             content_sections[section_key] = self._apply_humanization(
                 content_sections[section_key]
             )
+            # Apply v2 compliance sanitization
+            content_sections[section_key] = sanitize_claims(content_sections[section_key])
         
         # Combine all sections
         full_content = self._combine_sections(content_sections, structure)
@@ -1498,6 +1500,59 @@ class AntiAIContentGenerator:
             syllable_count -= 1
         
         return max(1, syllable_count)  # At least 1 syllable per word
+
+    
+# === Keyword Engine v2 content compliance additions ===
+HANDS_ON_LANGUAGE = False  # default off: we do not claim hands-on testing
+
+BANNED_PHRASES = [
+    "we tested for 30 days",
+    "our lab results show",
+    "hands-on review",
+    "we personally tested",
+    "we bought and tested",
+    "after weeks of testing",
+    "extensive real-world testing",
+    "we physically tested",
+    "through rigorous testing"
+]
+
+def sanitize_claims(s: str) -> str:
+    """Remove or replace potentially misleading testing claims"""
+    if not s: 
+        return s
+    
+    out = s
+    
+    # Remove banned phrases entirely
+    for phrase in BANNED_PHRASES:
+        out = out.replace(phrase, "")
+        out = out.replace(phrase.capitalize(), "")
+    
+    if not HANDS_ON_LANGUAGE:
+        # Replace testing claims with research-based language
+        replacements = [
+            ("we tested", "we analyzed specs and credible reports"),
+            ("We tested", "We analyzed specs and credible reports"),
+            ("hands-on", "research-based"),
+            ("Hands-on", "Research-based"),
+            ("real-world testing", "specification analysis"),
+            ("lab testing", "technical specification review"),
+            ("testing process", "research methodology"),
+            ("test results", "analysis findings"),
+            ("our testing", "our research"),
+            ("Our testing", "Our research")
+        ]
+        
+        for old, new in replacements:
+            out = out.replace(old, new)
+    
+    # Clean up any double spaces or awkward phrasing
+    out = out.replace("  ", " ")
+    out = out.replace(" .", ".")
+    out = out.replace(" ,", ",")
+    
+    return out.strip()
 
 
 # Example usage and testing
