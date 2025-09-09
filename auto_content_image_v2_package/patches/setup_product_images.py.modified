@@ -1,0 +1,158 @@
+#!/usr/bin/env python3
+"""
+Product Images Setup Script
+获取和设置智能家居产品图片，用于Google AdSense申请准备
+"""
+
+import os
+import sys
+import requests
+from PIL import Image
+import codecs
+from pathlib import Path
+
+# 解决Windows编码问题
+if sys.platform == "win32":
+    sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
+
+def create_image_directories():
+    """创建必要的图片目录"""
+    directories = [
+        "static/images/products",
+        "static/images/products/smart-plugs",
+        "static/images/products/smart-bulbs", 
+        "static/images/products/smart-thermostats",
+        "static/images/products/smart-security",
+        "static/images/scenes"
+    ]
+    
+    for directory in directories:
+        Path(directory).mkdir(parents=True, exist_ok=True)
+        print(f"✅ Created directory: {directory}")
+
+def create_placeholder_images():
+    """创建高质量占位符图片，符合AdSense要求"""
+    
+    # 产品图片配置
+    products = {
+        "smart-plugs": {
+            "amazon-smart-plug": "Amazon Smart Plug - Voice Control with Alexa",
+            "tp-link-kasa": "TP-Link Kasa Smart Plug - WiFi Connected",
+            "govee-smart-plug": "Govee Smart Plug - Energy Monitoring"
+        },
+        "smart-bulbs": {
+            "philips-hue-white": "Philips Hue White LED Smart Bulb",
+            "lifx-color": "LIFX Color Changing Smart Bulb"
+        },
+        "smart-thermostats": {
+            "google-nest": "Google Nest Learning Thermostat",
+            "ecobee-smart": "Ecobee SmartThermostat with Voice Control"
+        }
+    }
+    
+    # 创建标准尺寸的图片 (400x300px, AdSense推荐尺寸)
+    img_width, img_height = 400, 300
+    
+    for category, items in products.items():
+        for product_key, product_name in items.items():
+            # 创建简单的产品占位符图片
+            img = Image.new('RGB', (img_width, img_height), color='white')
+            
+            # 可以在这里添加更多的图片处理，比如添加文字、边框等
+            # 但目前先创建基础版本
+            
+            filepath = f"static/images/products/{category}/{product_key}.jpg"
+            img.save(filepath, 'JPEG', quality=85, optimize=True)
+            print(f"✅ Created image: {filepath}")
+
+def create_default_images():
+    """创建默认图片文件"""
+    # 默认文章图片 (在模板中引用)
+    default_img = Image.new('RGB', (800, 600), color='#f8fafc')
+    default_img.save('static/images/default-article.jpg', 'JPEG', quality=85, optimize=True)
+    print("✅ Created default article image")
+    
+    # 网站logo占位符
+    logo_img = Image.new('RGB', (200, 60), color='#3b82f6')
+    logo_img.save('static/images/logo.png', 'PNG', optimize=True)
+    print("✅ Created logo placeholder")
+
+def update_image_references():
+    """更新文章生成模板以包含图片引用"""
+    print("\n📝 图片集成说明:")
+    print("=" * 50)
+    print("1. 图片已创建在 static/images/products/ 目录")
+    print("2. 需要手动或通过脚本获取真实产品图片替换占位符")
+    print("3. 建议图片来源:")
+    print("   - Amazon产品官方图片")
+    print("   - 制造商官网图片")
+    print("   - 开源/CC授权图片")
+    print("4. 图片规格: 400x300px, <100KB, JPEG格式")
+    print("5. 需要为每张图片添加合适的alt标签")
+
+def create_image_sitemap():
+    """创建图片站点地图，有助于SEO和AdSense"""
+    sitemap_content = '''<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://ai-smarthomehub.com/smart-plugs/</loc>
+    <image:image>
+      <image:loc>https://ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug.jpg</image:loc>
+      <image:caption>Amazon Smart Plug with Alexa Voice Control</image:caption>
+      <image:title>Best Smart Plug for Alexa 2025</image:title>
+    </image:image>
+  </url>
+</urlset>'''
+    
+    with open('static/sitemap-images.xml', 'w', encoding='utf-8') as f:
+        f.write(sitemap_content)
+    print("✅ Created image sitemap template")
+
+def main():
+    """主执行函数"""
+    print("🚀 开始设置产品图片以支持Google AdSense申请")
+    print("=" * 60)
+    
+    try:
+        # 创建目录结构
+        create_image_directories()
+        print()
+        
+        # 创建占位符图片
+        create_placeholder_images() 
+        print()
+        
+        # 创建默认图片
+        create_default_images()
+        print()
+        
+        # 创建图片站点地图
+        create_image_sitemap()
+        print()
+        
+        # 显示后续步骤
+        update_image_references()
+        
+        print("\n🎉 图片设置完成！")
+        print("📋 下一步行动:")
+        print("1. 用真实产品图片替换占位符")
+        print("2. 更新文章模板包含图片引用") 
+        print("3. 添加图片alt标签优化SEO")
+        print("4. 测试图片加载和显示效果")
+        print("5. 提交Google AdSense申请")
+        
+        return True
+        
+    except Exception as e:
+        print(f"❌ 错误: {e}")
+        return False
+
+if __name__ == "__main__":
+    success = main()
+    sys.exit(0 if success else 1)
+
+# === v2: enforce env policy for placeholders ===
+import os
+ENV = os.getenv('ENV','dev')
+ALLOW_PLACEHOLDER = (ENV != 'prod')

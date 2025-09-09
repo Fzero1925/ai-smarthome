@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Daily Content Generation Script - v2 Enhanced
-Integrated with Smart Image Manager and Keyword Engine v2
+Daily Content Generation Script
+Simplified version extracted from complex workflow
 """
 
 import json
@@ -12,83 +12,15 @@ import codecs
 from datetime import datetime
 from pathlib import Path
 
-# Add project root to path for smart image manager import
-project_root = Path(__file__).parent.parent
-sys.path.append(str(project_root))
-
-try:
-    from smart_image_manager import search_and_assign
-    SMART_IMAGES_AVAILABLE = True
-    print("✅ Smart Image Manager loaded successfully")
-except ImportError as e:
-    SMART_IMAGES_AVAILABLE = False
-    print(f"⚠️ Smart Image Manager not available: {e}")
-
 # 解决Windows编码问题
 if sys.platform == "win32":
     sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
 
 def get_product_images(keyword, category):
-    """智能获取与关键词相关的产品图片路径，优先使用Smart Image Manager，失败时回退到静态映射"""
-    
-    # Step 1: 优先尝试使用Smart Image Manager进行智能配图
-    if SMART_IMAGES_AVAILABLE:
-        try:
-            print(f"🖼️ Attempting smart image assignment for: {keyword} (category: {category})")
-            
-            # 定义图片需求 (hero:1, inline:2-3)
-            image_needs = {
-                'hero': 1,      # 主要展示图
-                'inline': 3,    # 文章内嵌图片
-                'comparison': 1, # 对比图
-                'installation': 1 # 安装/使用图
-            }
-            
-            # 调用智能图片管理器
-            smart_results = search_and_assign(
-                keyword=keyword, 
-                category=category, 
-                needs=image_needs,
-                why_selected={'keyword': keyword, 'category': category}
-            )
-            
-            if smart_results and smart_results.get('success'):
-                assigned_images = smart_results.get('assigned_images', {})
-                print(f"✅ Smart image assignment successful: {len(assigned_images)} images assigned")
-                
-                # 转换格式以匹配现有系统
-                smart_image_dict = {}
-                if 'hero' in assigned_images and assigned_images['hero']:
-                    smart_image_dict['hero_image'] = assigned_images['hero'][0]['url']
-                    smart_image_dict['hero_image_alt'] = assigned_images['hero'][0]['alt']
-                
-                if 'inline' in assigned_images and assigned_images['inline']:
-                    for i, img in enumerate(assigned_images['inline'][:3], 1):
-                        smart_image_dict[f'product_{i}'] = img['url']
-                        smart_image_dict[f'product_{i}_alt'] = img['alt']
-                
-                if 'comparison' in assigned_images and assigned_images['comparison']:
-                    smart_image_dict['comparison'] = assigned_images['comparison'][0]['url']
-                    smart_image_dict['comparison_alt'] = assigned_images['comparison'][0]['alt']
-                
-                if 'installation' in assigned_images and assigned_images['installation']:
-                    smart_image_dict['installation'] = assigned_images['installation'][0]['url']
-                    smart_image_dict['installation_alt'] = assigned_images['installation'][0]['alt']
-                
-                # 如果智能配图成功且有足够图片，直接返回
-                if len(smart_image_dict) >= 4:  # 至少有hero + 3个其他图片
-                    return smart_image_dict
-                else:
-                    print(f"⚠️ Smart assignment returned insufficient images ({len(smart_image_dict)}), falling back to static mapping")
-            
-        except Exception as e:
-            print(f"⚠️ Smart Image Manager failed: {e}, falling back to static mapping")
-    
-    # Step 2: 回退到静态图片映射系统
-    print(f"📁 Using fallback static image mapping for: {keyword}")
+    """智能获取与关键词相关的产品图片路径，支持完整的产品数据库映射"""
     base_url = "/images/products/"
     
-    # 扩展的产品图片映射 - 基于真实Amazon产品 (保留原有逻辑)
+    # 扩展的产品图片映射 - 基于真实Amazon产品
     comprehensive_image_mapping = {
         # Smart Plugs类别
         "smart plug": {

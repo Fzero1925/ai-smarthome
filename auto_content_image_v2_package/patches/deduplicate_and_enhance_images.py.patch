@@ -1,0 +1,23 @@
+--- /mnt/data/deduplicate_and_enhance_images.py+++ /mnt/data/deduplicate_and_enhance_images.py (modified)@@ -343,4 +343,23 @@     elif changes_count == 0:
+         print(f"\n✅ 图片配置完美，无需修改！")
+     
+-    print(f"\n🎉 图片去重和增强分析完成！")+    print(f"\n🎉 图片去重和增强分析完成！")
++
++# === v2: global dedupe by content hash (non-invasive helper) ===
++import hashlib
++from pathlib import Path
++
++def _content_hash(p: Path):
++    try:
++        return hashlib.sha1(p.read_bytes()).hexdigest()
++    except Exception:
++        return None
++
++def list_duplicates(image_root='static/images'):
++    seen = {}; dups = []
++    for p in Path(image_root).rglob('*.webp'):
++        h = _content_hash(p)
++        if not h: continue
++        if h in seen: dups.append((p, seen[h]))
++        else: seen[h] = p
++    return dups

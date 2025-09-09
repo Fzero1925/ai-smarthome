@@ -1,0 +1,9 @@
+--- /mnt/data/image_config.py+++ /mnt/data/image_config.py (modified)@@ -152,4 +152,9 @@ 
+ 
+ if __name__ == "__main__":
+-    main()+    main()
++
++# === v2: enforce env policy for placeholders ===
++import os
++ENV = os.getenv('ENV','dev')
++ALLOW_PLACEHOLDER = (ENV != 'prod')

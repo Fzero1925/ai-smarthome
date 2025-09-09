@@ -1,0 +1,216 @@
+# Image Configuration for AI Smart Home Hub
+# Version: 2.0 Enhanced
+# Last Updated: 2025-09-09
+
+# Environment settings
+environment: "production"  # production | development
+debug_mode: false
+
+# Base URLs for different environments
+base_urls:
+  production: "https://www.ai-smarthomehub.com"
+  development: "http://localhost:1313"
+  staging: "https://staging-ai-smarthomehub.vercel.app"
+
+# Image quality standards
+quality:
+  min_width: 800
+  min_height: 600
+  max_width: 1920
+  max_height: 1080
+  min_file_size: 50000  # 50KB minimum
+  max_file_size: 2000000  # 2MB maximum
+  max_usage_count: 3  # Maximum times an image can be reused
+  quality_threshold: 0.6  # Minimum quality score (0-1)
+  preferred_formats: ["webp", "jpg", "png"]
+  compression_quality: 92  # WebP compression quality
+
+# Image requirements per article
+requirements:
+  min_images_per_article: 3
+  require_featured_image: true
+  require_hero_image: true
+  min_inline_images: 2
+  max_inline_images: 6
+
+# SEO optimization settings
+seo:
+  banned_alt_words:
+    - "best"
+    - "2025"
+    - "cheap"
+    - "lowest price"
+    - "amazing"
+    - "incredible"
+    - "unbeatable"
+  max_alt_length: 125
+  min_alt_length: 15
+  require_credit: true
+  require_caption: true
+  require_license_info: true
+  alt_templates:
+    hero: "{category} overview and compatibility guide for smart home automation"
+    inline: "{keyword} key features and installation guide"
+    comparison: "{category} comparison chart and specifications"
+    installation: "{keyword} setup and installation process"
+
+# Fallback image generation
+fallback:
+  enable_infographics: true
+  default_size: [1280, 720]
+  background_color: [255, 255, 255]  # White background
+  text_color: [0, 0, 0]  # Black text
+  font_size_large: 64
+  font_size_medium: 48
+  font_size_small: 36
+  margin: 60
+  line_spacing: 48
+  max_lines: 8
+  chars_per_line: 70
+
+# Category standardization (all hyphenated)
+categories:
+  smart_plugs: "smart-plugs"
+  smart_bulbs: "smart-bulbs"
+  security_cameras: "security-cameras"
+  robot_vacuums: "robot-vacuums"
+  smart_thermostats: "smart-thermostats"
+  smart_speakers: "smart-speakers"
+  smart_security: "smart-security"
+  smart_lighting: "smart-lighting"
+  smart_climate: "smart-climate"
+  general_smart_home: "general"
+
+# Semantic scoring weights
+scoring:
+  keyword_match_weight: 0.4
+  category_match_weight: 0.3
+  scene_relevance_weight: 0.2
+  quality_bonus_weight: 0.1
+  usage_penalty_factor: 0.5
+  max_usage_penalty: 2.0
+
+# Image scene classifications
+scenes:
+  installation: 1.0
+  energy: 0.9
+  compatibility: 0.8
+  voice_control: 0.7
+  app_interface: 0.6
+  comparison: 0.5
+  generic: 0.3
+
+# External API configuration (placeholder - actual keys should be in environment)
+apis:
+  unsplash:
+    enabled: true
+    api_key: "${UNSPLASH_API_KEY}"
+    rate_limit: 50  # requests per hour
+    search_per_page: 20
+    image_size: "regular"  # thumb, small, regular, full, raw
+  
+  pexels:
+    enabled: true
+    api_key: "${PEXELS_API_KEY}"
+    rate_limit: 200  # requests per hour
+    search_per_page: 20
+    image_size: "medium"  # large2x, large, medium, small, portrait, landscape, tiny
+  
+  pixabay:
+    enabled: true
+    api_key: "${PIXABAY_API_KEY}"
+    rate_limit: 5000  # requests per hour
+    search_per_page: 20
+    image_size: "webformatURL"  # webformatURL, largeImageURL, fullHDURL
+
+# Cache settings
+cache:
+  enable_local_cache: true
+  cache_duration_days: 30
+  max_cache_size_mb: 500
+  cleanup_interval_hours: 24
+  cache_directory: "data/image_cache"
+
+# Compliance and legal
+compliance:
+  require_license_check: true
+  allowed_licenses:
+    - "CC0"
+    - "CC BY 4.0"
+    - "Pixabay License"
+    - "Pexels License"
+    - "Custom Commercial"
+  default_credit: "AI Smart Home Hub"
+  default_license: "CC BY 4.0"
+  require_source_attribution: true
+
+# Quality check rules
+quality_rules:
+  min_images: 3
+  require_featured: true
+  ban_words_in_alt: true
+  min_internal_links: 3
+  min_external_links: 2
+  require_disclosure: true
+  require_schema: true
+  require_author_and_date: true
+  max_duplicate_usage: 3
+  min_image_relevance_score: 0.6
+
+# File naming and organization
+file_organization:
+  use_content_hash: true
+  hash_length: 8
+  include_dimensions: true
+  filename_template: "{hash}_{width}x{height}.{ext}"
+  directory_structure: "static/images/{category}/{filename}"
+
+# Sitemap configuration
+sitemap:
+  generate_image_sitemap: true
+  sitemap_file: "static/sitemap-images.xml"
+  include_in_robots: true
+  min_quality_for_sitemap: 0.6
+  exclude_infographics: false
+  update_main_sitemap: true
+
+# Development mode settings
+development:
+  allow_placeholder_images: true
+  placeholder_service: "https://via.placeholder.com"
+  placeholder_template: "{width}x{height}/cccccc/ffffff?text={category}"
+  disable_api_calls: false
+  verbose_logging: true
+  save_debug_info: true
+
+# Production mode restrictions
+production:
+  strict_quality_check: true
+  fail_on_missing_images: true
+  require_all_metadata: true
+  enable_image_optimization: true
+  compress_images: true
+  generate_webp_versions: true
+  generate_srcset: true
+
+# Monitoring and analytics
+monitoring:
+  track_usage_stats: true
+  log_api_usage: true
+  monitor_cache_hit_rate: true
+  alert_on_api_limits: true
+  daily_usage_reports: false
+
+# Responsive image sizes for srcset generation
+responsive_sizes:
+  small: 640
+  medium: 960
+  large: 1280
+  xlarge: 1920
+
+# CDN configuration (optional)
+cdn:
+  enabled: false
+  base_url: ""
+  cache_control: "public, max-age=31536000"  # 1 year
+  optimize_images: true

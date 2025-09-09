@@ -1,0 +1,24 @@
+--- /mnt/data/image_manager.py+++ /mnt/data/image_manager.py (modified)@@ -499,4 +499,24 @@ 
+ 
+ if __name__ == "__main__":
+-    asyncio.run(main())+    asyncio.run(main())
++
++# === v2: ranking + search_and_assign facade ===
++def rank_images(candidates, keyword, category, why_selected=None):
++    tokens = set((keyword or '').lower().split()) | set((category or '').lower().split())
++    intent = ((why_selected or {}).get('intent') or '').lower().split()
++    tokens |= set(intent)
++    def score(item):
++        alt = (item.get('alt') or '').lower().split()
++        url = item.get('url','')
++        overlap = len(tokens & set(alt))
++        usage = item.get('used', 0)
++        return overlap - 0.5*usage
++    return sorted(candidates, key=score, reverse=True)
++
++def search_and_assign(keyword, category, needs=None, why_selected=None):
++    try:
++        from smart_image_manager import search_and_assign as _impl
++        return _impl(keyword, category, needs, why_selected)
++    except Exception:
++        return {'hero': None, 'inline': []}

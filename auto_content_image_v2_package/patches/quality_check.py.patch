@@ -1,0 +1,18 @@
+--- /mnt/data/quality_check.py+++ /mnt/data/quality_check.py (modified)@@ -134,4 +134,18 @@ 
+ if __name__ == "__main__":
+     success = main()
+-    sys.exit(0 if success else 1)+    sys.exit(0 if success else 1)
++
++# === v2: enhanced quality gate (load external rules) ===
++import json
++from pathlib import Path
++
++def load_quality_rules(path='templates/quality_rules.json'):
++    p = Path(path)
++    if not p.exists():
++        return {
++            "min_images":3,"require_featured":True,"ban_words_in_alt":["best","2025","cheap","lowest price"],
++            "min_internal_links":3,"min_external_links":2,"require_disclosure":True,
++            "require_schema":True,"require_author_and_date":True
++        }
++    return json.loads(p.read_text(encoding='utf-8'))

@@ -1,0 +1,16 @@
+--- /mnt/data/generate_daily_content.py+++ /mnt/data/generate_daily_content.py (modified)@@ -1107,4 +1107,16 @@ 
+ if __name__ == "__main__":
+     success = main()
+-    sys.exit(0 if success else 1)+    sys.exit(0 if success else 1)
++
++# === v2: integrate SmartImageManager (non-invasive) ===
++try:
++    from smart_image_manager import search_and_assign as _ke2_assign_images
++except Exception:
++    _ke2_assign_images = None
++
++def get_images_v2(keyword, category, why_selected=None):
++    """Return {'hero':{...}, 'inline':[...]} or None if manager not available."""
++    if _ke2_assign_images is None:
++        return None
++    return _ke2_assign_images(keyword, category, needs={'hero':1,'inline':2}, why_selected=why_selected)
