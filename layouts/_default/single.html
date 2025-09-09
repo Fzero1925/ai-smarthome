@@ -1,7 +1,7 @@
 {{ define "main" }}
 <!-- SEO Enhancements: Structured data is now handled in baseof.html for better performance -->
 
-{{ if .Params.product_review }}
+{{ if and .Params.product_review .Site.Params.content.reviews.rating_system }}
 <!-- Product Review Structured Data -->
 <script type="application/ld+json">
 {
@@ -15,38 +15,9 @@
     "brand": {
       "@type": "Brand",
       "name": "{{ .Params.product_review.brand }}"
-    },
-    {{ if .Params.product_review.model }}
-    "model": "{{ .Params.product_review.model }}",
-    {{ end }}
-    {{ if .Params.product_review.sku }}
-    "sku": "{{ .Params.product_review.sku }}",
-    {{ end }}
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": {{ .Params.product_review.rating }},
-      "ratingCount": {{ .Params.product_review.review_count | default 25 }},
-      "bestRating": 5,
-      "worstRating": 1
-    },
-    {{ if .Params.product_review.price }}
-    "offers": {
-      "@type": "Offer",
-      "price": "{{ .Params.product_review.price }}",
-      "priceCurrency": "USD",
-      "availability": "https://schema.org/InStock",
-      "seller": {
-        "@type": "Organization",
-        "name": "Amazon"
-      }
-    }
-    {{ end }}
-  },
-  "reviewRating": {
-    "@type": "Rating",
-    "ratingValue": {{ .Params.product_review.rating }},
-    "bestRating": 5,
-    "worstRating": 1
+    }{{ if .Params.product_review.model }},
+    "model": "{{ .Params.product_review.model }}"{{ end }}{{ if .Params.product_review.sku }},
+    "sku": "{{ .Params.product_review.sku }}"{{ end }}
   },
   "name": "{{ .Title }}",
   "author": {
@@ -208,7 +179,7 @@
         {{ end }}
         
         <!-- Review Rating Display -->
-        {{ if .Params.review_rating }}
+        {{ if and .Params.review_rating .Site.Params.content.reviews.rating_system }}
         <div class="review-rating">
           <i class="fa fa-star"></i> {{ .Params.review_rating }}/5
           {{ if .Params.review_count }}({{ .Params.review_count }} reviews){{ end }}
@@ -253,7 +224,7 @@
           <i class="fa fa-file-text"></i>
           <span>{{ .WordCount }} words</span>
         </div>
-        {{ if .Params.review_rating }}
+        {{ if and .Params.review_rating .Site.Params.content.reviews.rating_system }}
         <div class="stat-item">
           <i class="fa fa-star"></i>
           <span>{{ .Params.review_rating }}/5 rating</span>

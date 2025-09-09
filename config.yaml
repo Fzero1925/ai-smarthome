@@ -97,7 +97,7 @@ params:
       
     # Review system
     reviews:
-      rating_system: true
+      rating_system: false
       pros_cons: true
       verdict: true
       

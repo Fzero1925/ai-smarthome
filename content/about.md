@@ -20,7 +20,7 @@ We believe that smart home technology should simplify your life, not complicate 
 ## What We Do
 
 ### Expert Product Reviews
-We conduct thorough, hands-on testing of smart home devices across all major categories:
+We conduct thorough, research-based analysis of smart home devices across all major categories:
 - **Smart Plugs & Outlets**: Control any device remotely
 - **Smart Speakers & Voice Assistants**: Command your home with your voice  
 - **Security Cameras & Doorbells**: Monitor and protect your property
@@ -37,12 +37,14 @@ Our buying guides help you navigate the crowded smart home marketplace by explai
 - Installation and setup requirements
 
 ### Research and Analysis Methodology
-Our product reviews are based on comprehensive research and analysis:
+Our product recommendations are based on comprehensive research and analysis:
 - **Detailed specification analysis** comparing key features and capabilities
 - **User feedback evaluation** from verified purchase reviews and forums
 - **Compatibility research** with popular smart home platforms
 - **Industry standard comparison** to assess product quality and value
 - **Customer support assessment** based on manufacturer policies and user reports
+
+*We do not conduct physical product testing. Our recommendations are based on specification analysis, user feedback patterns, and credible sources.*
 
 ## Our Values
 

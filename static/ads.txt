@@ -1,0 +1,8 @@
+# Google AdSense ads.txt
+# This file will be populated with publisher information after AdSense approval
+
+# Placeholder for Google AdSense publisher entry
+# Format: google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+
+# After approval, replace with actual publisher ID from AdSense dashboard
+# This ensures proper ad serving and revenue attribution
