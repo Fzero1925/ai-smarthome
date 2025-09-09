@@ -28,13 +28,20 @@ from auto_push import GitAutoPusher
 def run_git_command(command: str) -> tuple:
     """执行Git命令"""
     try:
+        # Windows下设置正确的编码环境
+        env = os.environ.copy()
+        if sys.platform == "win32":
+            env['PYTHONIOENCODING'] = 'utf-8'
+            env['LC_ALL'] = 'C.UTF-8'
+        
         result = subprocess.run(
             command,
             shell=True,
             capture_output=True,
             text=True,
             encoding='utf-8',
-            errors='replace'
+            errors='replace',
+            env=env
         )
         
         if result.returncode == 0:
