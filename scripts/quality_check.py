@@ -526,7 +526,7 @@ def main():
     parser.add_argument('--export', help='Export results to JSON file')
     parser.add_argument('--mode', choices=['legacy', 'v2', 'both'], default='v2',
                         help='Quality check mode (default: v2)')
-    parser.add_argument('--min-score', type=float, default=0.8, 
+    parser.add_argument('--min-score', type=float, default=0.9, 
                         help='Minimum quality score threshold (0.0-1.0)')
     parser.add_argument('--fail-fast', action='store_true', help='Stop at first failure')
     

@@ -42,7 +42,7 @@ except Exception:
     logger.warning("PIL not available. Infographic generation will be disabled.")
 
 ROOT = Path(".")
-STATIC_DIR = ROOT / "static" / "images"
+STATIC_DIR = ROOT / "static" / "images" / "products"
 DB_DIR = ROOT / "data"
 DB_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -238,7 +238,7 @@ def _write_image_to_disk(category: str, data: bytes, w: int, h: int) -> str:
     
     try:
         filepath.write_bytes(data)
-        url = f"/images/{category_normalized}/{filename}"
+        url = f"/images/products/{category_normalized}/{filename}"
         logger.info(f"Saved image: {url}")
         return url
     except Exception as e:
@@ -338,8 +338,8 @@ def search_and_assign(keyword: str, category: str, needs: Dict[str, int] = None,
         usage_data = _load_json(USAGE_DB, {})
         quality_data = _load_json(QUALITY_DB, {})
         
-        for image_path in category_folder.glob("*.webp"):
-            url = f"/images/{category_normalized}/{image_path.name}"
+        for image_path in list(category_folder.glob("*.webp")) + list(category_folder.glob("*.jpg")) + list(category_folder.glob("*.png")):
+            url = f"/images/products/{category_normalized}/{image_path.name}"
             
             # Get image metadata
             meta = {

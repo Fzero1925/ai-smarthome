@@ -21,7 +21,7 @@ quality:
   min_file_size: 50000  # 50KB minimum
   max_file_size: 2000000  # 2MB maximum
   max_usage_count: 3  # Maximum times an image can be reused
-  quality_threshold: 0.6  # Minimum quality score (0-1)
+  quality_threshold: 0.4  # Minimum quality score (0-1)
   preferred_formats: ["webp", "jpg", "png"]
   compression_quality: 92  # WebP compression quality
 
