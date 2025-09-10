@@ -1,0 +1,15 @@
+[
+  {
+    "keyword": "smart plug alexa",
+    "category": "smart-plugs",
+    "trend_score": 0.85,
+    "commercial_intent": 0.9,
+    "search_volume": 12000,
+    "difficulty": "Medium",
+    "reason": "High purchase intent and growing market demand",
+    "priority": 1,
+    "quality_level": "premium",
+    "filepath": "content/test5\\smart-plug-alexa-20250910.md",
+    "word_count": 1762
+  }
+]

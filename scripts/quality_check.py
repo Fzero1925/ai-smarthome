@@ -519,7 +519,7 @@ def check_article_quality(filepath):
 def main():
     """Main function with v2 enhanced quality checking"""
     parser = argparse.ArgumentParser(description='Content Quality Check v2 Enhanced')
-    parser.add_argument('directory', help='Directory containing articles to check')
+    parser.add_argument('path', help='Directory containing articles to check or single file path')
     parser.add_argument('--recent-only', action='store_true', help='Only check recently generated files')
     parser.add_argument('--config', help='Path to configuration file')
     parser.add_argument('--detailed', action='store_true', help='Show detailed quality analysis')
@@ -529,6 +529,7 @@ def main():
     parser.add_argument('--min-score', type=float, default=0.9, 
                         help='Minimum quality score threshold (0.0-1.0)')
     parser.add_argument('--fail-fast', action='store_true', help='Stop at first failure')
+    parser.add_argument('--single-file', action='store_true', help='Check single file instead of directory')
     
     args = parser.parse_args()
     
@@ -539,13 +540,20 @@ def main():
     checker = ComprehensiveQualityChecker(config_path=args.config)
     
     # Get files to check
-    if args.recent_only and os.path.exists('generated_files.txt'):
+    if args.single_file:
+        # Single file mode
+        if not os.path.exists(args.path):
+            print(f"❌ File not found: {args.path}")
+            return False
+        files_to_check = [args.path]
+        print(f"📋 Checking single file: {os.path.basename(args.path)}")
+    elif args.recent_only and os.path.exists('generated_files.txt'):
         with open('generated_files.txt', 'r') as f:
             files_to_check = [line.strip() for line in f if line.strip()]
         print(f"📋 Checking {len(files_to_check)} recently generated files")
     else:
-        files_to_check = list(Path(args.directory).glob('*.md'))
-        print(f"📋 Checking all {len(files_to_check)} files in {args.directory}")
+        files_to_check = list(Path(args.path).glob('*.md'))
+        print(f"📋 Checking all {len(files_to_check)} files in {args.path}")
     
     if not files_to_check:
         print("❌ No files found to check")

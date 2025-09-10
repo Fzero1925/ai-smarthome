@@ -1,0 +1,10 @@
+[
+  {
+    "timestamp": "2025-09-10T22:13:25.000556",
+    "keyword": "smart plug alexa",
+    "reason": "修复2次仍未达到90.0%标准",
+    "attempt_count": 2,
+    "quality_score": 0.8,
+    "threshold_required": 0.9
+  }
+]

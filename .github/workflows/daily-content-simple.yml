@@ -70,16 +70,11 @@ jobs:
           article_count="${{ github.event.inputs.article_count || '1' }}"
           echo "target_count=$article_count" >> $GITHUB_OUTPUT
 
-      - name: Generate articles
+      - name: Generate and enforce quality (90% standard)
         run: |
-          python scripts/generate_quality_content_enhanced.py \
+          python scripts/workflow_quality_enforcer.py \
             --count "${{ steps.check_needed.outputs.target_count }}" \
-            --quality-level premium \
-            --output-dir content/articles
-
-      - name: Quality check
-        run: |
-          python scripts/quality_check.py content/articles/
+            --max-attempts 5
 
       - name: Commit new content
         run: |

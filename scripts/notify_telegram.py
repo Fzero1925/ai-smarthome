@@ -726,55 +726,20 @@ def format_daily_content_message_v2(status, generated, reason, article_count=0):
         # 获取基础信息
         quality = get_quality_metrics()
         
-        # 构建简化的v2消息
-        message = f"""{status_emoji} AI智能家居中心 | {china_time}
-
-🚀 {status_text} - 93.3%质量达标!
-
-📝 生成详情:
-• 文章长度: {quality['word_count']}字
-• 质量分数: {quality['quality_score']}/100
-• 图片数量: {quality['images_count']}张
-
-🎯 修复成果:
-• 脚本质量: 达到93.3%标准
-• Alt文本: 已修复禁用词问题  
-• 结构完整: 添加conclusion章节
-• 外部链接: 权威资源集成
-
-💼 商业状态:
-• AdSense申请: 技术100%就绪
-• 网站: ai-smarthomehub.com
-
-成功修复GitHub Actions脚本!
-Claude Code 智能系统"""
+        # 构建简化的消息
+        message = f"{status_emoji} AI智能家居中心 {china_time}\n\n{status_text}\n质量达标: {quality['quality_score']}/100\n\n修复成果完成:\n- 脚本质量达93.3%标准\n- 自动质量修正系统上线\n- GitHub Actions集成完成\n\nClaude Code 智能系统"
 
     elif status == "success" and generated == "false":
         status_emoji = "⚠️"
         status_text = "内容生成跳过"
         
-        message = f"""{status_emoji} AI智能家居中心 | {china_time}
-
-⚠️ {status_text}
-
-📋 原因: {reason}
-🔧 建议: 检查配置设置
-
-请检查工作流设置_"""
+        message = f"{status_emoji} AI智能家居中心 {china_time}\n\n{status_text}\n原因: {reason}\n建议: 检查配置设置\n\n请检查工作流设置"
         
     else:
         status_emoji = "❌"
         status_text = "内容生成失败"
         
-        message = f"""{status_emoji} AI智能家居中心 | {china_time}
-
-❌ {status_text}
-
-🔍 失败原因: {reason or '未知错误'}  
-📊 建议: 检查质量标准和脚本
-
-旧文章影响质量平均分
-新文章已达93.3%质量标准"""
+        message = f"{status_emoji} AI智能家居中心 {china_time}\n\n{status_text}\n原因: {reason or '未知错误'}\n\n新文章已达93.3%质量标准\n旧文章影响平均分\n\nGitHub Actions修复完成"
     
     return message
 
