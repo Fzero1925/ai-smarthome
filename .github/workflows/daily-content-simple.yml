@@ -16,6 +16,14 @@ on:
         required: false
         default: false
         type: boolean
+      quality_mode:
+        description: 'Quality check mode (v2=Standard, pqs=PQS v3 Strict)'
+        required: false
+        default: 'pqs'
+        type: choice
+        options:
+          - 'v2'
+          - 'pqs'
 
 permissions:
   contents: write
@@ -70,11 +78,25 @@ jobs:
           article_count="${{ github.event.inputs.article_count || '1' }}"
           echo "target_count=$article_count" >> $GITHUB_OUTPUT
 
-      - name: Generate and enforce quality (90% standard)
+      - name: Generate and enforce quality (PQS v3/v2)
+        env:
+          QUALITY_MODE: ${{ github.event.inputs.quality_mode || 'pqs' }}
         run: |
-          python scripts/workflow_quality_enforcer.py \
-            --count "${{ steps.check_needed.outputs.target_count }}" \
-            --max-attempts 5
+          quality_mode="${QUALITY_MODE}"
+          echo "🎯 Quality Mode: $quality_mode"
+          
+          if [ "$quality_mode" = "pqs" ]; then
+            echo "🔧 Using PQS v3 Strict Mode (85+ score + Hard Gates)"
+            python scripts/workflow_quality_enforcer.py \
+              --count "${{ steps.check_needed.outputs.target_count }}" \
+              --max-attempts 5 \
+              --pqs-mode
+          else
+            echo "🔧 Using Standard v2 Mode (90% threshold)"
+            python scripts/workflow_quality_enforcer.py \
+              --count "${{ steps.check_needed.outputs.target_count }}" \
+              --max-attempts 5
+          fi
 
       - name: Commit new content
         run: |

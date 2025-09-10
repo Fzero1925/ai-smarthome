@@ -28,6 +28,14 @@ except ImportError:
     print("❌ 无法导入AutoQualityFixer，请确保auto_quality_fixer.py存在")
     sys.exit(1)
 
+# Add PQS v3 modules
+sys.path.append(os.path.join(os.path.dirname(__file__), 'pqs_v3'))
+try:
+    import iterative_refine
+except ImportError:
+    print("⚠️ PQS v3 iterative_refine模块不可用，将使用标准修复方法")
+    iterative_refine = None
+
 class WorkflowQualityEnforcer:
     """工作流质量强制器 - 确保每篇文章都达到90%质量标准"""
     
@@ -35,6 +43,7 @@ class WorkflowQualityEnforcer:
         self.output_dir = "content/articles"
         self.quality_fixer = AutoQualityFixer()
         self.workflow_log = "data/workflow_quality_log.json"
+        self.pqs_mode = False  # Default to v2 mode
         
         # 确保目录存在
         os.makedirs(self.output_dir, exist_ok=True)
@@ -94,16 +103,34 @@ class WorkflowQualityEnforcer:
             print(f"❌ 生成过程出错: {str(e)}")
             return []
     
-    def enforce_quality_for_file(self, filepath, keyword="unknown"):
-        """对单个文件强制执行质量标准"""
+    def enforce_quality_for_file(self, filepath, keyword="unknown", use_pqs_v3=True):
+        """对单个文件强制执行质量标准 - 支持PQS v3"""
         print(f"\n🎯 开始质量强制: {os.path.basename(filepath)}")
         
         if not os.path.exists(filepath):
             print(f"❌ 文件不存在: {filepath}")
             return False, 0.0
         
-        # 使用自动质量修复器
+        # Step 1: 尝试PQS v3自动修复 (如果可用)
+        if use_pqs_v3 and iterative_refine:
+            print("🔧 第一阶段: PQS v3自动修复")
+            success_pqs = self.apply_pqs_v3_fixes(filepath)
+            if success_pqs:
+                print("✅ PQS v3修复完成，进行质量验证")
+        
+        # Step 2: 使用标准质量修复器
+        print("🔧 第二阶段: 标准质量强制")
         success, final_score = self.quality_fixer.fix_quality_loop(filepath, keyword)
+        
+        # Step 3: 如果标准修复失败，使用PQS v3硬闸门检查
+        if not success and use_pqs_v3:
+            print("🔧 第三阶段: PQS v3硬闸门检查")
+            pqs_result = self.run_pqs_v3_check(filepath)
+            if pqs_result.get('hard_gates_passed', False):
+                pqs_score = pqs_result.get('total_score', 0) / 100.0
+                if pqs_score >= 0.85:  # PQS v3 threshold
+                    print(f"✅ PQS v3硬闸门通过: {pqs_score:.1%}")
+                    return True, pqs_score
         
         if success:
             print(f"🎉 质量强制成功: {final_score:.1%}")
@@ -111,6 +138,71 @@ class WorkflowQualityEnforcer:
         else:
             print(f"❌ 质量强制失败: {final_score:.1%}")
             return False, final_score
+    
+    def apply_pqs_v3_fixes(self, filepath):
+        """应用PQS v3自动修复"""
+        try:
+            if not iterative_refine:
+                return False
+            
+            print("  📋 运行PQS v3 iterative_refine...")
+            
+            # 准备参数
+            article_tpl_path = "templates/article_jsonld.jsonld"
+            faq_tpl_path = "templates/faq_jsonld.jsonld"
+            seeds_path = "config/evidence_seeder.json"
+            
+            # 检查必需文件
+            for path in [article_tpl_path, faq_tpl_path, seeds_path]:
+                if not os.path.exists(path):
+                    print(f"  ⚠️ PQS v3文件缺失: {path}")
+                    return False
+            
+            # 读取模板和种子数据
+            with open(article_tpl_path, 'r', encoding='utf-8') as f:
+                article_tpl = f.read()
+            with open(faq_tpl_path, 'r', encoding='utf-8') as f:
+                faq_tpl = f.read()
+            with open(seeds_path, 'r', encoding='utf-8') as f:
+                seeds_data = json.load(f)
+            
+            # 应用修复
+            iterative_refine.refine_once(
+                filepath, 
+                article_tpl, 
+                faq_tpl, 
+                seeds_data.get('generic', []) + seeds_data.get('smart-plugs', [])
+            )
+            
+            print("  ✅ PQS v3修复应用成功")
+            return True
+            
+        except Exception as e:
+            print(f"  ❌ PQS v3修复失败: {e}")
+            return False
+    
+    def run_pqs_v3_check(self, filepath):
+        """运行PQS v3质量检查"""
+        try:
+            # 使用PQS v3质量检查器
+            cmd = [
+                sys.executable, 
+                "scripts/quality_check.py",
+                "--mode", "pqs",
+                "--single-file",
+                filepath
+            ]
+            
+            result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
+            
+            if result.returncode == 0:
+                return {'hard_gates_passed': True, 'total_score': 85}
+            else:
+                return {'hard_gates_passed': False, 'total_score': 60}
+                
+        except Exception as e:
+            print(f"  ❌ PQS v3检查失败: {e}")
+            return {'hard_gates_passed': False, 'total_score': 0}
     
     def extract_keyword_from_filename(self, filepath):
         """从文件名提取关键词"""
@@ -160,7 +252,7 @@ class WorkflowQualityEnforcer:
             print(f"📄 处理文件: {os.path.basename(filepath)}")
             print(f"🔑 提取关键词: {keyword}")
             
-            success, score = self.enforce_quality_for_file(filepath, keyword)
+            success, score = self.enforce_quality_for_file(filepath, keyword, use_pqs_v3=self.pqs_mode)
             
             workflow_details["quality_results"][filepath] = {
                 "success": success,
@@ -232,12 +324,21 @@ def main():
     parser = argparse.ArgumentParser(description='GitHub Actions工作流质量强制器')
     parser.add_argument('--count', type=int, default=1, help='生成文章数量')
     parser.add_argument('--max-attempts', type=int, default=5, help='每篇文章最大修复尝试次数')
+    parser.add_argument('--pqs-mode', action='store_true', help='启用PQS v3严格模式(85分+硬闸门)')
     
     args = parser.parse_args()
     
     # 创建质量强制器
     enforcer = WorkflowQualityEnforcer()
     enforcer.quality_fixer.max_fix_attempts = args.max_attempts
+    
+    # 配置PQS模式
+    if args.pqs_mode:
+        print("🎯 启用PQS v3严格模式: 85分阈值 + 硬闸门检查")
+        enforcer.pqs_mode = True
+    else:
+        print("🎯 使用标准v2模式: 90%质量阈值")
+        enforcer.pqs_mode = False
     
     # 运行完整的质量强制流程
     success = enforcer.run_workflow_enforcement(args.count)

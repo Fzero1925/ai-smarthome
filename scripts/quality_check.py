@@ -26,15 +26,24 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 class ComprehensiveQualityChecker:
-    """v2 Enhanced Quality Checker with 15-item validation system"""
+    """v3 Hybrid Quality Checker: v2 Enhanced + PQS v3 Hard Gates"""
     
-    def __init__(self, config_path: Optional[str] = None):
-        """Initialize with configuration"""
+    def __init__(self, config_path: Optional[str] = None, pqs_mode: bool = False):
+        """Initialize with configuration
+        Args:
+            config_path: Path to configuration file
+            pqs_mode: Enable PQS v3 strict mode (85+ score required)
+        """
         self.config = self._load_config(config_path)
         self.quality_rules = self.config.get('quality_rules', {})
         self.seo_config = self.config.get('seo', {})
+        self.pqs_mode = pqs_mode
         
-        print(f"✅ Quality checker initialized with {len(self.quality_rules)} validation rules")
+        # Load PQS v3 config if available
+        self.pqs_config = self._load_pqs_config()
+        
+        mode_desc = "PQS v3 Hard Gates + v2 Enhanced" if pqs_mode else "v2 Enhanced"
+        print(f"✅ Quality checker initialized ({mode_desc}) with {len(self.quality_rules)} validation rules")
     
     def _load_config(self, config_path: Optional[str] = None) -> Dict:
         """Load configuration file"""
@@ -48,6 +57,32 @@ class ComprehensiveQualityChecker:
         except Exception as e:
             print(f"⚠️ Failed to load config, using defaults: {e}")
             return self._get_default_quality_rules()
+    
+    def _load_pqs_config(self) -> Dict:
+        """Load PQS v3 configuration"""
+        pqs_config_path = project_root / 'config' / 'pqs_config.yml'
+        try:
+            if pqs_config_path.exists():
+                with open(pqs_config_path, 'r', encoding='utf-8') as f:
+                    config = yaml.safe_load(f)
+                    print(f"📋 PQS v3 config loaded: {config.get('thresholds', {}).get('publish_score', 85)} score threshold")
+                    return config
+        except Exception as e:
+            print(f"⚠️ Failed to load PQS v3 config: {e}")
+        
+        # Default PQS v3 config
+        return {
+            'thresholds': {
+                'publish_score': 85,
+                'keyword_density_max': 0.025,
+                'min_inline_images': 2
+            },
+            'entities_tokens': {
+                'generic': ["matter","thread","zigbee","local control","watt","2.4g","hub"],
+                'smart-plugs': ["smart plug","energy","monitor","kwh","standby"],
+                'smart-cameras': ["rtsp","onvif","privacy shutter","fps"]
+            }
+        }
     
     def _get_default_quality_rules(self) -> Dict:
         """Default quality rules - 15-item validation system"""
@@ -107,6 +142,14 @@ class ComprehensiveQualityChecker:
                 self._check_image_relevance(article_content, front_matter),
                 self._check_duplicate_content(article_content)
             ]
+            
+            # PQS v3 Hard Gates (if enabled)
+            if self.pqs_mode:
+                pqs_validations = [
+                    self._pqs_check_hard_gates(content, front_matter, article_content),
+                    self._pqs_calculate_score(content, front_matter, article_content, validations)
+                ]
+                validations.extend(pqs_validations)
             
             # Collect issues and warnings
             for validation in validations:
@@ -500,6 +543,182 @@ class ComprehensiveQualityChecker:
             'issues': issues,
             'metadata': {'duplicate_content_score': duplicate_count}
         }
+    
+    def _pqs_check_hard_gates(self, content: str, front_matter: str, article_content: str) -> Dict:
+        """PQS v3 Hard Gates - Any failure = immediate FAIL"""
+        issues = []
+        
+        # Hard Gate 1: Featured image + >= 2 inline images with proper ALT
+        fm_data, _ = self._extract_front_matter_data(content)
+        featured_image = fm_data.get('featured_image')
+        image_pattern = r'!\[([^\]]*)\]\(([^)]+)\)'
+        images = re.findall(image_pattern, article_content)
+        
+        if not featured_image:
+            issues.append("HARD GATE FAIL: Missing featured_image in front matter")
+        
+        if len(images) < self.pqs_config.get('thresholds', {}).get('min_inline_images', 2):
+            issues.append(f"HARD GATE FAIL: Insufficient inline images ({len(images)} < 2)")
+        
+        # Check ALT text for entity tokens
+        category = fm_data.get('category', fm_data.get('categories', ['generic']))
+        if isinstance(category, list):
+            category = category[0] if category else 'generic'
+        
+        entity_tokens = self.pqs_config.get('entities_tokens', {}).get(category, []) + \
+                       self.pqs_config.get('entities_tokens', {}).get('generic', [])
+        
+        for alt_text, _ in images:
+            if not alt_text or len(alt_text) < 8 or len(alt_text) > 120:
+                issues.append(f"HARD GATE FAIL: ALT text length invalid: '{alt_text[:50]}...'")
+            elif not any(token.lower() in alt_text.lower() for token in entity_tokens):
+                issues.append(f"HARD GATE FAIL: ALT text lacks entity tokens: '{alt_text[:50]}...'")
+        
+        # Hard Gate 2: Evidence links >= 2
+        external_pattern = r'\[([^\]]+)\]\((https?://[^)]+)\)'
+        external_links = re.findall(external_pattern, article_content)
+        if len(external_links) < 2:
+            issues.append(f"HARD GATE FAIL: Insufficient evidence links ({len(external_links)} < 2)")
+        
+        # Hard Gate 3: JSON-LD presence
+        jsonld_patterns = [r'"@type"\s*:\s*"Article"', r'"@type"\s*:\s*"FAQPage"']
+        has_jsonld = any(re.search(pattern, content, re.IGNORECASE) for pattern in jsonld_patterns)
+        if not has_jsonld:
+            issues.append("HARD GATE FAIL: Missing JSON-LD structured data")
+        
+        # Hard Gate 4: Comparison/framework structure
+        has_table = '|' in article_content and len([ln for ln in article_content.splitlines() if ln.strip().startswith('|')]) >= 6
+        has_itemlist = 'ItemList' in content
+        has_framework = re.search(r'(?i)(who should buy|who should not buy|alternatives)', article_content)
+        
+        if not (has_table or has_itemlist or has_framework):
+            issues.append("HARD GATE FAIL: Missing comparison table/ItemList/framework structure")
+        
+        # Hard Gate 5: Keyword density check
+        primary_kw = fm_data.get('keyword', fm_data.get('title', '').split('|')[0])
+        if primary_kw:
+            word_count = len(article_content.split())
+            kw_count = len(re.findall(re.escape(primary_kw.lower()), article_content.lower()))
+            density = kw_count / max(1, word_count)
+            max_density = self.pqs_config.get('thresholds', {}).get('keyword_density_max', 0.025)
+            
+            if density > max_density:
+                issues.append(f"HARD GATE FAIL: Keyword density too high ({density:.1%} > {max_density:.1%})")
+        
+        # Hard Gate 6: Entity coverage >= 3
+        text_lower = article_content.lower()
+        entity_hits = [token for token in entity_tokens if token.lower() in text_lower]
+        if len(set(entity_hits)) < 3:
+            issues.append(f"HARD GATE FAIL: Insufficient entity coverage ({len(set(entity_hits))} < 3)")
+        
+        status = 'error' if issues else 'pass'
+        return {
+            'status': status,
+            'issues': issues,
+            'metadata': {
+                'pqs_hard_gates_passed': status == 'pass',
+                'hard_gate_failures': len(issues)
+            }
+        }
+    
+    def _pqs_calculate_score(self, content: str, front_matter: str, article_content: str, validations: List) -> Dict:
+        """PQS v3 100-point scoring system"""
+        if not self.pqs_mode:
+            return {'status': 'pass', 'issues': [], 'metadata': {}}
+        
+        # Content depth (30 points)
+        depth_score = 0
+        if re.search(r'(?i)(conclusion|summary)', article_content):
+            depth_score += 6
+        if '|' in article_content:  # has table
+            depth_score += 8
+        if re.search(r'(?i)(alternatives|who should buy|who should not buy)', article_content):
+            depth_score += 8
+        if re.search(r'(?i)(risks|watch out|considerations)', article_content):
+            depth_score += 8
+        depth_score = min(30, depth_score)
+        
+        # Evidence quality (20 points)  
+        external_links = len(re.findall(r'\[([^\]]+)\]\((https?://[^)]+)\)', article_content))
+        evidence_score = min(20, external_links * 5)
+        
+        # Images and visualization (15 points)
+        fm_data, _ = self._extract_front_matter_data(content)
+        images = re.findall(r'!\[([^\]]*)\]\(([^)]+)\)', article_content)
+        featured_image = fm_data.get('featured_image')
+        images_score = 0
+        if featured_image:
+            images_score += 7
+        if len(images) >= 2:
+            images_score += 8
+        images_score = min(15, images_score)
+        
+        # Structure and SEO (15 points)
+        structure_score = 0
+        if re.search(r'^\s*#\s+.+', article_content, re.M):  # H1
+            structure_score += 5
+        if len(re.findall(r'^\s*##\s+.+', article_content, re.M)) >= 4:  # H2s
+            structure_score += 5  
+        if re.search(r'\[(.+)\]\((\/[^)]+)\)', article_content):  # internal links
+            structure_score += 5
+        structure_score = min(15, structure_score)
+        
+        # Readability (10 points)
+        sentences = re.split(r'[。！？.!?]+', article_content)
+        valid_sentences = [s for s in sentences if s.strip()]
+        if valid_sentences:
+            avg_len = sum(len(s) for s in valid_sentences) / len(valid_sentences)
+            h2_count = len(re.findall(r'^\s*##\s+.+', article_content, re.M))
+            readability_score = max(0, min(10, (100 - min(70, avg_len) + min(10, h2_count*2)) / 10))
+        else:
+            readability_score = 5
+        
+        # Compliance and E-E-A-T (10 points)
+        compliance_score = 0
+        if fm_data.get('author') and fm_data.get('date'):
+            compliance_score += 4
+        if re.search(r'(?i)(affiliate disclosure|as an amazon associate|披露)', article_content):
+            compliance_score += 3
+        if re.search(r'(?i)(about|review policy)', article_content):
+            compliance_score += 3
+        compliance_score = min(10, compliance_score)
+        
+        total_score = depth_score + evidence_score + images_score + structure_score + readability_score + compliance_score
+        total_score = max(0, min(100, total_score))
+        
+        threshold = self.pqs_config.get('thresholds', {}).get('publish_score', 85)
+        issues = []
+        if total_score < threshold:
+            issues.append(f"PQS SCORE FAIL: {total_score}/100 (threshold: {threshold})")
+        
+        return {
+            'status': 'error' if issues else 'pass',
+            'issues': issues,
+            'metadata': {
+                'pqs_total_score': total_score,
+                'pqs_threshold': threshold,
+                'pqs_subscores': {
+                    'depth': depth_score,
+                    'evidence': evidence_score,
+                    'images': images_score,
+                    'structure': structure_score,
+                    'readability': readability_score,
+                    'compliance': compliance_score
+                }
+            }
+        }
+    
+    def _extract_front_matter_data(self, content: str) -> Tuple[Dict, str]:
+        """Extract front matter as dictionary and return body"""
+        if content.startswith('---'):
+            parts = content.split('---', 2)
+            if len(parts) >= 3:
+                try:
+                    fm_data = yaml.safe_load(parts[1]) or {}
+                    return fm_data, parts[2].strip()
+                except:
+                    pass
+        return {}, content
 
 
 def check_article_quality(filepath):
@@ -524,8 +743,8 @@ def main():
     parser.add_argument('--config', help='Path to configuration file')
     parser.add_argument('--detailed', action='store_true', help='Show detailed quality analysis')
     parser.add_argument('--export', help='Export results to JSON file')
-    parser.add_argument('--mode', choices=['legacy', 'v2', 'both'], default='v2',
-                        help='Quality check mode (default: v2)')
+    parser.add_argument('--mode', choices=['legacy', 'v2', 'v3', 'pqs'], default='v2',
+                        help='Quality check mode (default: v2, v3=PQS hard gates, pqs=PQS strict)')
     parser.add_argument('--min-score', type=float, default=0.9, 
                         help='Minimum quality score threshold (0.0-1.0)')
     parser.add_argument('--fail-fast', action='store_true', help='Stop at first failure')
@@ -533,11 +752,13 @@ def main():
     
     args = parser.parse_args()
     
-    print("🔍 Starting Content Quality Check v2 Enhanced...")
+    mode_name = {'legacy': 'Legacy', 'v2': 'v2 Enhanced', 'v3': 'v3 Hybrid (PQS+v2)', 'pqs': 'PQS v3 Strict'}
+    print(f"🔍 Starting Content Quality Check {mode_name.get(args.mode, args.mode)}...")
     print("=" * 60)
     
     # Initialize quality checker
-    checker = ComprehensiveQualityChecker(config_path=args.config)
+    pqs_mode = args.mode in ['v3', 'pqs']
+    checker = ComprehensiveQualityChecker(config_path=args.config, pqs_mode=pqs_mode)
     
     # Get files to check
     if args.single_file:
@@ -565,26 +786,26 @@ def main():
     total_warnings = 0
     failed_files = []
     
-    print(f"⚙️ Using {'v2 Enhanced' if args.mode in ['v2', 'both'] else 'Legacy'} mode")
-    print(f"🎯 Quality threshold: {args.min_score:.1%}")
+    print(f"⚙️ Using {mode_name.get(args.mode, args.mode)} mode")
+    if pqs_mode:
+        threshold = checker.pqs_config.get('thresholds', {}).get('publish_score', 85)
+        print(f"🎯 PQS Score threshold: {threshold}/100")
+    else:
+        print(f"🎯 Quality threshold: {args.min_score:.1%}")
     print("-" * 60)
     
     for i, filepath in enumerate(files_to_check, 1):
         print(f"📄 [{i}/{len(files_to_check)}] {os.path.basename(filepath)}")
         
-        if args.mode == 'v2':
-            result = checker.check_article_quality(filepath)
-        elif args.mode == 'legacy':
+        if args.mode == 'legacy':
             result = check_article_quality(filepath)
-        else:  # both modes
+        else:  # v2, v3, pqs modes
             result = checker.check_article_quality(filepath)
-            legacy_result = check_article_quality(filepath)
-            result['legacy_comparison'] = legacy_result
         
         results.append(result)
         
         # Count issues
-        if args.mode == 'v2':
+        if args.mode != 'legacy':
             total_issues += len(result.get('issues', []))
             total_warnings += len(result.get('warnings', []))
         else:
@@ -594,16 +815,41 @@ def main():
         status_emoji = {'PASS': '✅', 'WARN': '⚠️', 'FAIL': '❌', 'ERROR': '💥'}
         emoji = status_emoji.get(result['status'], '❓')
         
-        if args.mode == 'v2':
+        if args.mode != 'legacy':
             quality_score = result.get('quality_score', 0.0)
             passed_checks = result.get('passed_checks', 0)
-            total_checks = result.get('total_checks', 15)
+            total_checks = result.get('total_checks', 15 if args.mode == 'v2' else 17)
             
             print(f"  {emoji} Quality Score: {quality_score:.1%} ({passed_checks}/{total_checks} checks passed)")
             print(f"  📊 {result['word_count']} words, {result['sections']} sections, {result['images']} images")
             
-            if quality_score < args.min_score:
-                failed_files.append(result['file'])
+            # Show PQS specific info if in PQS mode
+            if pqs_mode and result.get('metadata', {}).get('pqs_total_score') is not None:
+                pqs_score = result['metadata']['pqs_total_score']
+                pqs_threshold = result['metadata']['pqs_threshold']
+                hard_gates_passed = result['metadata'].get('pqs_hard_gates_passed', False)
+                
+                gate_status = "✅ PASSED" if hard_gates_passed else "❌ FAILED"
+                print(f"  🎯 PQS Score: {pqs_score}/100 (threshold: {pqs_threshold}) | Hard Gates: {gate_status}")
+                
+                if args.detailed and 'pqs_subscores' in result['metadata']:
+                    subscores = result['metadata']['pqs_subscores']
+                    print(f"    📈 Depth: {subscores['depth']}/30, Evidence: {subscores['evidence']}/20, " +
+                          f"Images: {subscores['images']}/15, Structure: {subscores['structure']}/15")
+            
+            # Check failure conditions
+            if pqs_mode:
+                # PQS mode: hard gates + score threshold
+                pqs_score = result.get('metadata', {}).get('pqs_total_score', 0)
+                pqs_threshold = result.get('metadata', {}).get('pqs_threshold', 85)
+                hard_gates_passed = result.get('metadata', {}).get('pqs_hard_gates_passed', False)
+                
+                if not hard_gates_passed or pqs_score < pqs_threshold:
+                    failed_files.append(result['file'])
+            else:
+                # v2 mode: quality score threshold
+                if quality_score < args.min_score:
+                    failed_files.append(result['file'])
                 
             if args.detailed:
                 # Show detailed breakdown

@@ -1,0 +1,68 @@
+name: Daily Content (PQS v3)
+
+on:
+  schedule:
+    - cron: '0 9 * * *'   # 01:00 PST
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  actions: read
+  checks: write
+  issues: write
+
+jobs:
+  generate_refine_qc_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt || true
+          pip install pyyaml
+      - name: Generate 2–4 drafts (you implement)
+        run: |
+          set -e
+          export COUNT=$(( (RANDOM % 3) + 2 ))  # 2..4
+          echo "Target articles: $COUNT"
+          python scripts/generate_quality_content_enhanced.py --count "$COUNT" --output-dir content/articles || true
+      - name: Iterative refine until pass (max 3 rounds)
+        run: |
+          set -e
+          python scripts/iterative_refine.py content/articles --max_rounds 3 || true
+      - name: Quality check (strict)
+        id: qc
+        run: |
+          set -e
+          python scripts/quality_check_pqs_v3.py content/articles --out pqs_report.json
+      - name: Upload artifacts (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pqs-v3-artifacts
+          path: |
+            pqs_report.json
+            content/articles/**/*.md
+      - name: Open issue on failure
+        if: failure()
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: "PQS v3 failed — content needs fixes"
+          content-file: pqs_report.json
+          labels: "pqs-fail, content"
+      - name: Commit & push if QC passed
+        if: success()
+        run: |
+          git config user.email "action@github.com"
+          git config user.name "GitHub Action"
+          git add content/articles
+          if ! git diff --staged --quiet; then
+            git commit -m "Auto publish (PQS v3 passed) $(date -u +'%Y-%m-%dT%H:%MZ')"
+            git push
+          fi
