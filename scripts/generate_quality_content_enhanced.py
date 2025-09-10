@@ -91,11 +91,11 @@ def _add_seo_alt_tags(image_dict, keyword, context):
     enhanced_dict = image_dict.copy()
     
     alt_templates = {
-        "hero_image": f"Best {keyword} 2025 - Complete buying guide and reviews",
+        "hero_image": f"{keyword} hero guide for smart home automation",
         "product_1": f"Top rated {keyword} - Premium choice for smart homes", 
-        "product_2": f"Best value {keyword} - Budget-friendly smart home solution",
+        "product_2": f"Value {keyword} - Budget-friendly smart home solution",
         "product_3": f"Professional grade {keyword} - Advanced features",
-        "comparison": f"{keyword} comparison chart - Features and pricing 2025",
+        "comparison": f"{keyword} comparison chart - Features and pricing guide",
     }
     
     # 创建Alt标签键值对列表，避免在遍历时修改字典
@@ -187,10 +187,10 @@ def generate_enhanced_article_content(keyword, category):
     
     # 诚实的标题模式
     title_patterns = [
-        f"Best {keyword.title()} 2025: Research-Based Buying Guide",
-        f"{keyword.title()} Buyer's Guide 2025: Honest Reviews & Comparisons", 
-        f"Ultimate {keyword.title()} Guide 2025: Features, Pros & Cons",
-        f"Top {keyword.title()} 2025: Detailed Analysis & Recommendations"
+        f"{keyword.title()} Research-Based Buying Guide",
+        f"{keyword.title()} Buyer's Guide: Honest Reviews & Comparisons", 
+        f"Ultimate {keyword.title()} Guide: Features, Pros & Cons",
+        f"Top {keyword.title()} Detailed Analysis & Recommendations"
     ]
     title = random.choice(title_patterns)
     
@@ -232,7 +232,7 @@ We do not conduct physical product testing. Our recommendations are based on spe
 
 ### 1. Premium Choice - High-End {keyword.title()}
 
-![{product_images.get('product_1_alt', f'Premium {keyword}')}]({product_images.get('product_1', '')})
+![{product_images.get('product_1_alt', f'{keyword} premium features overview')}]({product_images.get('product_1', '')})
 
 **Ideal For:** Users who prioritize advanced features and long-term reliability
 **Not Ideal For:** Budget-conscious buyers or those needing basic functionality only
@@ -261,9 +261,9 @@ We do not conduct physical product testing. Our recommendations are based on spe
 - Those who prioritize long-term reliability over upfront savings
 - Households that fully utilize advanced automation features
 
-### 2. Best Value - Mid-Range {keyword.title()}
+### 2. Value Choice - Mid-Range {keyword.title()}
 
-![{product_images.get('product_2_alt', f'Value {keyword}')}]({product_images.get('product_2', '')})
+![{product_images.get('product_2_alt', f'{keyword} value models comparison')}]({product_images.get('product_2', '')})
 
 **Ideal For:** Most households seeking reliable performance at reasonable cost
 **Not Ideal For:** Users needing premium features or extremely tight budgets
@@ -294,7 +294,7 @@ We do not conduct physical product testing. Our recommendations are based on spe
 
 ### 3. Budget Option - Entry-Level {keyword.title()}
 
-![{product_images.get('product_3_alt', f'Budget {keyword}')}]({product_images.get('product_3', '')})
+![{product_images.get('product_3_alt', f'{keyword} budget-friendly options')}]({product_images.get('product_3', '')})
 
 **Ideal For:** Budget-conscious users or those trying smart home technology
 **Not Ideal For:** Users needing advanced features or premium reliability
@@ -428,14 +428,47 @@ A: Check the product specifications for supported platforms (Alexa, Google, Appl
 
 ### Final Recommendations
 
-The best {keyword} for your situation depends on your specific needs, technical comfort level, and budget constraints. Premium models offer advanced features and longer support lifecycles, but mid-range options often provide the best value for typical households.
+The right {keyword} for your situation depends on your specific needs, technical comfort level, and budget constraints. Premium models offer advanced features and longer support lifecycles, but mid-range options often provide excellent value for typical households.
 
 **Our Top Picks:**
-- **Best Overall**: Mid-range option offers the best balance for most users
+- **Top Choice**: Mid-range option offers excellent balance for most users
 - **Premium Choice**: Worth the investment if you'll use advanced features
 - **Budget Pick**: Adequate for basic needs but consider upgrade path
 
 Consider your long-term smart home plans when making your decision. It's often better to invest in a slightly more capable model that can grow with your needs rather than require replacement within a year or two.
+
+## Conclusion
+
+### Making Your Decision
+
+The {keyword} market offers diverse options to meet different needs and budgets. Based on our analysis, the most important factors to consider are compatibility with your existing smart home ecosystem, installation requirements, and long-term support from manufacturers.
+
+**Key Takeaways:**
+- Research compatibility before purchasing to ensure seamless integration
+- Consider total cost of ownership, including potential subscription fees
+- Prioritize products with strong manufacturer support and regular updates
+- Start with one or two devices to test functionality before expanding
+
+### Where to Learn More
+
+For additional insights and the latest smart home developments, consider these authoritative resources:
+
+- **[SmartHome Magazine](https://www.smarthomemag.com)** - Comprehensive industry coverage and product testing
+- **[Consumer Reports Smart Home Guide](https://www.consumerreports.org/smart-home)** - Independent testing and unbiased reviews
+
+### Future Outlook
+
+Smart home technology continues to evolve rapidly, with better interoperability and improved user experiences. As standards like Matter become more widespread, we expect continued innovation in this category.
+
+**Stay Informed:** Smart home technology changes rapidly. Bookmark this guide and check back for updates reflecting new products and market developments.
+
+### Ready to Get Started?
+
+The products recommended in this guide represent solid choices based on current market analysis. Whether you're beginning your smart home journey or expanding an existing setup, these options provide reliable performance and good long-term value.
+
+Remember to verify current pricing and availability, as market conditions change frequently in the smart home space.
+
+---
 
 **Affiliate Disclosure**: This article contains affiliate links. When you make purchases through our links, we may earn a commission at no additional cost to you. This helps support our research and content creation. We only recommend products we would consider purchasing ourselves based on our research criteria.
 """
@@ -446,7 +479,7 @@ Consider your long-term smart home plans when making your decision. It's often b
 
 {random.choice(intro_context)} Whether you're a tech enthusiast looking to automate your home or a beginner exploring smart home technology, this guide will help you make an informed decision.
 
-![{product_images.get('hero_image_alt', f'Best {keyword} 2025')}]({product_images.get('hero_image', '')})
+![{product_images.get('hero_image_alt', f'{keyword} hero guide for smart home automation')}]({product_images.get('hero_image', '')})
 
 *Complete {keyword} buying guide with honest assessments and research-based recommendations*
 
@@ -469,9 +502,9 @@ Modern {keyword} serve as important components in connected home ecosystems, but
         'title': title,
         'content': content,
         'metadata': {
-            'description': f'Research-based guide to the best {keyword} for 2025. Honest reviews, detailed comparisons, and practical buying advice.',
+            'description': f'Research-based guide to {keyword} with honest reviews, detailed comparisons, and practical buying advice.',
             'categories': [category.replace('_', '-')],
-            'tags': [keyword, 'smart home', 'buying guide', 'reviews', '2025']
+            'tags': [keyword, 'smart home', 'buying guide', 'reviews']
         }
     }
 
@@ -485,6 +518,10 @@ def create_hugo_article(article_data, output_dir):
     filename = f"{safe_title}-{timestamp}.md"
     filepath = os.path.join(output_dir, filename)
     
+    # 设置featured_image
+    category = article_data['metadata']['categories'][0]
+    hero_image_url = f'/images/products/{category}/hero.jpg'
+    
     # 生成Hugo前置事项
     front_matter = f"""---
 title: "{article_data['title']}"
@@ -494,7 +531,7 @@ categories: {json.dumps(article_data['metadata']['categories'])}
 tags: {json.dumps(article_data['metadata']['tags'])}
 keywords: ["{keyword}", "smart home", "buying guide", "reviews"]
 featured: true
-rating: 4.5
+featured_image: "{hero_image_url}"
 author: "Smart Home Research Team"
 authorBio: "Our research team analyzes smart home products through specification review, user feedback analysis, and market research to provide honest, helpful buying guidance."
 lastmod: {datetime.now().isoformat()}Z

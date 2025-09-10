@@ -7,32 +7,32 @@
     "updated_at": 1757460453
   },
   "/images/products/smart-plugs/amazon-smart-plug-hero.jpg": {
-    "alt": "smart plugs hero for smart home automation",
-    "caption": "Product category overview and compatibility guide",
-    "credit": "AI Smart Home Hub",
-    "license": "CC BY 4.0",
-    "updated_at": 1757505107
-  },
-  "/images/products/smart-plugs/amazon-smart-plug-main.jpg": {
     "alt": "smart plug alexa key features and installation guide",
     "caption": "Installation and usage illustration",
     "credit": "AI Smart Home Hub",
     "license": "CC BY 4.0",
-    "updated_at": 1757505107
+    "updated_at": 1757507161
+  },
+  "/images/products/smart-plugs/amazon-smart-plug-main.jpg": {
+    "alt": "smart plugs hero for smart home automation",
+    "caption": "Product category overview and compatibility guide",
+    "credit": "AI Smart Home Hub",
+    "license": "CC BY 4.0",
+    "updated_at": 1757507214
   },
   "/images/products/smart-plugs/amazon-smart-plug.jpg": {
     "alt": "smart plug alexa key features and installation guide",
     "caption": "Installation and usage illustration",
     "credit": "AI Smart Home Hub",
     "license": "CC BY 4.0",
-    "updated_at": 1757505107
+    "updated_at": 1757507214
   },
   "/images/products/smart-plugs/generic-smart-plug.jpg": {
     "alt": "smart plug alexa key features and installation guide",
     "caption": "Installation and usage illustration",
     "credit": "AI Smart Home Hub",
     "license": "CC BY 4.0",
-    "updated_at": 1757505107
+    "updated_at": 1757507214
   },
   "/images/products/smart-thermostats/ecobee-smart.jpg": {
     "alt": "smart thermostats hero for smart home automation",
@@ -82,5 +82,19 @@
     "credit": "AI Smart Home Hub",
     "license": "CC BY 4.0",
     "updated_at": 1757505591
+  },
+  "/images/products/smart-plugs/tp-link-kasa-hs103.jpg": {
+    "alt": "smart plugs hero for smart home automation",
+    "caption": "Product category overview and compatibility guide",
+    "credit": "AI Smart Home Hub",
+    "license": "CC BY 4.0",
+    "updated_at": 1757507161
+  },
+  "/images/products/smart-plugs/tp-link-kasa.jpg": {
+    "alt": "smart plug alexa key features and installation guide",
+    "caption": "Installation and usage illustration",
+    "credit": "AI Smart Home Hub",
+    "license": "CC BY 4.0",
+    "updated_at": 1757507161
   }
 }
