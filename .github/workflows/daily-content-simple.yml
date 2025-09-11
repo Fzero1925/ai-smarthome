@@ -76,12 +76,24 @@ jobs:
           export YOUTUBE_API_KEY="${{ secrets.YOUTUBE_API_KEY }}"
           export AMAZON_PAAPI_ACCESS_KEY="${{ secrets.AMAZON_PAAPI_ACCESS_KEY }}"
           export AMAZON_PAAPI_SECRET_KEY="${{ secrets.AMAZON_PAAPI_SECRET_KEY }}"
-          
+
           # Setup analytics configuration
           python scripts/setup_analytics.py
 
           # Ensure UTF-8 output for clean logs
           echo "PYTHONIOENCODING=utf-8" >> $GITHUB_ENV
+
+          # Persist secrets across steps for trend collection and generation
+          echo "GOOGLE_ADSENSE_ID=${{ secrets.GOOGLE_ADSENSE_ID }}" >> $GITHUB_ENV
+          echo "AMAZON_AFFILIATE_TAG=${{ secrets.AMAZON_AFFILIATE_TAG }}" >> $GITHUB_ENV
+          echo "GOOGLE_ANALYTICS_ID=${{ secrets.GOOGLE_ANALYTICS_ID }}" >> $GITHUB_ENV
+          echo "REDDIT_CLIENT_ID=${{ secrets.REDDIT_CLIENT_ID }}" >> $GITHUB_ENV
+          echo "REDDIT_CLIENT_SECRET=${{ secrets.REDDIT_CLIENT_SECRET }}" >> $GITHUB_ENV
+          echo "REDDIT_USERNAME=${{ secrets.REDDIT_USERNAME }}" >> $GITHUB_ENV
+          echo "REDDIT_PASSWORD=${{ secrets.REDDIT_PASSWORD }}" >> $GITHUB_ENV
+          echo "YOUTUBE_API_KEY=${{ secrets.YOUTUBE_API_KEY }}" >> $GITHUB_ENV
+          echo "AMAZON_PAAPI_ACCESS_KEY=${{ secrets.AMAZON_PAAPI_ACCESS_KEY }}" >> $GITHUB_ENV
+          echo "AMAZON_PAAPI_SECRET_KEY=${{ secrets.AMAZON_PAAPI_SECRET_KEY }}" >> $GITHUB_ENV
 
       - name: Prepare content generation
         id: check_needed
