@@ -1108,6 +1108,14 @@ def create_hugo_article(article_data, output_dir):
     filename = f"{safe_title}-{timestamp}.md"
     filepath = os.path.join(output_dir, filename)
     
+    # Resolve featured image using product image mapping
+    try:
+        category = article_data['metadata']['categories'][0]
+        images = get_product_images(keyword, category)
+        hero_image_url = images.get('hero_image', '/images/default-article.jpg')
+    except Exception:
+        hero_image_url = '/images/default-article.jpg'
+
     # Generate Hugo front matter
     front_matter = f"""---
 title: "{article_data['title']}"
@@ -1117,6 +1125,7 @@ categories: {json.dumps(article_data['metadata']['categories'])}
 tags: {json.dumps(article_data['metadata']['tags'])}
 keywords: ["{keyword}", "smart home", "automation", "review"]
 featured: true
+featured_image: "{hero_image_url}"
 rating: 4.5
 author: "Smart Home Team"
 ---
