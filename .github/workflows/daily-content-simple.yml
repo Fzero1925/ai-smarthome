@@ -138,6 +138,10 @@ jobs:
               --max-attempts 5
           fi
 
+      - name: Ensure featured images (relevant & valid)
+        run: |
+          python scripts/fix_featured_images.py || true
+
       - name: Content uniqueness guard
         run: |
           if [ -f generated_files.txt ]; then

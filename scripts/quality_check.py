@@ -570,6 +570,18 @@ class ComprehensiveQualityChecker:
         
         if len(images) < self.pqs_config.get('thresholds', {}).get('min_inline_images', 2):
             issues.append(f"HARD GATE FAIL: Insufficient inline images ({len(images)} < 2)")
+
+        # Validate inline image files exist under static/
+        for alt_text, img_path in images:
+            try:
+                if img_path.startswith('/'):
+                    fs_path = os.path.join('static', img_path.lstrip('/'))
+                else:
+                    fs_path = os.path.join('static', img_path)
+                if not os.path.exists(fs_path):
+                    issues.append(f"HARD GATE FAIL: Inline image not found: {img_path}")
+            except Exception:
+                pass
         
         # Check ALT text for entity tokens
         category = fm_data.get('category', fm_data.get('categories', ['generic']))

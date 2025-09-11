@@ -84,6 +84,11 @@ jobs:
           else
             echo "No generated_files.txt present; skipping uniqueness guard."
           fi
+
+      - name: Ensure featured images (relevant & valid)
+        if: steps.trending_check.outputs.has_new_content == 'true'
+        run: |
+          python scripts/fix_featured_images.py || true
       - name: Commit new articles
         if: steps.trending_check.outputs.has_new_content == 'true'
         run: |
