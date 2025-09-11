@@ -728,3 +728,15 @@ header.article-header {
   white-space: nowrap;
   border: 0;
 }
+
+
+/* ===== Layout Overrides (post-fix) ===== */
+/* Ensure fixed navbar never hides content */
+body { padding-top: 72px; }
+
+/* Reduce article header vertical footprint */
+header.article-header { padding-bottom: 1rem !important; margin-bottom: 1rem !important; }
+
+/* Tighter featured image height for better above-the-fold */
+.featured-image { max-height: 300px; }
+@media (max-width: 768px) { .featured-image { max-height: 200px; } }

@@ -188,7 +188,9 @@
     {{ end }}
 
     <!-- Top AdSense Slot -->
+    {{ if and .Site.Params.advertising.google_adsense.enabled .Site.Params.advertising.google_adsense.show_top_slot }}
     {{ partial "adsense.html" . }}
+    {{ end }}
     
     <!-- Enhanced Article Content with SEO and Performance Optimization -->
     <div class="article-content">

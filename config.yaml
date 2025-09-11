@@ -81,6 +81,7 @@ params:
       client_id: 'ca-pub-XXXXXXXXXXXXXXXX'
       enabled: true
       auto_ads: true
+      show_top_slot: false
       
   affiliate:
     amazon:
