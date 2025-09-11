@@ -556,6 +556,17 @@ class ComprehensiveQualityChecker:
         
         if not featured_image:
             issues.append("HARD GATE FAIL: Missing featured_image in front matter")
+        else:
+            # Validate file exists under static/ for site paths like /images/...
+            try:
+                if featured_image.startswith('/'):
+                    fs_path = os.path.join('static', featured_image.lstrip('/'))
+                else:
+                    fs_path = os.path.join('static', featured_image)
+                if not os.path.exists(fs_path):
+                    issues.append(f"HARD GATE FAIL: featured_image not found: {featured_image}")
+            except Exception:
+                pass
         
         if len(images) < self.pqs_config.get('thresholds', {}).get('min_inline_images', 2):
             issues.append(f"HARD GATE FAIL: Insufficient inline images ({len(images)} < 2)")

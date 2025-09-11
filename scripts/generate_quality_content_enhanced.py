@@ -585,7 +585,11 @@ def create_hugo_article(article_data, output_dir):
     
     # 设置featured_image
     category = article_data['metadata']['categories'][0]
-    hero_image_url = f'/images/products/{category}/hero.jpg'
+    try:
+        _imgs = get_product_images(keyword, category)
+        hero_image_url = _imgs.get('hero_image', '/images/default-article.jpg')
+    except Exception:
+        hero_image_url = '/images/default-article.jpg'
     
     # 生成Hugo前置事项
     front_matter = f"""---
