@@ -1,4 +1,4 @@
-# AI Smart Home Hub 🏠
+﻿# AI Smart Home Hub 🏠
 
 **Your Ultimate Guide to Smart Home Technology**
 

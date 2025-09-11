@@ -2,23 +2,21 @@ name: Realtime Trending Monitor & Content Generator
 
 on:
   schedule:
-    # 每30分钟检查一次热点（欧美活跃时段优先）
     - cron: '*/30 6-22 * * *'
-  
   workflow_dispatch:
     inputs:
       force_analysis:
-        description: '强制分析（忽略时区限制）'
+        description: 'Force analysis (ignore time windows)'
         required: false
         default: false
         type: boolean
       check_only:
-        description: '仅分析不生成'
+        description: 'Analyze only, do not generate'
         required: false
         default: false
         type: boolean
       max_articles:
-        description: '最多生成文章数'
+        description: 'Max number of articles to generate'
         required: false
         default: '2'
         type: string
@@ -33,7 +31,7 @@ jobs:
       cancel-in-progress: true
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -54,13 +52,10 @@ jobs:
 
       - name: Setup environment
         run: |
-          # 创建所需目录
           mkdir -p data/realtime_trends
           mkdir -p data/generation_history
           mkdir -p data/trending_cache
-          mkdir -p modules/trending
-          
-          # 导出凭据
+
           echo "TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}" >> $GITHUB_ENV
           echo "TELEGRAM_CHAT_ID=${{ secrets.TELEGRAM_CHAT_ID }}" >> $GITHUB_ENV
           echo "REDDIT_CLIENT_ID=${{ secrets.REDDIT_CLIENT_ID }}" >> $GITHUB_ENV
@@ -69,17 +64,14 @@ jobs:
           echo "REDDIT_PASSWORD=${{ secrets.REDDIT_PASSWORD }}" >> $GITHUB_ENV
           echo "YOUTUBE_API_KEY=${{ secrets.YOUTUBE_API_KEY }}" >> $GITHUB_ENV
 
-      - name: Check trending topics and trigger generation
+      - name: Check trending and trigger
         id: trending_check
         run: |
-          echo "🚀 开始实时热点分析..."
-          
-          # 参数
+          echo "Starting realtime trending analysis..."
           FORCE_ANALYSIS="${{ github.event.inputs.force_analysis || 'false' }}"
           CHECK_ONLY="${{ github.event.inputs.check_only || 'false' }}"
           MAX_ARTICLES="${{ github.event.inputs.max_articles || '2' }}"
-          
-          # 组装参数
+
           ARGS=""
           if [ "$FORCE_ANALYSIS" = "true" ]; then
             ARGS="$ARGS --force-analysis"
@@ -87,60 +79,44 @@ jobs:
           if [ "$CHECK_ONLY" = "true" ]; then
             ARGS="$ARGS --check-only"
           fi
-          
-          # 执行热点分析与触发
+
           python scripts/realtime_workflow.py $ARGS --max-articles $MAX_ARTICLES
 
-      - name: Commit new articles if generated
+      - name: Commit new articles
         if: steps.trending_check.outputs.has_new_content == 'true'
         run: |
-          echo "🔐 检查是否有新内容需要提交..."
-          
+          echo "Committing newly generated articles..."
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action - Realtime Trending"
-          
+
           if [ -n "$(git status --porcelain content/articles/*.md 2>/dev/null)" ]; then
-            echo "📝 检测到新文章，准备提交..."
-            
             git add content/articles/*.md
             git add data/realtime_trends/ 2>/dev/null || true
             git add data/generation_history/ 2>/dev/null || true
-            
             current_time=$(date '+%Y-%m-%d %H:%M:%S UTC')
             articles_count="${{ steps.trending_check.outputs.generated_articles }}"
-            
-            git commit -m "🔥 Realtime: Generated $articles_count trending articles - $current_time
-
-⏱ Triggered by realtime trending analysis
-📰 Articles generated: $articles_count
-🕒 Generated at: $current_time
-
-🤖 Generated with Claude Code AI Assistant
-Co-Authored-By: Claude <noreply@anthropic.com>"
-            
-            echo "📤 推送到远端..."
+            git commit -m "Realtime: Generated ${articles_count} trending articles - ${current_time} (CI)"
             git push
-            echo "✅ 已提交新内容"
           else
-            echo "ℹ️ 未检测到新文章"
+            echo "No new articles to commit"
           fi
 
-      - name: Send Telegram notification
+      - name: Notify Telegram
         if: always()
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          echo "📣 发送Telegram通知"
           if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
-            echo "⚠️ Telegram未配置，跳过通知"
+            echo "Telegram not configured; skipping."
           else
             curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
-                 -H "Content-Type: application/json" \
-                 -d "{
-                   \"chat_id\": \"$TELEGRAM_CHAT_ID\",
-                   \"text\": \"Realtime trending check completed\",
-                   \"parse_mode\": \"HTML\",
-                   \"disable_web_page_preview\": true
-                 }" > /dev/null
+              -H "Content-Type: application/json" \
+              -d "{
+                \"chat_id\": \"$TELEGRAM_CHAT_ID\",
+                \"text\": \"Realtime trending check completed\",
+                \"parse_mode\": \"HTML\",
+                \"disable_web_page_preview\": true
+              }" > /dev/null
           fi
+
