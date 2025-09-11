@@ -850,6 +850,81 @@ def count_generated_articles():
         pass
     return 0
 
+def _load_json(path):
+    try:
+        if os.path.exists(path):
+            with open(path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+    except Exception as e:
+        print(f"Warning: Failed to read {path}: {e}")
+    return None
+
+def format_realtime_trending_message():
+    """Compose a rich realtime trending notification using available artifacts."""
+    china_time = get_china_time()
+    trigger = _load_json('trigger_result.json') or {}
+    trends = _load_json('data/current_trends.json') or []
+    lineup = _load_json('data/daily_lineup_latest.json') or []
+    kw_analysis = _load_json('keyword_analysis.json') or []
+
+    trends_analyzed = trigger.get('trends_analyzed', 0)
+    triggers_attempted = trigger.get('triggers_attempted', 0)
+    successful_generations = trigger.get('successful_generations', 0) or len([k for k in kw_analysis if k])
+    failed_generations = trigger.get('failed_generations', 0)
+    action = trigger.get('action', 'unknown')
+
+    lines = []
+    lines.append(f"\ud83d\udd14 *Realtime Trending Update* | {china_time}")
+    lines.append("")
+    lines.append(f"• Analyzed topics: {trends_analyzed}")
+    lines.append(f"• Triggers attempted: {triggers_attempted}")
+    lines.append(f"• Articles generated: {successful_generations} (failed: {failed_generations})")
+    lines.append(f"• Action: {action}")
+
+    if isinstance(lineup, list) and lineup:
+        lines.append("")
+        lines.append("\ud83d\udc4d *Selected for Generation*:")
+        for i, it in enumerate(lineup[:3], 1):
+            kw = it.get('keyword', 'N/A')
+            angle = it.get('angle', 'best')
+            reason = it.get('reason', '')
+            tscore = it.get('trend_score', 0)
+            lines.append(f"{i}. `{kw}` · angle: {angle} · trend: {tscore:.2f}")
+            if reason:
+                lines.append(f"   reason: {reason}")
+
+    if isinstance(trends, list) and trends:
+        lines.append("")
+        lines.append("\ud83d\udcc8 *Top Trending (others)*:")
+        for i, t in enumerate(trends[:5], 1):
+            kw = t.get('keyword', 'N/A')
+            tr = t.get('trend_score', 0.0)
+            cv = t.get('commercial_value', 0.0)
+            urg = t.get('urgency_score', 0.0)
+            est = t.get('estimated_revenue', 'N/A')
+            lines.append(f"{i}. `{kw}` · trend {tr:.2f} · commercial {cv:.2f} · urgency {urg:.2f} · est {est}")
+
+    if isinstance(kw_analysis, list) and kw_analysis:
+        lines.append("")
+        lines.append("\ud83d\udcda *Generated Articles*:")
+        for i, k in enumerate(kw_analysis[:3], 1):
+            kw = k.get('keyword', 'N/A')
+            wc = k.get('word_count', 0)
+            sv = k.get('search_volume', 0)
+            ci = k.get('commercial_intent', 0.0)
+            ts = k.get('trend_score', 0.0)
+            path = k.get('filepath', '')
+            reason = k.get('reason', '')
+            lines.append(f"{i}. `{kw}` · {wc} words · vol {sv:,} · comm {ci:.2f} · trend {ts:.2f}")
+            if reason:
+                lines.append(f"   reason: {reason}")
+            if path:
+                lines.append(f"   file: {path}")
+
+    lines.append("")
+    lines.append("_ai-smarthomehub.com | Realtime trending pipeline_")
+    return "\n".join(lines)
+
 def main():
     parser = argparse.ArgumentParser(description='Send simple Telegram notifications')
     parser.add_argument('--type', required=True, help='Notification type')
@@ -887,7 +962,9 @@ _Claude Code 测试_"""
             # Test v2 enhanced notification format with sample data
             message = format_v2_test_message()
             
-        elif args.type == 'custom':
+        elif args.type == 'realtime_trending':
+            message = format_realtime_trending_message()
+            \n        elif args.type == 'custom':
             message = args.message or "📢 自定义通知"
             
         else:
@@ -1014,3 +1091,4 @@ def get_analysis_summary(keywords_data):
 
 if __name__ == "__main__":
     main()
+

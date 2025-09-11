@@ -1,5 +1,4 @@
 name: Realtime Trending Monitor & Content Generator
-
 on:
   schedule:
     - cron: '*/15 * * * *'
@@ -20,10 +19,8 @@ on:
         required: false
         default: '2'
         type: string
-
 permissions:
   contents: write
-
 jobs:
   trending-monitor:
     concurrency:
@@ -31,33 +28,27 @@ jobs:
       cancel-in-progress: true
     runs-on: ubuntu-latest
     timeout-minutes: 15
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
           cache: 'pip'
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
       - name: Setup environment
         run: |
           mkdir -p data/realtime_trends
           mkdir -p data/generation_history
           mkdir -p data/trending_cache
-
           echo "PYTHONIOENCODING=utf-8" >> $GITHUB_ENV
-
           echo "TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}" >> $GITHUB_ENV
           echo "TELEGRAM_CHAT_ID=${{ secrets.TELEGRAM_CHAT_ID }}" >> $GITHUB_ENV
           echo "REDDIT_CLIENT_ID=${{ secrets.REDDIT_CLIENT_ID }}" >> $GITHUB_ENV
@@ -65,7 +56,6 @@ jobs:
           echo "REDDIT_USERNAME=${{ secrets.REDDIT_USERNAME }}" >> $GITHUB_ENV
           echo "REDDIT_PASSWORD=${{ secrets.REDDIT_PASSWORD }}" >> $GITHUB_ENV
           echo "YOUTUBE_API_KEY=${{ secrets.YOUTUBE_API_KEY }}" >> $GITHUB_ENV
-
       - name: Check trending and trigger
         id: trending_check
         run: |
@@ -73,7 +63,6 @@ jobs:
           FORCE_ANALYSIS="${{ github.event.inputs.force_analysis || 'true' }}"
           CHECK_ONLY="${{ github.event.inputs.check_only || 'false' }}"
           MAX_ARTICLES="${{ github.event.inputs.max_articles || '2' }}"
-
           ARGS=""
           if [ "$FORCE_ANALYSIS" = "true" ]; then
             ARGS="$ARGS --force-analysis"
@@ -81,9 +70,7 @@ jobs:
           if [ "$CHECK_ONLY" = "true" ]; then
             ARGS="$ARGS --check-only"
           fi
-
           python scripts/realtime_workflow.py $ARGS --max-articles $MAX_ARTICLES
-
       - name: Content uniqueness guard
         if: steps.trending_check.outputs.has_new_content == 'true'
         run: |
@@ -97,14 +84,12 @@ jobs:
           else
             echo "No generated_files.txt present; skipping uniqueness guard."
           fi
-
       - name: Commit new articles
         if: steps.trending_check.outputs.has_new_content == 'true'
         run: |
           echo "Committing newly generated articles..."
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action - Realtime Trending"
-
           if [ -n "$(git status --porcelain content/articles/*.md 2>/dev/null)" ]; then
             git add content/articles/*.md
             git add data/realtime_trends/ 2>/dev/null || true
@@ -116,8 +101,7 @@ jobs:
           else
             echo "No new articles to commit"
           fi
-
-      - name: Notify Telegram
+      - name: Notify Telegram (rich)
         if: always()
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -126,12 +110,5 @@ jobs:
           if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
             echo "Telegram not configured; skipping."
           else
-            curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
-              -H "Content-Type: application/json" \
-              -d "{
-                \"chat_id\": \"$TELEGRAM_CHAT_ID\",
-                \"text\": \"Realtime trending check completed\",
-                \"parse_mode\": \"HTML\",
-                \"disable_web_page_preview\": true
-              }" > /dev/null
+            python scripts/notify_telegram.py --type realtime_trending || true
           fi
