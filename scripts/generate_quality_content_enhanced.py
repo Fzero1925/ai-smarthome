@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 Enhanced Daily Content Generation Script - Commercial Compliance Version
 Generates high-quality, honest, and SEO-optimized smart home product reviews
@@ -29,7 +29,7 @@ if sys.platform == 'win32':
         sys.stderr = codecs.getwriter('utf-8')(sys.stderr.detach())
     except Exception:
         pass
-def get_product_images(keyword, category):
+def get_product_images(keyword, category, angle: str = None):
     """获取与关键词相关的产品图片路径，包含SEO优化的Alt标签"""
     base_url = "/images/products/"
     
@@ -77,7 +77,7 @@ def get_product_images(keyword, category):
     keyword_lower = keyword.lower()
     for key_pattern, images in comprehensive_image_mapping.items():
         if key_pattern in keyword_lower:
-            return _add_seo_alt_tags(images, keyword, key_pattern)
+            return _add_seo_alt_tags(images, keyword, key_pattern, angle)
     
     # 默认图片
     default_images = {
@@ -87,18 +87,30 @@ def get_product_images(keyword, category):
         "comparison": f"{base_url}general/smart-home-comparison.jpg",
     }
     
-    return _add_seo_alt_tags(default_images, keyword, "smart home")
+    return _add_seo_alt_tags(default_images, keyword, "smart home", angle)
 
-def _add_seo_alt_tags(image_dict, keyword, context):
+def _add_seo_alt_tags(image_dict, keyword, context, angle: str = None):
     """为图片添加SEO优化的Alt标签"""
     enhanced_dict = image_dict.copy()
     
+    # Angle-aware alt suffix to improve relevance (SEO + AdSense compliance)
+    angle_suffix = {
+        'setup': 'installation & setup',
+        'troubleshooting': 'fix common issues',
+        'alternatives': 'best alternatives',
+        'use-case': 'real-world use cases',
+        'vs': 'side-by-side comparison'
+    }.get((angle or '').lower(), '')
+
+    def _with_angle(text: str) -> str:
+        return f"{text} - {angle_suffix}" if angle_suffix else text
+
     alt_templates = {
-        "hero_image": f"{keyword} hero guide for smart home automation",
-        "product_1": f"Top rated {keyword} - Premium choice for smart homes", 
-        "product_2": f"Value {keyword} - Budget-friendly smart home solution",
-        "product_3": f"Professional grade {keyword} - Advanced features",
-        "comparison": f"{keyword} comparison chart - Features and pricing guide",
+        "hero_image": _with_angle(f"{keyword} hero guide for smart home automation"),
+        "product_1": _with_angle(f"Top rated {keyword} - Premium choice for smart homes"), 
+        "product_2": _with_angle(f"Value {keyword} - Budget-friendly smart home solution"),
+        "product_3": _with_angle(f"Professional grade {keyword} - Advanced features"),
+        "comparison": _with_angle(f"{keyword} comparison chart - Features and pricing guide"),
     }
     
     # 创建Alt标签键值对列表，避免在遍历时修改字典
@@ -107,7 +119,7 @@ def _add_seo_alt_tags(image_dict, keyword, context):
         if key in alt_templates:
             alt_items.append((f"{key}_alt", alt_templates[key]))
         else:
-            alt_items.append((f"{key}_alt", f"{keyword} - {context} smart home device"))
+            alt_items.append((f"{key}_alt", _with_angle(f"{keyword} - {context} smart home device")))
     
     # 添加Alt标签到字典
     for alt_key, alt_value in alt_items:
@@ -208,8 +220,8 @@ def generate_enhanced_article_content(keyword, category, angle: str = None):
     else:
         title = random.choice(title_patterns)
     
-    # 获取产品图片
-    product_images = get_product_images(keyword, category)
+    # 获取产品图片（角度敏感的ALT优化）
+    product_images = get_product_images(keyword, category, angle)
     
     # 诚实的引言模式
     intro_hooks = [
