@@ -85,6 +85,11 @@ jobs:
             echo "No generated_files.txt present; skipping uniqueness guard."
           fi
 
+      - name: Generate image sitemap
+        if: steps.trending_check.outputs.has_new_content == 'true'
+        run: |
+          python scripts/generate_image_sitemap.py || true
+
       - name: Ensure featured images (relevant & valid)
         if: steps.trending_check.outputs.has_new_content == 'true'
         run: |
@@ -99,6 +104,7 @@ jobs:
             git add content/articles/*.md
             git add data/realtime_trends/ 2>/dev/null || true
             git add data/generation_history/ 2>/dev/null || true
+            git add static/sitemap-images.xml 2>/dev/null || true
             current_time=$(date '+%Y-%m-%d %H:%M:%S UTC')
             articles_count="${{ steps.trending_check.outputs.generated_articles }}"
             git commit -m "Realtime: Generated ${articles_count} trending articles - ${current_time} (CI)"

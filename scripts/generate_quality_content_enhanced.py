@@ -77,7 +77,8 @@ def get_product_images(keyword, category, angle: str = None):
     keyword_lower = keyword.lower()
     for key_pattern, images in comprehensive_image_mapping.items():
         if key_pattern in keyword_lower:
-            return _add_seo_alt_tags(images, keyword, key_pattern, angle)
+            enriched = _add_seo_alt_tags(images, keyword, key_pattern, angle)
+            return _apply_angle_image_mapping(enriched, angle)
     
     # 默认图片
     default_images = {
@@ -87,7 +88,7 @@ def get_product_images(keyword, category, angle: str = None):
         "comparison": f"{base_url}general/smart-home-comparison.jpg",
     }
     
-    return _add_seo_alt_tags(default_images, keyword, "smart home", angle)
+    return _apply_angle_image_mapping(_add_seo_alt_tags(default_images, keyword, "smart home", angle), angle)
 
 def _add_seo_alt_tags(image_dict, keyword, context, angle: str = None):
     """为图片添加SEO优化的Alt标签"""
@@ -126,6 +127,29 @@ def _add_seo_alt_tags(image_dict, keyword, context, angle: str = None):
         enhanced_dict[alt_key] = alt_value
     
     return enhanced_dict
+
+def _apply_angle_image_mapping(images: dict, angle: str | None) -> dict:
+    """Adjust hero/product image preference by angle to better match intent."""
+    if not angle:
+        return images
+    a = (angle or '').lower()
+    out = dict(images)
+
+    def promote_to_hero(src_key: str):
+        path = images.get(src_key)
+        if path:
+            out['hero_image'] = path
+            alt = images.get(f"{src_key}_alt")
+            if alt:
+                out['hero_image_alt'] = alt
+
+    if a in ('vs', 'alternatives'):
+        promote_to_hero('comparison')
+    elif a == 'troubleshooting':
+        promote_to_hero('product_3')
+    elif a == 'use-case':
+        promote_to_hero('product_2')
+    return out
 
 def load_trending_keywords():
     """加载关键词数据，包含商业意图和难度分析"""

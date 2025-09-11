@@ -142,6 +142,10 @@ jobs:
         run: |
           python scripts/fix_featured_images.py || true
 
+      - name: Generate image sitemap
+        run: |
+          python scripts/generate_image_sitemap.py || true
+
       - name: Content uniqueness guard
         run: |
           if [ -f generated_files.txt ]; then
@@ -161,6 +165,7 @@ jobs:
           git config --local user.name "GitHub Action"
           
           git add content/articles/*.md
+          git add static/sitemap-images.xml 2>/dev/null || true
           
           if ! git diff --staged --quiet; then
             current_date=$(date '+%Y-%m-%d')
