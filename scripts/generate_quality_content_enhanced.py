@@ -282,7 +282,7 @@ We do not conduct physical product testing. Our recommendations are based on spe
 
 ### 1. Premium Choice - High-End {keyword.title()}
 
-![{product_images.get('product_1_alt', f'{keyword} premium features overview')}]({product_images.get('product_1', '')})
+    ![{product_images.get('product_1_alt', f'{keyword} premium features overview')}]({product_images.get('product_1', '')} "{product_images.get('product_1_alt', f'{keyword} premium features overview')}")
 
 **Ideal For:** Users who prioritize advanced features and long-term reliability
 **Not Ideal For:** Budget-conscious buyers or those needing basic functionality only
@@ -313,7 +313,7 @@ We do not conduct physical product testing. Our recommendations are based on spe
 
 ### 2. Value Choice - Mid-Range {keyword.title()}
 
-![{product_images.get('product_2_alt', f'{keyword} value models comparison')}]({product_images.get('product_2', '')})
+    ![{product_images.get('product_2_alt', f'{keyword} value models comparison')}]({product_images.get('product_2', '')} "{product_images.get('product_2_alt', f'{keyword} value models comparison')}")
 
 **Ideal For:** Most households seeking reliable performance at reasonable cost
 **Not Ideal For:** Users needing premium features or extremely tight budgets
@@ -344,7 +344,7 @@ We do not conduct physical product testing. Our recommendations are based on spe
 
 ### 3. Budget Option - Entry-Level {keyword.title()}
 
-![{product_images.get('product_3_alt', f'{keyword} budget-friendly options')}]({product_images.get('product_3', '')})
+![{product_images.get('product_3_alt', f'{keyword} budget-friendly options')}]({product_images.get('product_3', '')} "{product_images.get('product_3_alt', f'{keyword} budget-friendly options')}")
 
 **Ideal For:** Budget-conscious users or those trying smart home technology
 **Not Ideal For:** Users needing advanced features or premium reliability
@@ -578,7 +578,7 @@ Remember to verify current pricing and availability, as market conditions change
 
 {random.choice(intro_context)} Whether you're a tech enthusiast looking to automate your home or a beginner exploring smart home technology, this guide will help you make an informed decision.
 
-![{product_images.get('hero_image_alt', f'{keyword} hero guide for smart home automation')}]({product_images.get('hero_image', '')})
+    ![{product_images.get('hero_image_alt', f'{keyword} hero guide for smart home automation')}]({product_images.get('hero_image', '')} "{product_images.get('hero_image_alt', f'{keyword} hero guide for smart home automation')}")
 
 *Complete {keyword} buying guide with honest assessments and research-based recommendations*
 
