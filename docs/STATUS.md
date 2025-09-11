@@ -1,6 +1,6 @@
 # Project Status – AI Smart Home Hub
 
-Updated: 2025-09-11 22:45
+Updated: 2025-09-11 22:55
 
 - Domain: ai-smarthomehub.com (configured as baseURL)
 - Current: Application prep phase — fix UX and duplication first
@@ -30,7 +30,14 @@ Updated: 2025-09-11 22:45
 
 - Hotfix (applied):
   - Sticky navbar enforced in `static/css/critical.css` (works even if `main.css` delays)
-  - Featured images capped height and object-fit cover to prevent overlaying content
+  - Article header is non-sticky; featured image moved below header to preserve above-the-fold readability
+  - Featured images capped height (desktop 300px, mobile 200px) and object-fit cover
+  - Top ad slot disabled via config until AdSense approval
+  - Newsletter inputs unified (white background, consistent placeholders)
+
+Machine-readable summaries:
+- Status JSON: `docs/status_summary.json`
+- TODO JSON: `docs/todo_backlog.json`
 
 - Short-term (today–tomorrow):
   - Clamp reading width to 720–800px for articles

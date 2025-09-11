@@ -74,3 +74,11 @@ Domain status: ai-smarthomehub.com configured as baseURL and live.
 7. Unit tests for the scheduler, similarity guard, and gating functions.
 8. Frontend modernization: local Tailwind build (no CDN), clamp reading width (720–800px), ensure TOC/anchors and sticky sidebar on desktop.
 
+## Frontend Status (Today)
+
+- Fixed overlay: removed global sticky header; article header forced non‑sticky; navbar fixed with high z‑index.
+- Above‑the‑fold improved: moved featured image below header; tightened max‑height (desktop 300px, mobile 200px).
+- Top ad slot: disabled via `config.yaml` until AdSense approval (`show_top_slot: false`).
+- Newsletter inputs: unified white background/border/placeholder in homepage and footer forms.
+- Body offset: added top padding to prevent fixed navbar covering content.
+
