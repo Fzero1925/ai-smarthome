@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       article_count:
-        description: 'Number of articles to generate'
+        description: 'Number of articles to generate (min 2, max 4)'
         required: false
-        default: '3'
+        default: '2'
         type: string
       force_generation:
         description: 'Force generation even if recent articles exist'
@@ -106,8 +106,11 @@ jobs:
             echo "reason=daily_content_schedule" >> $GITHUB_OUTPUT
           fi
           
-          # Set target article count (default 1, can be overridden)
-          article_count="${{ github.event.inputs.article_count || '1' }}"
+          # Set target article count (default 2; clamp 2..4)
+          article_count="${{ github.event.inputs.article_count || '2' }}"
+          if ! [[ "$article_count" =~ ^[0-9]+$ ]]; then article_count=2; fi
+          if [ "$article_count" -lt 2 ]; then article_count=2; fi
+          if [ "$article_count" -gt 4 ]; then article_count=4; fi
           echo "target_count=$article_count" >> $GITHUB_OUTPUT
 
       - name: Refresh multi-source trending cache
@@ -146,13 +149,14 @@ jobs:
         run: |
           python scripts/generate_image_sitemap.py || true
 
-      - name: Content uniqueness guard
+      - name: Content uniqueness guard (3-month, 30% max similarity)
         run: |
           if [ -f generated_files.txt ]; then
             echo "Checking uniqueness of generated content..."
             while IFS= read -r file; do
               if [ -f "$file" ]; then
-                python scripts/content_uniqueness_guard.py --target "$file" --threshold 0.88 --days 30 || echo "WARNING: Similar content detected for $file"
+                python scripts/content_uniqueness_guard.py --target "$file" --threshold 0.30 --days 90 \
+                  --cache data/content_fingerprints.json --update-cache --simhash-hamm 12 --config config/uniqueness.yml || echo "WARNING: Similar content detected for $file"
               fi
             done < generated_files.txt
           else
@@ -165,6 +169,7 @@ jobs:
           git config --local user.name "GitHub Action"
           
           git add content/articles/*.md
+          git add data/content_fingerprints.json 2>/dev/null || true
           git add static/sitemap-images.xml 2>/dev/null || true
           
           if ! git diff --staged --quiet; then

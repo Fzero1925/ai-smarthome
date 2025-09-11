@@ -71,14 +71,15 @@ jobs:
             ARGS="$ARGS --check-only"
           fi
           python scripts/realtime_workflow.py $ARGS --max-articles $MAX_ARTICLES
-      - name: Content uniqueness guard
+      - name: Content uniqueness guard (3-month, 30% max similarity)
         if: steps.trending_check.outputs.has_new_content == 'true'
         run: |
           if [ -f generated_files.txt ]; then
             echo "Checking uniqueness of generated content..."
             while IFS= read -r file; do
               if [ -f "$file" ]; then
-                python scripts/content_uniqueness_guard.py --target "$file" --threshold 0.88 --days 30 || echo "WARNING: Similar content detected for $file"
+                python scripts/content_uniqueness_guard.py --target "$file" --threshold 0.30 --days 90 \
+                  --cache data/content_fingerprints.json --update-cache --simhash-hamm 12 --config config/uniqueness.yml || echo "WARNING: Similar content detected for $file"
               fi
             done < generated_files.txt
           else
@@ -102,6 +103,7 @@ jobs:
           git config --local user.name "GitHub Action - Realtime Trending"
           if [ -n "$(git status --porcelain content/articles/*.md 2>/dev/null)" ]; then
             git add content/articles/*.md
+            git add data/content_fingerprints.json 2>/dev/null || true
             git add data/realtime_trends/ 2>/dev/null || true
             git add data/generation_history/ 2>/dev/null || true
             git add static/sitemap-images.xml 2>/dev/null || true

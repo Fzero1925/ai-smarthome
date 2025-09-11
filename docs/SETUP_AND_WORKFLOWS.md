@@ -36,3 +36,10 @@ Add these to GitHub → Repository Settings → Secrets and variables → Action
 - Missing Reddit/YouTube keys: analyzer falls back to simulated data; logs warnings.
 - Local Git push requires credentials: use `scripts/quick_commit_push.py` or configure PAT/credential helper.
 
+## Notes (Updated Defaults)
+
+- Daily Content default `article_count` is 2 and clamped to 2–4.
+- Content uniqueness guard uses cosine similarity threshold 0.30 over 90 days (≥30% treated as duplicate).
+- SimHash precheck enabled (64‑bit Hamming ≤ 12 considered near‑duplicate), with cache at `data/content_fingerprints.json`.
+- Section‑level TF‑IDF check enabled for sections ≥200 words at 0.45; excluded headings and thresholds configurable in `config/uniqueness.yml`.
+

@@ -14,6 +14,7 @@ body {
   line-height: 1.6;
   color: #333;
   background-color: #fff;
+  padding-top: 80px; /* 为sticky导航栏留出空间 */
 }
 
 .container {
@@ -141,13 +142,18 @@ tr:hover {
 .article {
   background: white;
   margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
 }
 
 .article-header {
   text-align: center;
   margin-bottom: 2rem;
+  padding-top: 2rem;
   padding-bottom: 2rem;
   border-bottom: 2px solid #f8f9fa;
+  position: relative;
+  z-index: 1;
 }
 
 .article-title {
@@ -155,6 +161,8 @@ tr:hover {
   margin-bottom: 1rem;
   color: #2c3e50;
   line-height: 1.2;
+  position: relative;
+  z-index: 1;
 }
 
 .article-meta {
@@ -186,6 +194,38 @@ tr:hover {
   margin: 0 auto 2rem auto;
   font-size: 1.1rem;
   line-height: 1.8;
+  position: relative;
+  z-index: 2;
+}
+
+/* Table of Contents - enhanced readability */
+.table-of-contents {
+  background: #f8f9fa;
+  border-left: 4px solid #007bff;
+  border-radius: 0 8px 8px 0;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0 2rem 0;
+}
+.table-of-contents h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  color: #2c3e50;
+}
+.table-of-contents a {
+  text-decoration: none;
+}
+.table-of-contents a:hover {
+  text-decoration: underline;
+}
+
+@media (min-width: 1024px) {
+  .table-of-contents {
+    position: sticky;
+    top: 96px; /* below sticky navbar */
+    max-height: calc(100vh - 120px);
+    overflow: auto;
+  }
 }
 
 .article-content h2 {
@@ -624,6 +664,8 @@ tr:hover {
   overflow: hidden;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 1;
 }
 
 .featured-image {
@@ -635,6 +677,8 @@ tr:hover {
   border-radius: 12px;
   display: block;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 /* Responsive featured image */

@@ -4,6 +4,8 @@ Date: 2025-09-11
 
 This document summarizes the current state of the project after recent work to make trending discovery smarter and content generation monetization-ready.
 
+Domain status: ai-smarthomehub.com configured as baseURL and live.
+
 ## What’s Implemented
 
 - Multi‑source trending cache
@@ -34,8 +36,12 @@ This document summarizes the current state of the project after recent work to m
   - Realtime selection now estimates an opportunity score (0–100) from v2 weights and includes it in gating alongside trend, urgency, search volume, and competition.
 
 - Default daily volume and CI integration
-  - Daily workflow default article_count set to 3 (configurable via manual dispatch input).
+  - Daily workflow default article_count set to 2 (configurable; clamped 2–4).
   - Daily flow refreshes trending cache then schedules the lineup before generation.
+
+- Frontend critical patch (today)
+  - Sticky navbar enforced in critical CSS to remain visible while scrolling (works even if main CSS loads late).
+  - Featured image capped height/object-fit cover to avoid covering text on article pages.
 
 ## Verified Locally
 
@@ -48,6 +54,7 @@ This document summarizes the current state of the project after recent work to m
 - Reddit 401: if Reddit secrets are missing/invalid, analyzer falls back to simulated data and logs warnings.
 - Windows console encoding: we added stdout/stderr UTF‑8 wrappers in scripts that print Unicode icons to avoid GBK encode errors.
 - Push via CLI requires valid local GitHub credentials (PAT/credential helper). Our local quick push failed due to missing credentials; CI will run after repo push.
+- UX: Some users reported the navbar not visible on scroll and large featured images overlaying text. Critical CSS patch applied; further polishing planned.
 
 ## Artifacts Updated
 
@@ -65,4 +72,5 @@ This document summarizes the current state of the project after recent work to m
 5. Amazon PA‑API integration (when approved): switch from simulated Amazon trends to live PA‑API signals and deepen monetization sections.
 6. Replace pytrends deprecated params with `allowed_methods` and add lightweight rate limiting/rotating proxies if needed.
 7. Unit tests for the scheduler, similarity guard, and gating functions.
+8. Frontend modernization: local Tailwind build (no CDN), clamp reading width (720–800px), ensure TOC/anchors and sticky sidebar on desktop.
 
