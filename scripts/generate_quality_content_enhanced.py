@@ -605,7 +605,8 @@ Modern {keyword} serve as important components in connected home ecosystems, but
         'metadata': {
             'description': f'Research-based guide to {keyword} with honest reviews, detailed comparisons, and practical buying advice.',
             'categories': [category.replace('_', '-')],
-            'tags': [keyword, 'smart home', 'buying guide', 'reviews'] + ([angle] if angle else [])
+            'tags': [keyword, 'smart home', 'buying guide', 'reviews'] + ([angle] if angle else []),
+            'angle': angle
         }
     }
 
@@ -622,7 +623,7 @@ def create_hugo_article(article_data, output_dir):
     # 设置featured_image
     category = article_data['metadata']['categories'][0]
     try:
-        _imgs = get_product_images(keyword, category)
+        _imgs = get_product_images(keyword, category, article_data['metadata'].get('angle'))
         hero_image_url = _imgs.get('hero_image', '/images/default-article.jpg')
     except Exception:
         hero_image_url = '/images/default-article.jpg'
