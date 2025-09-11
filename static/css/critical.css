@@ -24,9 +24,11 @@ header {
 
 /* Ensure navbar stays visible on scroll on all pages */
 .navbar {
-    position: sticky;
+    position: fixed;
     top: 0;
-    z-index: 9999;
+    left: 0;
+    right: 0;
+    z-index: 10000;
     width: 100%;
     background: #fff;
 }
