@@ -120,21 +120,6 @@
     <!-- Enhanced Article Header with Core Web Vitals Optimization -->
     <header class="article-header">
       <h1 class="article-title">{{ .Title }}</h1>
-      
-      <!-- Featured Image with Core Web Vitals Optimization -->
-      {{ if .Params.featured_image }}
-      <div class="featured-image-container">
-        <img src="{{ .Params.featured_image }}" 
-             alt="{{ if .Params.featured_image_alt }}{{ .Params.featured_image_alt }}{{ else }}{{ .Title }}{{ end }}"
-             class="featured-image"
-             loading="eager"
-             decoding="async"
-             width="1200"
-             height="630"
-             fetchpriority="high">
-      </div>
-      {{ end }}
-      
       <div class="article-meta">
         <time class="published" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
           <i class="fa fa-calendar"></i> {{ .Date.Format "January 2, 2006" }}
@@ -187,6 +172,20 @@
         {{ end }}
       </div>
     </header>
+
+    <!-- Move featured image below header to avoid overlaying nav/meta -->
+    {{ if .Params.featured_image }}
+    <div class="featured-image-container">
+      <img src="{{ .Params.featured_image }}" 
+           alt="{{ if .Params.featured_image_alt }}{{ .Params.featured_image_alt }}{{ else }}{{ .Title }}{{ end }}"
+           class="featured-image"
+           loading="eager"
+           decoding="async"
+           width="1200"
+           height="630"
+           fetchpriority="high">
+    </div>
+    {{ end }}
 
     <!-- Top AdSense Slot -->
     {{ partial "adsense.html" . }}
