@@ -184,26 +184,30 @@
 .input-group {
   display: flex;
   margin-bottom: 0.5rem;
+  background: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .newsletter-form input[type="email"] {
   flex: 1;
   padding: 0.75rem 1rem;
-  border: 2px solid #34495e;
+  border: 2px solid #e9ecef;
   border-right: none;
   border-radius: 6px 0 0 6px;
-  background: #34495e;
-  color: #ecf0f1;
+  background: #ffffff;
+  color: #2c3e50;
   outline: none;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .newsletter-form input[type="email"]:focus {
-  border-color: #3498db;
+  border-color: #80bdff;
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.15);
 }
 
 .newsletter-form input[type="email"]::placeholder {
-  color: #95a5a6;
+  color: #6c757d;
 }
 
 .subscribe-btn {
