@@ -8,7 +8,7 @@ date: 2025-09-11 13:34:03.405730+00:00
 description: Research-based guide to smart thermostat energy savings with honest reviews,
   detailed comparisons, and practical buying advice.
 featured: true
-featured_image: /images/products/smart-thermostats/hero.jpg
+featured_image: /images/products/smart-thermostats/smart-thermostat-hero.jpg
 keywords:
 - smart thermostat energy savings
 - smart home

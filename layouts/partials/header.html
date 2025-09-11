@@ -1,4 +1,4 @@
-<nav class="navbar">
+<nav class="navbar" x-data="{ mobileMenuOpen: false }">
   <div class="container">
     <div class="navbar-brand">
       <a href="{{ .Site.BaseURL }}" class="brand-link">
@@ -8,12 +8,12 @@
       </a>
     </div>
     
-    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-menu">
+    <button class="navbar-toggle" type="button" @click="mobileMenuOpen = !mobileMenuOpen">
       <span class="sr-only">Toggle navigation</span>
-      <i class="fa fa-bars"></i>
+      <i class="fa" :class="mobileMenuOpen ? 'fa-times' : 'fa-bars'"></i>
     </button>
     
-    <div class="navbar-menu" id="navbar-menu">
+    <div class="navbar-menu" :class="{ 'show': mobileMenuOpen }" @click.outside="mobileMenuOpen = false">
       <ul class="navbar-nav">
         {{ range .Site.Menus.main }}
         <li class="nav-item">
@@ -24,11 +24,11 @@
         {{ end }}
       </ul>
       
-      <!-- Search Box -->
+      <!-- Search Box with Tailwind Tech Design -->
       <div class="navbar-search">
         <form class="search-form" role="search" action="/search/" method="GET">
-          <input type="search" name="q" class="search-input" placeholder="Search smart home devices..." aria-label="Search" required>
-          <button type="submit" class="search-button">
+          <input type="search" name="q" class="search-input bg-tech-50 border-tech-200 focus:border-tech-500 focus:ring-2 focus:ring-tech-200 transition-all duration-300" placeholder="Search smart home devices..." aria-label="Search" required>
+          <button type="submit" class="search-button bg-gradient-to-r from-tech-500 to-tech-600 hover:from-tech-600 hover:to-tech-700 transform hover:scale-105 transition-all duration-300">
             <i class="fa fa-search"></i>
           </button>
         </form>
@@ -214,22 +214,4 @@
 }
 </style>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const toggle = document.querySelector('.navbar-toggle');
-  const menu = document.querySelector('.navbar-menu');
-  
-  if (toggle && menu) {
-    toggle.addEventListener('click', function() {
-      menu.classList.toggle('show');
-    });
-  }
-  
-  // Close menu when clicking outside
-  document.addEventListener('click', function(e) {
-    if (!toggle.contains(e.target) && !menu.contains(e.target)) {
-      menu.classList.remove('show');
-    }
-  });
-});
-</script>
+<!-- Alpine.js now handles mobile menu functionality - old JavaScript removed for cleaner code -->

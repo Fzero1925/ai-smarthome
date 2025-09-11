@@ -616,6 +616,40 @@ tr:hover {
   100% { transform: rotate(360deg); }
 }
 
+/* Featured Image Styles - Fix for display issues */
+.featured-image-container {
+  max-width: 100%;
+  margin: 2rem auto;
+  text-align: center;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.featured-image {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Responsive featured image */
+@media (max-width: 768px) {
+  .featured-image-container {
+    margin: 1rem auto;
+    border-radius: 8px;
+  }
+  
+  .featured-image {
+    max-height: 250px;
+    border-radius: 8px;
+  }
+}
+
 /* Utility Classes */
 .text-center { text-align: center; }
 .text-left { text-align: left; }

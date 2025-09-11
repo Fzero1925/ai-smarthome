@@ -964,7 +964,8 @@ _Claude Code 测试_"""
             
         elif args.type == 'realtime_trending':
             message = format_realtime_trending_message()
-            \n        elif args.type == 'custom':
+            
+        elif args.type == 'custom':
             message = args.message or "📢 自定义通知"
             
         else:

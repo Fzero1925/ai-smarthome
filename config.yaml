@@ -125,12 +125,6 @@ menu:
     - name: 'Cleaning' 
       url: '/categories/robot-vacuums/'
       weight: 50
-    - name: 'About Us'
-      url: '/about/'
-      weight: 80
-    - name: 'Contact'
-      url: '/contact/'
-      weight: 90
 
 # Taxonomy Configuration
 taxonomies:

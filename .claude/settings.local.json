@@ -53,7 +53,10 @@
       "Bash(move test_optimized_template.py oldfile)",
       "WebFetch(domain:ai-smarthomehub.com)",
       "Bash(nslookup:*)",
-      "WebFetch(domain:www.ai-smarthomehub.com)"
+      "WebFetch(domain:www.ai-smarthomehub.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(git fetch:*)",
+      "Read(//d/**)"
     ],
     "deny": [],
     "ask": []
