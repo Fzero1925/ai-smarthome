@@ -144,18 +144,39 @@ class RealtimeContentTrigger:
             
             if not trending_topics:
                 self.logger.info("📊 未发现新的热点话题")
-                return {'status': 'no_trends', 'action': 'none'}
+                empty_summary = self._generate_trigger_summary([], [])
+                empty_summary.update({'status': 'no_trends', 'action': 'none'})
+                return empty_summary
                 
         except Exception as e:
             self.logger.error(f"❌ 趋势分析失败: {e}")
-            return {'status': 'error', 'message': str(e)}
+            return {
+                'timestamp': datetime.now(timezone.utc).isoformat(),
+                'status': 'error',
+                'action': 'error',
+                'analysis_summary': {
+                    'total_topics_analyzed': 0,
+                    'triggers_attempted': 0,
+                    'successful_generations': 0,
+                    'failed_generations': 0
+                },
+                'generated_articles': [],
+                'failed_attempts': [],
+                'top_topics_not_triggered': [],
+                'next_monitoring_cycle': (
+                    datetime.now(timezone.utc) + timedelta(minutes=30)
+                ).isoformat(),
+                'message': str(e)
+            }
         
         # 评估是否需要立即触发
         trigger_candidates = self._evaluate_trigger_candidates(trending_topics)
         
         if not trigger_candidates:
             self.logger.info("⏳ 暂无符合触发条件的热点话题")
-            return {'status': 'no_triggers', 'topics_count': len(trending_topics)}
+            summary = self._generate_trigger_summary([], trending_topics)
+            summary.update({'status': 'no_triggers', 'action': 'none'})
+            return summary
         
         # 执行触发
         trigger_results = []
@@ -307,6 +328,11 @@ class RealtimeContentTrigger:
         start_time = datetime.now(timezone.utc)
         
         try:
+            angle = 'use-case' if any(k in topic.keyword.lower() for k in ['outdoor','pet','apartment','garage','wireless','energy']) else 'best'
+            one_item_lineup = [{ 'keyword': topic.keyword, 'category': topic.category, 'angle': angle, 'trend_score': topic.trend_score, 'reason': 'Realtime trigger' }]
+            os.makedirs('data', exist_ok=True)
+            with open('data/daily_lineup_latest.json', 'w', encoding='utf-8') as f:
+                json.dump(one_item_lineup, f, indent=2, ensure_ascii=False)
             # 调用文章生成脚本
             result = subprocess.run([
                 'python', 'scripts/workflow_quality_enforcer.py',

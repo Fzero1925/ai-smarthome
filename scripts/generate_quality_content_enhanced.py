@@ -638,6 +638,21 @@ def _get_used_keywords_history(days: int = 30):
 
 def load_trending_keywords_filtered():
     """Load keywords, filter out recently used, and shuffle for diversity."""
+    # Prefer scheduled lineup if available
+    try:
+        import os as _os, json as _json
+        from datetime import datetime as _dt
+        _today = _dt.now().strftime('%Y%m%d')
+        for _p in [_os.path.join('data', f'daily_lineup_{_today}.json'), _os.path.join('data', 'daily_lineup_latest.json')]:
+            if _os.path.exists(_p):
+                with open(_p, 'r', encoding='utf-8') as f:
+                    lineup = _json.load(f)
+                if isinstance(lineup, list) and lineup:
+                    print(f"?? Using scheduled lineup (filtered): {len(lineup)} items")
+                    return lineup
+    except Exception:
+        pass
+
     items = load_trending_keywords()
     used = _get_used_keywords_history()
     before = len(items)
@@ -690,6 +705,23 @@ def main():
     # 生成文章
     generated_files = []
     used_keywords = []
+    # Supplement to ensure at least requested count
+    try:
+        needed = max(0, args.count - len(trends))
+        if needed > 0:
+            base_kws = {str(x.get('keyword', '')).lower().strip() for x in trends}
+            extra_pool = load_trending_keywords()
+            for item in extra_pool:
+                kw = str(item.get('keyword', '')).lower().strip()
+                if not kw or kw in base_kws:
+                    continue
+                trends.append(item)
+                base_kws.add(kw)
+                if len(trends) >= args.count:
+                    break
+    except Exception:
+        pass
+    
     article_count = min(args.count, len(trends))
     
     # Helpers for cross-article similarity

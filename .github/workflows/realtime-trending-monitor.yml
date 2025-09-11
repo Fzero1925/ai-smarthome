@@ -2,7 +2,7 @@ name: Realtime Trending Monitor & Content Generator
 
 on:
   schedule:
-    - cron: '*/30 6-22 * * *'
+    - cron: '*/15 * * * *'
   workflow_dispatch:
     inputs:
       force_analysis:
@@ -56,6 +56,8 @@ jobs:
           mkdir -p data/generation_history
           mkdir -p data/trending_cache
 
+          echo "PYTHONIOENCODING=utf-8" >> $GITHUB_ENV
+
           echo "TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}" >> $GITHUB_ENV
           echo "TELEGRAM_CHAT_ID=${{ secrets.TELEGRAM_CHAT_ID }}" >> $GITHUB_ENV
           echo "REDDIT_CLIENT_ID=${{ secrets.REDDIT_CLIENT_ID }}" >> $GITHUB_ENV
@@ -68,7 +70,7 @@ jobs:
         id: trending_check
         run: |
           echo "Starting realtime trending analysis..."
-          FORCE_ANALYSIS="${{ github.event.inputs.force_analysis || 'false' }}"
+          FORCE_ANALYSIS="${{ github.event.inputs.force_analysis || 'true' }}"
           CHECK_ONLY="${{ github.event.inputs.check_only || 'false' }}"
           MAX_ARTICLES="${{ github.event.inputs.max_articles || '2' }}"
 
@@ -81,6 +83,20 @@ jobs:
           fi
 
           python scripts/realtime_workflow.py $ARGS --max-articles $MAX_ARTICLES
+
+      - name: Content uniqueness guard
+        if: steps.trending_check.outputs.has_new_content == 'true'
+        run: |
+          if [ -f generated_files.txt ]; then
+            echo "Checking uniqueness of generated content..."
+            while IFS= read -r file; do
+              if [ -f "$file" ]; then
+                python scripts/content_uniqueness_guard.py --target "$file" --threshold 0.88 --days 30 || echo "WARNING: Similar content detected for $file"
+              fi
+            done < generated_files.txt
+          else
+            echo "No generated_files.txt present; skipping uniqueness guard."
+          fi
 
       - name: Commit new articles
         if: steps.trending_check.outputs.has_new_content == 'true'
@@ -119,4 +135,3 @@ jobs:
                 \"disable_web_page_preview\": true
               }" > /dev/null
           fi
-

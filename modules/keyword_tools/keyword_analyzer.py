@@ -142,6 +142,155 @@ class SmartHomeKeywordAnalyzer:
         
         # Create multi-source cache directory
         os.makedirs(self.multi_source_cache, exist_ok=True)
+
+    def analyze_multi_source_trends(self, category: Optional[str] = None, geo: str = 'US') -> List[Dict]:
+        """Aggregate multi-source trends (Reddit, YouTube) into normalized items.
+
+        Returns a list of dicts with keys:
+        - keyword, category, trend_score, competition_score, search_volume, reason
+        """
+        aggregated: List[Dict] = []
+
+        # Reddit
+        try:
+            aggregated.extend(self._collect_reddit_trends(category))
+        except Exception as e:
+            self.logger.warning(f"Reddit trends collection failed: {e}")
+
+        # YouTube
+        try:
+            aggregated.extend(self._collect_youtube_trends(category))
+        except Exception as e:
+            self.logger.warning(f"YouTube trends collection failed: {e}")
+
+        # Dedup by keyword (case-insensitive), keep max trend_score
+        dedup: Dict[str, Dict] = {}
+        for item in aggregated:
+            kw = str(item.get('keyword', '')).strip()
+            if not kw:
+                continue
+            key = kw.lower()
+            if key not in dedup or float(item.get('trend_score', 0) or 0) > float(dedup[key].get('trend_score', 0) or 0):
+                dedup[key] = item
+
+        return list(dedup.values())
+
+    def _collect_reddit_trends(self, category: Optional[str] = None) -> List[Dict]:
+        """Collect trending posts from relevant subreddits and extract keywords."""
+        results: List[Dict] = []
+        if not REDDIT_AVAILABLE:
+            return results
+        if self.reddit is None:
+            self._initialize_reddit()
+        if self.reddit is None:
+            return results
+
+        subreddits = self.config.get('reddit_subreddits', ['smarthome', 'homeautomation'])
+        limit = int(self.config.get('max_reddit_posts', 50))
+
+        for sub in subreddits:
+            try:
+                sr = self.reddit.subreddit(sub)
+                for post in sr.top(time_filter='day', limit=limit):
+                    title = str(post.title)
+                    keyword = self._extract_keyword_from_text(title)
+                    if not keyword:
+                        continue
+                    cat = self._infer_category(keyword)
+                    # Simple velocity score combining score and comments
+                    score = float(post.score or 0)
+                    comments = float(post.num_comments or 0)
+                    trend_score = max(0.0, min(1.0, (score/500.0)*0.7 + (comments/100.0)*0.3))
+                    results.append({
+                        'keyword': keyword,
+                        'category': cat,
+                        'trend_score': round(trend_score, 3),
+                        'competition_score': 0.5,
+                        'search_volume': 10000,
+                        'reason': f"Reddit r/{sub}: score={int(score)}, comments={int(comments)}"
+                    })
+            except Exception as e:
+                self.logger.debug(f"Subreddit {sub} fetch failed: {e}")
+
+        return results
+
+    def _collect_youtube_trends(self, category: Optional[str] = None) -> List[Dict]:
+        """Collect recent YouTube videos matching smart home topics and extract keywords."""
+        results: List[Dict] = []
+        if not YOUTUBE_AVAILABLE:
+            return results
+        if self.youtube is None:
+            self._initialize_youtube()
+        if self.youtube is None:
+            return results
+
+        # Use seed queries per category
+        if category and category in self.smart_home_categories:
+            seeds = self.smart_home_categories[category][:5]
+        else:
+            # flatten a few seeds from each
+            seeds = []
+            for arr in self.smart_home_categories.values():
+                seeds.extend(arr[:1])
+            seeds = seeds[:8]
+
+        try:
+            for q in seeds:
+                search = self.youtube.search().list(
+                    part='snippet',
+                    q=q,
+                    maxResults=10,
+                    order='date',
+                    type='video'
+                ).execute()
+                video_ids = [item['id']['videoId'] for item in search.get('items', []) if 'id' in item and 'videoId' in item['id']]
+                if not video_ids:
+                    continue
+                stats_resp = self.youtube.videos().list(
+                    part='statistics,snippet',
+                    id=','.join(video_ids)
+                ).execute()
+                for item in stats_resp.get('items', []):
+                    title = item.get('snippet', {}).get('title', '')
+                    keyword = self._extract_keyword_from_text(title)
+                    if not keyword:
+                        continue
+                    cat = self._infer_category(keyword)
+                    stats = item.get('statistics', {})
+                    views = float(stats.get('viewCount', 0) or 0)
+                    likes = float(stats.get('likeCount', 0) or 0)
+                    # Normalize: views 50k -> 1.0, likes 2k -> 1.0 (clamped)
+                    trend_score = max(0.0, min(1.0, (views/50000.0)*0.7 + (likes/2000.0)*0.3))
+                    results.append({
+                        'keyword': keyword,
+                        'category': cat,
+                        'trend_score': round(trend_score, 3),
+                        'competition_score': 0.6,
+                        'search_volume': 12000,
+                        'reason': f"YouTube query '{q}': views={int(views)}, likes={int(likes)}"
+                    })
+        except Exception as e:
+            self.logger.debug(f"YouTube fetch failed: {e}")
+
+        return results
+
+    def _extract_keyword_from_text(self, text: str) -> str:
+        """Extract a normalized keyword from arbitrary text using seed match and simple fallback."""
+        lowered = (text or '').lower()
+        for cat, seeds in self.smart_home_categories.items():
+            for s in seeds:
+                if s in lowered:
+                    return s
+        # fallback: first 2-3 significant words
+        tokens = [t for t in lowered.split() if t.isalnum() and len(t) > 2]
+        return ' '.join(tokens[:3]) if tokens else ''
+
+    def _infer_category(self, keyword: str) -> str:
+        kw = (keyword or '').lower()
+        for cat, seeds in self.smart_home_categories.items():
+            if any(s in kw for s in seeds):
+                return cat
+        return 'general'
         
         # Smart home product categories and seed keywords
         self.smart_home_categories = {

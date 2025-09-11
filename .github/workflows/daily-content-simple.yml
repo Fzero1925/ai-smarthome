@@ -80,6 +80,9 @@ jobs:
           # Setup analytics configuration
           python scripts/setup_analytics.py
 
+          # Ensure UTF-8 output for clean logs
+          echo "PYTHONIOENCODING=utf-8" >> $GITHUB_ENV
+
       - name: Prepare content generation
         id: check_needed
         run: |
@@ -121,6 +124,19 @@ jobs:
             python scripts/workflow_quality_enforcer.py \
               --count "${{ steps.check_needed.outputs.target_count }}" \
               --max-attempts 5
+          fi
+
+      - name: Content uniqueness guard
+        run: |
+          if [ -f generated_files.txt ]; then
+            echo "Checking uniqueness of generated content..."
+            while IFS= read -r file; do
+              if [ -f "$file" ]; then
+                python scripts/content_uniqueness_guard.py --target "$file" --threshold 0.88 --days 30 || echo "WARNING: Similar content detected for $file"
+              fi
+            done < generated_files.txt
+          else
+            echo "No generated_files.txt present; skipping uniqueness guard."
           fi
 
       - name: Commit new content

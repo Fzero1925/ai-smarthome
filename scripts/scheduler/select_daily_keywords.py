@@ -63,11 +63,27 @@ def choose_angles(keyword: str):
     kw = keyword.lower()
     # avoid vs if no clear comparator
     if " vs " in f" {kw} ":
-        return ["vs", "best", "alternatives", "setup"]
+        return ["vs", "best", "alternatives", "setup", "use-case", "troubleshooting"]
     # prefer use-case for scenario terms
     if any(t in kw for t in ["outdoor", "pet", "apartment", "garage", "dorm", "wireless", "energy"]):
-        return ["use-case", "best", "setup", "alternatives"]
+        return ["use-case", "best", "setup", "alternatives", "troubleshooting", "vs"]
     return base
+
+
+def load_angle_history(path="data/angle_history.json"):
+    if os.path.exists(path):
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception:
+            return {}
+    return {}
+
+
+def save_angle_history(history, path="data/angle_history.json"):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, 'w', encoding='utf-8') as f:
+        json.dump(history, f, indent=2, ensure_ascii=False)
 
 
 def schedule_today(count=3):
@@ -76,6 +92,7 @@ def schedule_today(count=3):
         return []
 
     used = recent_used_keywords(days=14)
+    angle_hist = load_angle_history()
     picks = []
     seen_core = set()
     used_cats = set()
@@ -101,7 +118,9 @@ def schedule_today(count=3):
             continue
 
         angle_order = choose_angles(kw)
-        angle = angle_order[0] if angle_order else 'best'
+        # Rotate angle for same canonical keyword
+        last = angle_hist.get(core, [])
+        angle = next((a for a in angle_order if a not in last[-3:]), angle_order[0])
 
         picks.append({
             'keyword': kw,
@@ -112,6 +131,8 @@ def schedule_today(count=3):
         })
         seen_core.add(core)
         used_cats.add(cat)
+        # update history in-memory (persist later)
+        angle_hist.setdefault(core, []).append(angle)
         if len(picks) >= count:
             break
 
@@ -127,7 +148,9 @@ def schedule_today(count=3):
             if not core or core in seen_core:
                 continue
             cat = str(item.get('category', 'general')).replace(' ', '_')
-            angle = choose_angles(kw)[0]
+            angle_order = choose_angles(kw)
+            last = angle_hist.get(core, [])
+            angle = next((a for a in angle_order if a not in last[-3:]), angle_order[0])
             picks.append({
                 'keyword': kw,
                 'category': cat,
@@ -136,7 +159,10 @@ def schedule_today(count=3):
                 'reason': item.get('reason', 'Selected by scheduler (relaxed)')
             })
             seen_core.add(core)
+            angle_hist.setdefault(core, []).append(angle)
 
+    # Persist updated angle history for rotation across days
+    save_angle_history(angle_hist)
     return picks
 
 
@@ -170,6 +196,7 @@ def main():
         json.dump(picks, f, indent=2, ensure_ascii=False)
     with open(latest_path, 'w', encoding='utf-8') as f:
         json.dump(picks, f, indent=2, ensure_ascii=False)
+    # Angle history already persisted in schedule_today()
 
     print(f'✅ Saved daily lineup ({len(picks)} items) → {out_path}')
     return 0
