@@ -1,1 +1,3 @@
-content/test5\smart-plug-alexa-20250910.md
+content/articles\smart-thermostat-energy-savings-20250911.md
+content/articles\best-robot-vacuum-2025-20250911.md
+content/articles\smart-light-bulbs-color-changing-20250911.md

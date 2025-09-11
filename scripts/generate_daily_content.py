@@ -594,6 +594,57 @@ def get_diverse_keyword_pool():
     random.shuffle(diverse_keywords)
     return diverse_keywords
 
+def load_trending_keywords_v2():
+    """Load trending keywords with smart de-duplication and diversity.
+    - Prefer cached list if present
+    - Filter out keywords used in last 30 days
+    - Fall back to diverse pool if cache missing
+    - Shuffle order to avoid repetition
+    """
+    import random
+
+    trending_file = "data/trending_keywords_cache.json"
+
+    # 最近30天已用关键词
+    used_keywords = {k.lower().strip() for k in get_used_keywords_history()}
+    print(f"?? Found {len(used_keywords)} recently used keywords: {', '.join(list(used_keywords)[:5])}")
+
+    # 多样化关键词池（兜底）
+    diverse_pool = get_diverse_keyword_pool()
+    fallback_data = diverse_pool[:]
+
+    # 读取缓存
+    trends = []
+    try:
+        if os.path.exists(trending_file):
+            with open(trending_file, 'r', encoding='utf-8') as f:
+                trends = json.load(f)
+            print(f"? Loaded {len(trends)} trending keywords from cache")
+    except Exception as e:
+        print(f"?? Warning: Failed to load trending keywords: {e}")
+
+    if not trends:
+        trends = fallback_data
+        print("?? Using fallback keyword data (no cached trends)")
+
+    def _canon(s: str) -> str:
+        return (s or '').lower().strip()
+
+    filtered = [t for t in trends if _canon(t.get('keyword', '')) not in used_keywords]
+    print(f"? Filtered out {len(trends)-len(filtered)} keywords used in last 30 days")
+
+    if not filtered:
+        # 兜底：从多样化池取未用的
+        fallback_filtered = [t for t in fallback_data if _canon(t.get('keyword', '')) not in used_keywords]
+        if fallback_filtered:
+            filtered = fallback_filtered
+            print(f"? Using {len(filtered)} items from diverse pool after filtering history")
+        else:
+            filtered = trends
+            print("?? No unused keywords available; falling back to original list (shuffled)")
+
+    random.shuffle(filtered)
+    return filtered
 def load_trending_keywords():
     """Load trending keywords with smart deduplication and diversity"""
     trending_file = "data/trending_keywords_cache.json"
@@ -1108,7 +1159,7 @@ def main():
         print(f"[TARGETED] 使用指定关键词: {args.keyword}")
     else:
         # Load trending keywords (including multi-source data)
-        trends = load_trending_keywords()
+        trends = load_trending_keywords_v2()
         
         # Enhance with multi-source analysis if keyword analyzer is available
         try:

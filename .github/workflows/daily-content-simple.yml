@@ -9,7 +9,7 @@ on:
       article_count:
         description: 'Number of articles to generate'
         required: false
-        default: '1'
+        default: '3'
         type: string
       force_generation:
         description: 'Force generation even if recent articles exist'
@@ -30,6 +30,9 @@ permissions:
 
 jobs:
   generate-content:
+    concurrency:
+      group: daily-content
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -54,11 +57,25 @@ jobs:
           echo "GOOGLE_ADSENSE_ID=${{ secrets.GOOGLE_ADSENSE_ID }}" >> .env
           echo "AMAZON_AFFILIATE_TAG=${{ secrets.AMAZON_AFFILIATE_TAG }}" >> .env
           echo "GOOGLE_ANALYTICS_ID=${{ secrets.GOOGLE_ANALYTICS_ID }}" >> .env
+          echo "REDDIT_CLIENT_ID=${{ secrets.REDDIT_CLIENT_ID }}" >> .env
+          echo "REDDIT_CLIENT_SECRET=${{ secrets.REDDIT_CLIENT_SECRET }}" >> .env
+          echo "REDDIT_USERNAME=${{ secrets.REDDIT_USERNAME }}" >> .env
+          echo "REDDIT_PASSWORD=${{ secrets.REDDIT_PASSWORD }}" >> .env
+          echo "YOUTUBE_API_KEY=${{ secrets.YOUTUBE_API_KEY }}" >> .env
+          echo "AMAZON_PAAPI_ACCESS_KEY=${{ secrets.AMAZON_PAAPI_ACCESS_KEY }}" >> .env
+          echo "AMAZON_PAAPI_SECRET_KEY=${{ secrets.AMAZON_PAAPI_SECRET_KEY }}" >> .env
           
           # Export environment variables for analytics setup
           export GOOGLE_ADSENSE_ID="${{ secrets.GOOGLE_ADSENSE_ID }}"
           export AMAZON_AFFILIATE_TAG="${{ secrets.AMAZON_AFFILIATE_TAG }}"
           export GOOGLE_ANALYTICS_ID="${{ secrets.GOOGLE_ANALYTICS_ID }}"
+          export REDDIT_CLIENT_ID="${{ secrets.REDDIT_CLIENT_ID }}"
+          export REDDIT_CLIENT_SECRET="${{ secrets.REDDIT_CLIENT_SECRET }}"
+          export REDDIT_USERNAME="${{ secrets.REDDIT_USERNAME }}"
+          export REDDIT_PASSWORD="${{ secrets.REDDIT_PASSWORD }}"
+          export YOUTUBE_API_KEY="${{ secrets.YOUTUBE_API_KEY }}"
+          export AMAZON_PAAPI_ACCESS_KEY="${{ secrets.AMAZON_PAAPI_ACCESS_KEY }}"
+          export AMAZON_PAAPI_SECRET_KEY="${{ secrets.AMAZON_PAAPI_SECRET_KEY }}"
           
           # Setup analytics configuration
           python scripts/setup_analytics.py
@@ -77,6 +94,14 @@ jobs:
           # Set target article count (default 1, can be overridden)
           article_count="${{ github.event.inputs.article_count || '1' }}"
           echo "target_count=$article_count" >> $GITHUB_OUTPUT
+
+      - name: Refresh multi-source trending cache
+        run: |
+          python scripts/refresh_trending_keywords.py
+
+      - name: Select daily lineup (2-4 diverse topics)
+        run: |
+          python scripts/scheduler/select_daily_keywords.py --count "${{ steps.check_needed.outputs.target_count }}"
 
       - name: Generate and enforce quality (PQS v3/v2)
         env:

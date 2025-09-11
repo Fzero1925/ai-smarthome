@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
 实时文章生成触发器 - Realtime Content Generation Trigger
 当检测到高价值热点话题时，立即触发文章生成，不受定时限制
@@ -205,24 +205,39 @@ class RealtimeContentTrigger:
         return candidates[:2]  # 最多同时生成2篇文章
     
     def _meets_basic_criteria(self, topic: TrendingTopic) -> bool:
-        """检查话题是否满足基本触发条件"""
+        """检查话题是否满足触发门槛"""
+        opp = self._estimate_opportunity_score(topic)
         criteria_checks = {
             'trend_score': topic.trend_score >= self.trigger_thresholds['min_trend_score'],
             'commercial_value': topic.commercial_value >= self.trigger_thresholds['min_commercial_value'],
             'urgency_score': topic.urgency_score >= self.trigger_thresholds['min_urgency_score'],
             'search_volume': topic.search_volume_est >= self.trigger_thresholds['min_search_volume'],
-            'competition_ok': self._check_competition_level(topic.competition_level)
+            'competition_ok': self._check_competition_level(topic.competition_level),
+            'opportunity_score': opp >= self.trigger_thresholds.get('min_opportunity_score', 70)
         }
         
         passed_checks = sum(criteria_checks.values())
-        required_checks = 4  # 至少通过4项检查
+        required_checks = 4
         
         if passed_checks >= required_checks:
-            self.logger.info(f"🎯 '{topic.keyword}' 通过 {passed_checks}/5 项基本检查")
+            self.logger.info(f"✅ '{topic.keyword}' 通过 {passed_checks}/{len(criteria_checks)} 项阈值 (opp={opp:.1f})")
             return True
         else:
-            self.logger.debug(f"❌ '{topic.keyword}' 仅通过 {passed_checks}/5 项检查: {criteria_checks}")
+            self.logger.debug(f"ℹ️ '{topic.keyword}' 未通过 {passed_checks}/{len(criteria_checks)} 项: {criteria_checks} (opp={opp:.1f})")
             return False
+
+    def _estimate_opportunity_score(self, topic: TrendingTopic) -> float:
+        """Estimate opportunity score (0-100) from topic fields and v2 weights."""
+        weights = self.v2_config.get('weights', {"T":0.35,"I":0.30,"S":0.15,"F":0.20,"D_penalty":0.6})
+        T = max(0.0, min(1.0, float(topic.trend_score)))
+        I = max(0.0, min(1.0, float(topic.commercial_value)))
+        S = 0.5  # neutral seasonality
+        F = 0.8  # site fit approximation
+        comp_map = {'Low':0.2,'Low-Medium':0.3,'Medium':0.5,'Medium-High':0.7,'High':0.85}
+        D = comp_map.get(topic.competition_level, 0.5)
+        base = weights.get('T',0.35)*T + weights.get('I',0.30)*I + weights.get('S',0.15)*S + weights.get('F',0.20)*F
+        score = 100.0 * base * (1.0 - weights.get('D_penalty',0.6) * D)
+        return max(0.0, min(100.0, round(score, 2)))
     
     def _check_competition_level(self, competition: str) -> bool:
         """检查竞争度是否可接受"""
@@ -294,12 +309,12 @@ class RealtimeContentTrigger:
         try:
             # 调用文章生成脚本
             result = subprocess.run([
-                'python', 'scripts/generate_daily_content.py',
+                'python', 'scripts/workflow_quality_enforcer.py',
                 '--count', '1',
-                '--keyword', topic.keyword,
-                '--category', topic.category,
-                '--priority', 'urgent'
-            ], capture_output=True, text=True, timeout=300)  # 5分钟超时
+                
+                
+                
+            ], capture_output=True, text=True, timeout=600)
             
             if result.returncode == 0:
                 # 生成成功

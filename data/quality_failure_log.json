@@ -6,5 +6,13 @@
     "attempt_count": 2,
     "quality_score": 0.8,
     "threshold_required": 0.9
+  },
+  {
+    "timestamp": "2025-09-11T13:34:05.409244",
+    "keyword": "best robot vacuum 2025",
+    "reason": "修复5次仍未达到90.0%标准",
+    "attempt_count": 5,
+    "quality_score": 0.867,
+    "threshold_required": 0.9
   }
 ]

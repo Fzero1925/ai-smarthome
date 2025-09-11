@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
 Enhanced Daily Content Generation Script - Commercial Compliance Version
 Generates high-quality, honest, and SEO-optimized smart home product reviews
@@ -22,10 +22,13 @@ import random
 from datetime import datetime
 from pathlib import Path
 
-# 解决Windows编码问题
-if sys.platform == "win32":
-    sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
-
+# Windows encoding handling
+if sys.platform == 'win32':
+    try:
+        sys.stdout = codecs.getwriter('utf-8')(sys.stdout.detach())
+        sys.stderr = codecs.getwriter('utf-8')(sys.stderr.detach())
+    except Exception:
+        pass
 def get_product_images(keyword, category):
     """获取与关键词相关的产品图片路径，包含SEO优化的Alt标签"""
     base_url = "/images/products/"
@@ -181,7 +184,7 @@ def load_trending_keywords():
     print("📄 Using high-value keyword data")
     return fallback_data
 
-def generate_enhanced_article_content(keyword, category):
+def generate_enhanced_article_content(keyword, category, angle: str = None):
     """生成高质量、诚实且符合商业标准的文章内容"""
     import random
     
@@ -192,7 +195,18 @@ def generate_enhanced_article_content(keyword, category):
         f"Ultimate {keyword.title()} Guide: Features, Pros & Cons",
         f"Top {keyword.title()} Detailed Analysis & Recommendations"
     ]
-    title = random.choice(title_patterns)
+    if angle == 'troubleshooting':
+        title = f"{keyword.title()} Troubleshooting Guide: Fix Common Problems"
+    elif angle == 'setup':
+        title = f"{keyword.title()} Setup & Installation Guide (2025)"
+    elif angle == 'alternatives':
+        title = f"Best {keyword.title()} Alternatives in 2025"
+    elif angle == 'use-case':
+        title = f"Best {keyword.title()} for Real-World Use Cases (2025)"
+    elif angle == 'vs':
+        title = f"{keyword.title()} vs Alternatives: Which to Choose in 2025"
+    else:
+        title = random.choice(title_patterns)
     
     # 获取产品图片
     product_images = get_product_images(keyword, category)
@@ -325,6 +339,55 @@ We do not conduct physical product testing. Our recommendations are based on spe
 """
     
     # 诚实的比较部分
+    # Angle-specific section (differentiation)
+    angle_section = ""
+    if angle == 'troubleshooting':
+        angle_section = f"""
+## Troubleshooting Common {keyword.title()} Issues
+
+- Connection drops: Check 2.4GHz WiFi band and disable AP isolation
+- Voice commands fail: Re-link skill/service, re-sync discovered devices
+- App discovery issues: Reset device, clear cache, verify location permission
+- Automation not triggering: Verify schedules, time zone, overlapping rules
+"""
+    elif angle == 'setup':
+        angle_section = f"""
+## Step-by-Step {keyword.title()} Setup
+
+1. Unbox and inspect components
+2. Power on and ensure within WiFi coverage
+3. Pair with the app; update firmware
+4. Link with Alexa/Google/HomeKit; test routines
+5. Create schedules and scenes
+"""
+    elif angle == 'alternatives':
+        angle_section = f"""
+## Top {keyword.title()} Alternatives
+
+- Premium alternative: Advanced features + longer warranty
+- Budget alternative: Core features with better price
+- Local-control option: Privacy-focused models with hub/API
+"""
+    elif angle == 'use-case':
+        angle_section = f"""
+## Best {keyword.title()} by Use Case
+
+- Apartments: Quiet, compact, low light bleed
+- Pet owners: Strong schedules, high durability, tangle-free
+- Outdoor: Weather resistance (IP65+), temperature tolerance
+"""
+    elif angle == 'vs':
+        angle_section = f"""
+## {keyword.title()} vs. Popular Alternatives
+
+| Criteria | {keyword.title()} | Alternative |
+|---------|-------------------|-------------|
+| Price | Mid | Varies |
+| Features | Strong core set | Depends |
+| Compatibility | Major ecosystems | Varies |
+| Best for | Most users | Specific needs |
+"""
+
     comparison_section = f"""
 ## Feature Comparison & Buying Considerations
 
@@ -493,6 +556,8 @@ Modern {keyword} serve as important components in connected home ecosystems, but
 
 {product_sections}
 
+{angle_section}
+
 {comparison_section}
 
 {buying_guide}
@@ -504,7 +569,7 @@ Modern {keyword} serve as important components in connected home ecosystems, but
         'metadata': {
             'description': f'Research-based guide to {keyword} with honest reviews, detailed comparisons, and practical buying advice.',
             'categories': [category.replace('_', '-')],
-            'tags': [keyword, 'smart home', 'buying guide', 'reviews']
+            'tags': [keyword, 'smart home', 'buying guide', 'reviews'] + ([angle] if angle else [])
         }
     }
 
@@ -547,6 +612,44 @@ lastmod: {datetime.now().isoformat()}Z
     
     return filepath
 
+def _get_used_keywords_history(days: int = 30):
+    """Return set of keywords used in the last N days (from filenames)."""
+    from datetime import datetime, timedelta
+    import re
+    used = set()
+    articles_dir = os.path.join('content', 'articles')
+    if not os.path.exists(articles_dir):
+        return used
+    cutoff = datetime.now() - timedelta(days=days)
+    for filename in os.listdir(articles_dir):
+        if not filename.endswith('.md'):
+            continue
+        path = os.path.join(articles_dir, filename)
+        try:
+            ts = datetime.fromtimestamp(os.path.getctime(path))
+        except Exception:
+            continue
+        if ts < cutoff:
+            continue
+        base = filename[:-3]
+        base = re.sub(r'-\d{8}$', '', base)
+        used.add(base.replace('-', ' ').lower())
+    return used
+
+def load_trending_keywords_filtered():
+    """Load keywords, filter out recently used, and shuffle for diversity."""
+    items = load_trending_keywords()
+    used = _get_used_keywords_history()
+    before = len(items)
+    filtered = [it for it in items if it.get('keyword', '').lower().strip() not in used]
+    print(f"? Filtered {before - len(filtered)} recently used keywords")
+    if not filtered:
+        filtered = items
+        print("?? No unused keywords available; falling back to original list")
+    import random
+    random.shuffle(filtered)
+    return filtered
+
 def main():
     parser = argparse.ArgumentParser(description='Generate high-quality commercial-ready articles')
     parser.add_argument('--count', type=int, default=2, help='Number of articles to generate (1-3 recommended per day)')
@@ -560,24 +663,107 @@ def main():
     print(f"🎯 Quality Level: {args.quality_level}")
     
     # 加载关键词数据
-    trends = load_trending_keywords()
+    # 使用带过滤与随机化的关键词列表，避免重复
+    try:
+        trends = load_trending_keywords_filtered()
+    except Exception:
+        # 优先使用当日排期
+        import json as _json, os as _os
+        from datetime import datetime as _dt
+        _today = _dt.now().strftime('%Y%m%d')
+        lineup = None
+        for _p in [_os.path.join('data', f'daily_lineup_{_today}.json'), _os.path.join('data', 'daily_lineup_latest.json')]:
+            if _os.path.exists(_p):
+                try:
+                    with open(_p, 'r', encoding='utf-8') as f:
+                        lineup = _json.load(f)
+                    break
+                except Exception:
+                    pass
+        if lineup:
+            print(f"🗓 Using scheduled lineup: {len(lineup)} items")
+            trends = lineup
+        else:
+            print("ℹ️ No lineup found; using filtered trending keywords")
+            trends = load_trending_keywords_filtered()
     
     # 生成文章
     generated_files = []
     used_keywords = []
     article_count = min(args.count, len(trends))
     
-    for i in range(article_count):
+    # Helpers for cross-article similarity
+    import re as _re
+    def _extract_article_body(text: str) -> str:
+        if text.startswith('---'):
+            parts = text.split('---', 2)
+            if len(parts) >= 3:
+                return parts[2]
+        return text
+    def _load_recent_bodies(limit=20):
+        bodies = []
+        art_dir = Path('content/articles')
+        if art_dir.exists():
+            files = sorted(art_dir.glob('*.md'), key=lambda p: p.stat().st_mtime, reverse=True)
+            for p in files[:limit]:
+                try:
+                    bodies.append(_extract_article_body(p.read_text(encoding='utf-8', errors='ignore')).lower())
+                except Exception:
+                    continue
+        return bodies
+    def _jaccard_ngram(a: str, b: str, n: int = 5) -> float:
+        def grams(s):
+            tokens = _re.sub(r"[^a-z0-9\s]", " ", s.lower()).split()
+            return {tuple(tokens[i:i+n]) for i in range(max(0, len(tokens)-n+1))}
+        A, B = grams(a), grams(b)
+        if not A or not B:
+            return 0.0
+        inter = len(A & B)
+        union = len(A | B)
+        return inter / union if union else 0.0
+    def _angles_for_keyword(kw: str):
+        base = ['best','alternatives','setup','troubleshooting','use-case','vs']
+        kwl = kw.lower()
+        if ' vs ' in f' {kwl} ':
+            return ['vs','best','alternatives','setup','use-case','troubleshooting']
+        if any(t in kwl for t in ['outdoor','pet','apartment','garage','dorm','wireless','energy']):
+            return ['use-case','best','setup','alternatives','troubleshooting','vs']
+        return base
+    recent_bodies = _load_recent_bodies(limit=20)
+
+    produced = 0
+    i = 0
+    while produced < article_count and i < len(trends):
         trend = trends[i]
         keyword = trend.get('keyword', 'smart home device')
         category = trend.get('category', 'smart-home')
+        angle = trend.get('angle')
         
         print(f"📝 Generating quality article {i+1}/{article_count} for: {keyword}")
         
         try:
-            article_data = generate_enhanced_article_content(keyword, category)
+            # Generate with similarity guard and angle fallback
+            try_angles = [angle] if angle else []
+            if not try_angles:
+                try_angles = _angles_for_keyword(keyword)
+            final_data = None
+            for idx, ang in enumerate(try_angles[:4]):  # try up to 4 variants
+                ad = generate_enhanced_article_content(keyword, category, angle=ang)
+                body = ad['content'].lower()
+                sim_max = max((_jaccard_ngram(body, rb) for rb in recent_bodies), default=0.0)
+                if sim_max < 0.8:
+                    final_data = ad
+                    angle = ang
+                    break
+                else:
+                    print(f"⚠️ Similarity too high ({sim_max:.2f}) with angle '{ang}', trying next...")
+            if final_data is None:
+                # Last resort: use default angle
+                final_data = generate_enhanced_article_content(keyword, category, angle=None)
+            article_data = final_data
             filepath = create_hugo_article(article_data, args.output_dir)
             generated_files.append(filepath)
+            produced += 1
             
             # 保存关键词信息用于通知
             keyword_info = {
@@ -588,7 +774,7 @@ def main():
                 'search_volume': trend.get('search_volume', 0),
                 'difficulty': trend.get('difficulty', 'Unknown'),
                 'reason': trend.get('reason', 'Research-based selection'),
-                'priority': i + 1,
+                'priority': produced,
                 'quality_level': args.quality_level,
                 'filepath': filepath,
                 'word_count': len(article_data['content'].split())
@@ -599,7 +785,10 @@ def main():
             
         except Exception as e:
             print(f"❌ Error generating article for {keyword}: {e}")
+            i += 1
             continue
+        
+        i += 1
     
     # 保存生成的文件列表
     with open('generated_files.txt', 'w') as f:

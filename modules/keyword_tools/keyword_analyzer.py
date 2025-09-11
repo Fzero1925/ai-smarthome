@@ -130,7 +130,7 @@ class SmartHomeKeywordAnalyzer:
                 except Exception as e2:
                     self.logger.error(f"Failed to initialize pytrends at all: {e2}")
                     self.pytrends = None
-                    PYTRENDS_AVAILABLE = False
+                    # Do not modify module-level flag here to avoid UnboundLocalError
         
         # Initialize Reddit API if available
         if REDDIT_AVAILABLE:
@@ -304,7 +304,7 @@ class SmartHomeKeywordAnalyzer:
                     for keyword in seed_keywords:
                         if keyword in interest_df.columns:
                             trend_data = interest_df[keyword]
-                            trend_score = self._calculate_trend_score(trend_data)
+                            trend_score = self._calculate_trend_score_from_series(trend_data)
                             
                             topic_data = {
                                 'keyword': keyword,
@@ -335,7 +335,7 @@ class SmartHomeKeywordAnalyzer:
         
         return sorted(trending_topics, key=lambda x: x['trend_score'], reverse=True)
     
-    def _calculate_trend_score(self, trend_data: pd.Series) -> float:
+    def _calculate_trend_score_from_series(self, trend_data: pd.Series) -> float:
         """Calculate a normalized trend score based on recent growth"""
         if len(trend_data) < 2:
             return 0.0
@@ -437,7 +437,7 @@ class SmartHomeKeywordAnalyzer:
                 seasonal_pattern = self._analyze_seasonal_pattern(keyword)
                 
                 # Calculate v2 enhanced features
-                trend_score = self._calculate_trend_score(keyword)
+                trend_score = self._calculate_trend_score_from_keyword(keyword)
                 site_fit_score = self._calculate_site_fit_score(keyword)
                 seasonality_score = self._calculate_seasonality_score(keyword, seasonal_pattern)
                 
@@ -781,13 +781,105 @@ class SmartHomeKeywordAnalyzer:
     
     def _analyze_reddit_trends(self, category: str = None) -> List[Dict]:
         """Analyze trending topics from relevant subreddits"""
-        # Use simulation data for now since Reddit API requires credentials
-        return self._get_simulated_reddit_trends(category)
+        results: List[Dict] = []
+        try:
+            if REDDIT_AVAILABLE and self.reddit is not None:
+                subreddits = self.config.get('reddit_subreddits', ['smarthome', 'homeautomation'])
+                per_sub_limit = max(5, int(self.config.get('max_reddit_posts', 50) / max(1, len(subreddits))))
+                for sub in subreddits:
+                    try:
+                        sr = self.reddit.subreddit(sub)
+                        for post in sr.top(time_filter='day', limit=per_sub_limit):
+                            title = str(post.title)
+                            kw = title.lower()
+                            cat = category or 'general'
+                            if self._is_relevant_keyword(kw, cat):
+                                score = float(getattr(post, 'score', 0) or 0)
+                                comments = int(getattr(post, 'num_comments', 0) or 0)
+                                results.append({
+                                    'keyword': kw,
+                                    'category': cat,
+                                    'trend_score': min(1.0, score / 1000.0),
+                                    'source': 'reddit',
+                                    'subreddit': sub,
+                                    'upvotes': int(score),
+                                    'comments': comments,
+                                    'reason': f'Top {sub} post today — engagement {int(score)} upvotes/{comments} comments',
+                                    'timestamp': datetime.now()
+                                })
+                    except Exception as e:
+                        self.logger.warning(f"Reddit fetch failed for r/{sub}: {e}")
+            # Fallback to simulated if nothing fetched
+            if not results:
+                return self._get_simulated_reddit_trends(category)
+            return results
+        except Exception as e:
+            self.logger.warning(f"Reddit analysis failed, using simulated: {e}")
+            return self._get_simulated_reddit_trends(category)
     
     def _analyze_youtube_trends(self, category: str = None, geo: str = 'US') -> List[Dict]:
         """Analyze trending topics from YouTube videos"""
-        # Use simulation data for now since YouTube API requires credentials
-        return self._get_simulated_youtube_trends(category)
+        results: List[Dict] = []
+        try:
+            if YOUTUBE_AVAILABLE and self.youtube is not None:
+                # Build query seeds
+                seeds = []
+                if category and category in self.smart_home_categories:
+                    seeds = self.smart_home_categories.get(category, [])[:3]
+                else:
+                    # take a few seeds across categories
+                    for v in self.smart_home_categories.values():
+                        seeds.extend(v[:1])
+                seeds = list(dict.fromkeys(seeds))[:5]
+
+                # Published within last 7 days
+                published_after = (datetime.utcnow() - timedelta(days=7)).isoformat("T") + "Z"
+
+                for q in seeds:
+                    try:
+                        sr = self.youtube.search().list(
+                            q=q,
+                            part='id',
+                            type='video',
+                            order='viewCount',
+                            maxResults=10,
+                            publishedAfter=published_after
+                        ).execute()
+                        video_ids = [it['id']['videoId'] for it in sr.get('items', []) if 'id' in it and 'videoId' in it['id']]
+                        if not video_ids:
+                            continue
+                        vr = self.youtube.videos().list(
+                            id=','.join(video_ids),
+                            part='snippet,statistics'
+                        ).execute()
+                        for it in vr.get('items', []):
+                            snip = it.get('snippet', {})
+                            stats = it.get('statistics', {})
+                            title = snip.get('title', '')
+                            views = int(stats.get('viewCount', 0))
+                            kw = title.lower()
+                            cat = category or 'general'
+                            if self._is_relevant_keyword(kw, cat):
+                                results.append({
+                                    'keyword': kw,
+                                    'category': cat,
+                                    'trend_score': min(1.0, views / 200000.0),
+                                    'source': 'youtube',
+                                    'video_title': title,
+                                    'channel': snip.get('channelTitle', ''),
+                                    'views': views,
+                                    'reason': f'High views in last 7d for seed "{q}"',
+                                    'timestamp': datetime.now()
+                                })
+                    except Exception as e:
+                        self.logger.warning(f"YouTube query failed for '{q}': {e}")
+
+            if not results:
+                return self._get_simulated_youtube_trends(category)
+            return results
+        except Exception as e:
+            self.logger.warning(f"YouTube analysis failed, using simulated: {e}")
+            return self._get_simulated_youtube_trends(category)
     
     def _analyze_amazon_trends(self, category: str = None) -> List[Dict]:
         """Analyze trending topics from Amazon Best Sellers"""
@@ -1047,7 +1139,7 @@ class SmartHomeKeywordAnalyzer:
     
     # === Keyword Engine v2 Helper Methods ===
     
-    def _calculate_trend_score(self, keyword: str) -> float:
+    def _calculate_trend_score_from_keyword(self, keyword: str) -> float:
         """Calculate normalized trend score (0-1) for v2 algorithm"""
         try:
             if not PYTRENDS_AVAILABLE:

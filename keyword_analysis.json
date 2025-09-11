@@ -1,15 +1,41 @@
 [
   {
-    "keyword": "smart plug alexa",
-    "category": "smart-plugs",
-    "trend_score": 0.85,
-    "commercial_intent": 0.9,
-    "search_volume": 12000,
+    "keyword": "smart thermostat energy savings",
+    "category": "smart-thermostats",
+    "trend_score": 0.78,
+    "commercial_intent": 0.88,
+    "search_volume": 6200,
     "difficulty": "Medium",
-    "reason": "High purchase intent and growing market demand",
+    "reason": "Cost-saving focus drives purchase decisions",
     "priority": 1,
     "quality_level": "premium",
-    "filepath": "content/test5\\smart-plug-alexa-20250910.md",
-    "word_count": 1762
+    "filepath": "content/articles\\smart-thermostat-energy-savings-20250911.md",
+    "word_count": 1823
+  },
+  {
+    "keyword": "best robot vacuum 2025",
+    "category": "robot-vacuums",
+    "trend_score": 0.92,
+    "commercial_intent": 0.95,
+    "search_volume": 8500,
+    "difficulty": "High",
+    "reason": "Strong buyer intent with seasonal shopping patterns",
+    "priority": 2,
+    "quality_level": "premium",
+    "filepath": "content/articles\\best-robot-vacuum-2025-20250911.md",
+    "word_count": 1782
+  },
+  {
+    "keyword": "smart light bulbs color changing",
+    "category": "smart-bulbs",
+    "trend_score": 0.75,
+    "commercial_intent": 0.82,
+    "search_volume": 5400,
+    "difficulty": "Medium",
+    "reason": "Entertainment and ambiance features popular with consumers",
+    "priority": 3,
+    "quality_level": "premium",
+    "filepath": "content/articles\\smart-light-bulbs-color-changing-20250911.md",
+    "word_count": 1833
   }
 ]

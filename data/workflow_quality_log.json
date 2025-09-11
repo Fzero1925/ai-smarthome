@@ -1,0 +1,66 @@
+[
+  {
+    "timestamp": "2025-09-11T13:21:46.358357",
+    "status": "failure",
+    "details": {
+      "requested_count": 3,
+      "generated_files": [],
+      "quality_results": {},
+      "overall_success": false,
+      "failed_files": [],
+      "quality_summary": {},
+      "failure_reason": "article_generation_failed"
+    }
+  },
+  {
+    "timestamp": "2025-09-11T13:31:34.509215",
+    "status": "failure",
+    "details": {
+      "requested_count": 3,
+      "generated_files": [],
+      "quality_results": {},
+      "overall_success": false,
+      "failed_files": [],
+      "quality_summary": {},
+      "failure_reason": "article_generation_failed"
+    }
+  },
+  {
+    "timestamp": "2025-09-11T13:34:06.714786",
+    "status": "success",
+    "details": {
+      "requested_count": 3,
+      "generated_files": [
+        "content/articles\\smart-thermostat-energy-savings-20250911.md",
+        "content/articles\\best-robot-vacuum-2025-20250911.md",
+        "content/articles\\smart-light-bulbs-color-changing-20250911.md"
+      ],
+      "quality_results": {
+        "content/articles\\smart-thermostat-energy-savings-20250911.md": {
+          "success": true,
+          "final_score": 0.9329999999999999,
+          "keyword": "smart thermostat energy savings"
+        },
+        "content/articles\\best-robot-vacuum-2025-20250911.md": {
+          "success": true,
+          "final_score": 0.85,
+          "keyword": "best robot vacuum 2025"
+        },
+        "content/articles\\smart-light-bulbs-color-changing-20250911.md": {
+          "success": true,
+          "final_score": 0.9329999999999999,
+          "keyword": "smart light bulbs color changing"
+        }
+      },
+      "overall_success": true,
+      "failed_files": [],
+      "quality_summary": {
+        "passed_count": 3,
+        "failed_count": 0,
+        "average_quality": 0.9053333333333332,
+        "min_quality": 0.85,
+        "max_quality": 0.9329999999999999
+      }
+    }
+  }
+]
