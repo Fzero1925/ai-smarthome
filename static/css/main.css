@@ -152,8 +152,10 @@ tr:hover {
   padding-top: 2rem;
   padding-bottom: 2rem;
   border-bottom: 2px solid #f8f9fa;
-  position: relative;
-  z-index: auto;
+  position: static !important; /* Ensure never sticky */
+  z-index: 1 !important;
+  top: auto !important;
+  transform: none !important;
 }
 
 .article-title {
@@ -742,10 +744,20 @@ h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
   flex-shrink: 0;
 }
 
-/* Hard override to guarantee article header never sticks or overlays nav */
-header.article-header {
+/* Hard override to guarantee article header never sticks or overlays nav - Enhanced */
+article header.article-header,
+header.article-header,
+.article-header,
+article .article-header {
   position: static !important;
-  z-index: auto !important;
+  z-index: 1 !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  display: block !important;
+  float: none !important;
 }
 
 /* Responsive featured image */
@@ -792,8 +804,13 @@ header.article-header {
 
 
 /* ===== Layout Overrides (post-fix) ===== */
-/* Reduce article header vertical footprint */
-header.article-header { padding-bottom: 1rem !important; margin-bottom: 1rem !important; }
+/* Reduce article header vertical footprint - Enhanced specificity */
+article header.article-header,
+header.article-header { 
+  padding-bottom: 1rem !important; 
+  margin-bottom: 1rem !important;
+  margin-top: 0 !important;
+}
 
 /* Duplicate featured image rules removed - using main definition above */
 
