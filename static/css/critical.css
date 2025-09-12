@@ -40,6 +40,15 @@ h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
     opacity: 1 !important;
 }
 
+/* Force article-header to never stick or overlay navbar */
+header.article-header,
+.article-header {
+    position: static !important;
+    z-index: 1 !important;
+    max-width: 100%;
+    transform: none !important;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;

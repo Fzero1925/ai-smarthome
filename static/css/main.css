@@ -715,13 +715,16 @@ h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
 /* Featured Image Styles - Fix for display issues */
 .featured-image-container {
   max-width: 100%;
-  margin: 2rem auto;
-  text-align: center;
+  margin: 2rem auto !important;
+  text-align: center !important;
   overflow: hidden;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   position: relative;
   z-index: 0; /* keep below fixed navbar */
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
 }
 
 .featured-image {
@@ -732,10 +735,11 @@ h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
   aspect-ratio: 10/3; /* 3.33:1 ratio for consistent display */
   object-fit: cover;
   border-radius: 12px;
-  display: block;
-  margin: 0 auto;
+  display: block !important;
+  margin: 0 auto !important;
   position: relative;
   z-index: 0;
+  flex-shrink: 0;
 }
 
 /* Hard override to guarantee article header never sticks or overlays nav */
