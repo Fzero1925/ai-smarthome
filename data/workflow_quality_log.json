@@ -62,5 +62,43 @@
         "max_quality": 0.9329999999999999
       }
     }
+  },
+  {
+    "timestamp": "2025-09-12T10:04:33.039934",
+    "status": "success",
+    "details": {
+      "requested_count": 3,
+      "generated_files": [
+        "content/articles\\smart-plug-energy-monitoring-wifi-20250912.md",
+        "content/articles\\robot-vacuum-pet-hair-reviews-20250912.md",
+        "content/articles\\outdoor-security-camera-solar-powered-20250912.md"
+      ],
+      "quality_results": {
+        "content/articles\\smart-plug-energy-monitoring-wifi-20250912.md": {
+          "success": true,
+          "final_score": 0.9329999999999999,
+          "keyword": "smart plug energy monitoring wifi"
+        },
+        "content/articles\\robot-vacuum-pet-hair-reviews-20250912.md": {
+          "success": true,
+          "final_score": 0.85,
+          "keyword": "robot vacuum pet hair reviews"
+        },
+        "content/articles\\outdoor-security-camera-solar-powered-20250912.md": {
+          "success": true,
+          "final_score": 0.85,
+          "keyword": "outdoor security camera solar powered"
+        }
+      },
+      "overall_success": true,
+      "failed_files": [],
+      "quality_summary": {
+        "passed_count": 3,
+        "failed_count": 0,
+        "average_quality": 0.8776666666666667,
+        "min_quality": 0.85,
+        "max_quality": 0.9329999999999999
+      }
+    }
   }
 ]

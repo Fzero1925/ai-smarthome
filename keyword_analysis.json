@@ -1,41 +1,41 @@
 [
   {
-    "keyword": "smart thermostat energy savings",
-    "category": "smart-thermostats",
-    "trend_score": 0.78,
-    "commercial_intent": 0.88,
-    "search_volume": 6200,
-    "difficulty": "Medium",
-    "reason": "Cost-saving focus drives purchase decisions",
+    "keyword": "smart plug energy monitoring wifi",
+    "category": "smart-plugs",
+    "trend_score": 0.94,
+    "commercial_intent": 0.0,
+    "search_volume": 0,
+    "difficulty": "Unknown",
+    "reason": "#1 Best Seller in Smart Plugs category - energy monitoring becoming essential feature",
     "priority": 1,
     "quality_level": "premium",
-    "filepath": "content/articles\\smart-thermostat-energy-savings-20250911.md",
-    "word_count": 1823
+    "filepath": "content/articles\\smart-plug-energy-monitoring-wifi-20250912.md",
+    "word_count": 1849
   },
   {
-    "keyword": "best robot vacuum 2025",
-    "category": "robot-vacuums",
+    "keyword": "robot vacuum pet hair reviews",
+    "category": "robot_vacuums",
     "trend_score": 0.92,
-    "commercial_intent": 0.95,
-    "search_volume": 8500,
-    "difficulty": "High",
-    "reason": "Strong buyer intent with seasonal shopping patterns",
+    "commercial_intent": 0.0,
+    "search_volume": 0,
+    "difficulty": "Unknown",
+    "reason": "Seasonal spike in pet hair cleaning discussions, especially for long-haired cats and shedding dogs",
     "priority": 2,
     "quality_level": "premium",
-    "filepath": "content/articles\\best-robot-vacuum-2025-20250911.md",
-    "word_count": 1782
+    "filepath": "content/articles\\robot-vacuum-pet-hair-reviews-20250912.md",
+    "word_count": 1925
   },
   {
-    "keyword": "smart light bulbs color changing",
-    "category": "smart-bulbs",
-    "trend_score": 0.75,
-    "commercial_intent": 0.82,
-    "search_volume": 5400,
-    "difficulty": "Medium",
-    "reason": "Entertainment and ambiance features popular with consumers",
+    "keyword": "outdoor security camera solar powered",
+    "category": "security_cameras",
+    "trend_score": 0.91,
+    "commercial_intent": 0.0,
+    "search_volume": 0,
+    "difficulty": "Unknown",
+    "reason": "Rising demand for solar-powered outdoor security solutions",
     "priority": 3,
     "quality_level": "premium",
-    "filepath": "content/articles\\smart-light-bulbs-color-changing-20250911.md",
-    "word_count": 1833
+    "filepath": "content/articles\\outdoor-security-camera-solar-powered-20250912.md",
+    "word_count": 1915
   }
 ]

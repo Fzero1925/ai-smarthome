@@ -1,3 +1,3 @@
-content/articles\smart-thermostat-energy-savings-20250911.md
-content/articles\best-robot-vacuum-2025-20250911.md
-content/articles\smart-light-bulbs-color-changing-20250911.md
+content/articles\smart-plug-energy-monitoring-wifi-20250912.md
+content/articles\robot-vacuum-pet-hair-reviews-20250912.md
+content/articles\outdoor-security-camera-solar-powered-20250912.md

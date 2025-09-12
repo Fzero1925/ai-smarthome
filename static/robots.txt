@@ -52,3 +52,4 @@ Crawl-delay: 1
 
 # Cache optimization  
 # Host: ai-smarthomehub.com
+Sitemap: https://www.ai-smarthomehub.com/sitemap-images.xml

@@ -14,5 +14,21 @@
     "attempt_count": 5,
     "quality_score": 0.867,
     "threshold_required": 0.9
+  },
+  {
+    "timestamp": "2025-09-12T10:04:32.181570",
+    "keyword": "robot vacuum pet hair reviews",
+    "reason": "修复5次仍未达到90.0%标准",
+    "attempt_count": 5,
+    "quality_score": 0.867,
+    "threshold_required": 0.9
+  },
+  {
+    "timestamp": "2025-09-12T10:04:32.812899",
+    "keyword": "outdoor security camera solar powered",
+    "reason": "修复5次仍未达到90.0%标准",
+    "attempt_count": 5,
+    "quality_score": 0.867,
+    "threshold_required": 0.9
   }
 ]
