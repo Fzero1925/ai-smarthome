@@ -14,7 +14,7 @@ body {
   line-height: 1.6;
   color: #333;
   background-color: #fff;
-  padding-top: 80px; /* 为sticky导航栏留出空间 */
+  padding-top: 64px; /* 为fixed导航栏留出空间 - 统一高度 */
 }
 
 .container {
@@ -214,7 +214,7 @@ h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
   .article-content > .table-of-contents {
     grid-column: 2;
     position: sticky;
-    top: 80px; /* below fixed navbar */
+    top: 64px; /* below fixed navbar */
     max-height: calc(100vh - 100px);
     overflow: auto;
   }
@@ -278,7 +278,7 @@ h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
 @media (min-width: 1024px) {
   .table-of-contents {
     position: sticky;
-    top: 96px; /* below sticky navbar */
+    top: 64px; /* below fixed navbar */
     max-height: calc(100vh - 120px);
     overflow: auto;
   }
@@ -792,9 +792,6 @@ header.article-header {
 
 
 /* ===== Layout Overrides (post-fix) ===== */
-/* Ensure fixed navbar never hides content */
-body { padding-top: 64px; }
-
 /* Reduce article header vertical footprint */
 header.article-header { padding-bottom: 1rem !important; margin-bottom: 1rem !important; }
 
