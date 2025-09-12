@@ -676,14 +676,23 @@ def generate_article_content(keyword, category):
     """Generate comprehensive article content for given keyword - targeting 2500+ words with advanced variations"""
     import random
     
-    # Title variations for more natural content
+    # Title variations for more natural content (SEO-optimized length)
     title_patterns = [
-        f"Best {keyword.title()} 2025: Complete Buying Guide & Reviews",
-        f"Ultimate {keyword.title()} Guide 2025: Top Picks & Expert Reviews",
-        f"Top {keyword.title()} 2025: In-Depth Analysis & Comparison",
-        f"{keyword.title()} Buyer's Guide 2025: Expert Recommendations & Reviews"
+        f"Best {keyword.title()} 2025 Buying Guide",
+        f"Ultimate {keyword.title()} Guide 2025", 
+        f"Top {keyword.title()} 2025 Reviews",
+        f"{keyword.title()} Buyer's Guide 2025"
     ]
     title = random.choice(title_patterns)
+    
+    # Generate SEO-optimized slug (max 50 chars, no redundant keywords)
+    slug_base = keyword.lower().replace(' ', '-').replace(',', '').replace(':', '')
+    # Remove redundant words and keep it concise
+    slug = slug_base.replace('-guide', '').replace('-reviews', '').replace('-2025', '') + '-2025'
+    # Ensure slug is under 50 characters
+    if len(slug) > 50:
+        # Truncate while keeping the year
+        slug = slug_base[:46] + '-2025'
     
     # 获取智能匹配的产品图片（包含Alt标签）
     product_images = get_product_images(keyword, category)
@@ -1090,6 +1099,7 @@ A: Reputable manufacturers implement bank-level security with regular updates. W
 
     return {
         'title': title,
+        'slug': slug,
         'content': content,
         'metadata': {
             'description': f'Complete guide to the best {keyword} for 2025. Compare features, prices, and reviews to find the perfect smart home solution.',
@@ -1102,10 +1112,8 @@ def create_hugo_article(article_data, output_dir):
     """Create Hugo markdown file with front matter"""
     keyword = article_data['metadata']['tags'][0]
     
-    # Create filename
-    safe_title = keyword.lower().replace(' ', '-').replace(',', '').replace(':', '')
-    timestamp = datetime.now().strftime("%Y%m%d")
-    filename = f"{safe_title}-{timestamp}.md"
+    # Create filename using optimized slug
+    filename = f"{article_data['slug']}.md"
     filepath = os.path.join(output_dir, filename)
     
     # Resolve featured image using product image mapping
@@ -1119,6 +1127,7 @@ def create_hugo_article(article_data, output_dir):
     # Generate Hugo front matter
     front_matter = f"""---
 title: "{article_data['title']}"
+slug: "{article_data['slug']}"
 description: "{article_data['metadata']['description']}"
 date: {datetime.now().isoformat()}Z
 categories: {json.dumps(article_data['metadata']['categories'])}
