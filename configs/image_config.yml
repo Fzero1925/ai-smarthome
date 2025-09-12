@@ -1,0 +1,47 @@
+# Image Aggregator Configuration
+# Auto-generated from ai_shh_growth_kit_v3
+
+# Image provider settings
+providers:
+  openverse: true        # Openverse Creative Commons images
+  wikimedia: true        # Wikimedia Commons images
+  flickr_cc: false       # Flickr CC images (not implemented)
+  pexels: false          # Pexels API (not implemented) 
+  pixabay: false         # Pixabay API (not implemented)
+
+# Semantic matching threshold (0.0-1.0)
+# Lower = more permissive, Higher = more strict
+semantic_threshold: 0.28
+
+# Local storage settings
+download_dir: 'static/images'
+formats: ['webp']
+
+# Minimum image dimensions
+min_hero_size: [1280, 720]    # Hero/featured image minimum size
+min_inline_size: [960, 540]   # Inline image minimum size
+
+# Cache settings
+cache_dir: 'data/image_cache'
+cache_ttl_hours: 24           # Cache time-to-live in hours
+
+# Quality settings
+webp_quality: 85              # WebP compression quality (1-100)
+optimize: true                # Enable image optimization
+
+# API rate limiting (requests per minute)
+rate_limits:
+  openverse: 60               # Openverse allows ~100/min
+  wikimedia: 30               # Be conservative with Commons
+  
+# Image metadata extraction
+extract_metadata: true
+required_licenses:
+  - 'cc0'
+  - 'cc-by'
+  - 'cc-by-sa' 
+  - 'pdm'                     # Public Domain Mark
+
+# Fallback behavior
+fallback_enabled: true
+max_fallback_images: 3
