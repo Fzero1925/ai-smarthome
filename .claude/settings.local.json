@@ -56,7 +56,16 @@
       "WebFetch(domain:www.ai-smarthomehub.com)",
       "WebFetch(domain:github.com)",
       "Bash(git fetch:*)",
-      "Read(//d/**)"
+      "Read(//d/**)",
+      "Bash(tree:*)",
+      "Bash(sort:*)",
+      "Bash(for file in *.md)",
+      "Bash(do)",
+      "Bash(if [ ! -f \"../../oldfile/pre_v3_articles/$file\" ])",
+      "Bash(then)",
+      "Bash(echo \"Need to migrate: $file\")",
+      "Bash(fi)",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []

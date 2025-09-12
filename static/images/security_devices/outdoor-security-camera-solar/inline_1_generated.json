@@ -1,0 +1,9 @@
+{
+  "source": "generated",
+  "type": "compatibility_card",
+  "protocols": [
+    "WiFi",
+    "Matter"
+  ],
+  "alt_text": "outdoor security camera solar powered compatibility guide"
+}

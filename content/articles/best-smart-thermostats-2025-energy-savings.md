@@ -14,7 +14,7 @@ imageAlt: "Comparison of top smart thermostats 2025 showing Nest, Ecobee, and Ho
 featured: true
 toc: true
 affiliate: true
-featured_image: "/images/products/smart-thermostats/ecobee-smartthermostat.jpg"
+featured_image: "/images/climate_control/best-smart-thermostats-2025-energy-savings/hero_generated.webp"
 ---
 
 # Best Smart Thermostats 2025: The Ultimate Guide to Comfort and Savings

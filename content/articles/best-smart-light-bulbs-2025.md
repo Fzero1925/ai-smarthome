@@ -91,13 +91,13 @@ featured_products:
         - "Limited white color range"
         - "Less vibrant colors than premium brands"
     badge: "Budget Pick"
-featured_image: "/images/products/smart-bulbs/smart-lighting-setup.jpg"
+featured_image: "/images/smart_lighting/best-smart-light-bulbs-2025/hero_generated.webp"
 ---
 
 ## Introduction
 
 
-![Smart light bulbs 2025 comparison: WiFi-connected RGB lighting options including color temperature control, scheduling, and voice control compatibility](/images/products/smart-bulbs/philips-hue-white.jpg)
+![Smart light bulbs 2025 comparison: WiFi-connected RGB lighting options including color temperature control, scheduling, and voice control compatibility](/images/smart_lighting/best-smart-light-bulbs-2025/inline_1_generated.webp "Smart light bulbs 2025 comparison: WiFi-connected RGB lighting options including color temperature control, scheduling, and voice control compatibility")
 
 *Featured: Professional review and buying guide for smart light bulbs 2025*
 Smart lighting has revolutionized the way we illuminate our homes, offering unprecedented control over ambiance, energy usage, and automation. In 2025, the market for intelligent LED bulbs has matured significantly, bringing us a diverse range of options from basic white-adjustable bulbs to full-spectrum color-changing powerhouses that sync with your music and respond to your voice commands.

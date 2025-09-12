@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 Daily Content Generation Script - v2 Enhanced
 Integrated with Smart Image Manager and Keyword Engine v2
@@ -17,293 +18,154 @@ project_root = Path(__file__).parent.parent
 sys.path.append(str(project_root))
 
 try:
-    from smart_image_manager import search_and_assign
-    SMART_IMAGES_AVAILABLE = True
-    print("✅ Smart Image Manager loaded successfully")
+    from modules.image_aggregator import assign
+    IMAGE_AGGREGATOR_AVAILABLE = True
+    print("Image Aggregator v3 loaded successfully")
 except ImportError as e:
-    SMART_IMAGES_AVAILABLE = False
-    print(f"⚠️ Smart Image Manager not available: {e}")
+    IMAGE_AGGREGATOR_AVAILABLE = False
+    print(f"Warning: Image Aggregator v3 not available: {e}")
 
-# 解决Windows编码问题
+# Fix Windows encoding issues
 if sys.platform == "win32":
+    import codecs
     sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
 
 def get_product_images(keyword, category):
-    """智能获取与关键词相关的产品图片路径，优先使用Smart Image Manager，失败时回退到静态映射"""
+    """智能获取与关键词相关的产品图片路径，使用v3 Image Aggregator，失败时回退到静态映射"""
     
-    # Step 1: 优先尝试使用Smart Image Manager进行智能配图
-    if SMART_IMAGES_AVAILABLE:
+    # Step 1: 优先尝试使用v3 Image Aggregator进行智能配图
+    if IMAGE_AGGREGATOR_AVAILABLE:
         try:
-            print(f"🖼️ Attempting smart image assignment for: {keyword} (category: {category})")
+            print(f"Attempting v3 image assignment for: {keyword} (category: {category})")
             
-            # 定义图片需求 (hero:1, inline:2-3)
-            image_needs = {
-                'hero': 1,      # 主要展示图
-                'inline': 3,    # 文章内嵌图片
-                'comparison': 1, # 对比图
-                'installation': 1 # 安装/使用图
+            # 准备实体信息，v3系统使用这些信息
+            entities = {
+                'category': category.replace('_', '-'),  # 转换为连字符格式
+                'product_type': keyword,
+                'use_case': 'review'
             }
             
-            # 调用智能图片管理器
-            smart_results = search_and_assign(
-                keyword=keyword, 
-                category=category, 
-                needs=image_needs,
-                why_selected={'keyword': keyword, 'category': category}
-            )
+            # 生成文章slug用于图片组织
+            import re
+            slug = re.sub(r'[^\w\s-]', '', keyword.lower())
+            slug = re.sub(r'[-\s]+', '-', slug).strip('-')
             
-            if smart_results and smart_results.get('success'):
-                assigned_images = smart_results.get('assigned_images', {})
-                print(f"✅ Smart image assignment successful: {len(assigned_images)} images assigned")
+            # 调用v3图片聚合器
+            v3_results = assign(keyword, entities, slug)
+            
+            if v3_results and v3_results.get('hero'):
+                print(f"v3 Image assignment successful")
                 
-                # 转换格式以匹配现有系统
-                smart_image_dict = {}
-                if 'hero' in assigned_images and assigned_images['hero']:
-                    smart_image_dict['hero_image'] = assigned_images['hero'][0]['url']
-                    smart_image_dict['hero_image_alt'] = assigned_images['hero'][0]['alt']
+                # 转换v3结果为现有系统格式
+                v3_image_dict = {}
                 
-                if 'inline' in assigned_images and assigned_images['inline']:
-                    for i, img in enumerate(assigned_images['inline'][:3], 1):
-                        smart_image_dict[f'product_{i}'] = img['url']
-                        smart_image_dict[f'product_{i}_alt'] = img['alt']
+                # Hero图片
+                if v3_results['hero']:
+                    v3_image_dict['hero_image'] = v3_results['hero']
+                    v3_image_dict['hero_image_alt'] = f"Best {keyword} for smart home automation"
                 
-                if 'comparison' in assigned_images and assigned_images['comparison']:
-                    smart_image_dict['comparison'] = assigned_images['comparison'][0]['url']
-                    smart_image_dict['comparison_alt'] = assigned_images['comparison'][0]['alt']
+                # Inline图片
+                inline_images = v3_results.get('inline', [])
+                for i, img_path in enumerate(inline_images[:3], 1):
+                    v3_image_dict[f'product_{i}'] = img_path
+                    v3_image_dict[f'product_{i}_alt'] = f"{keyword.title()} product view {i}"
                 
-                if 'installation' in assigned_images and assigned_images['installation']:
-                    smart_image_dict['installation'] = assigned_images['installation'][0]['url']
-                    smart_image_dict['installation_alt'] = assigned_images['installation'][0]['alt']
-                
-                # 如果智能配图成功且有足够图片，直接返回
-                if len(smart_image_dict) >= 4:  # 至少有hero + 3个其他图片
-                    return smart_image_dict
+                # 如果v3配图成功且有足够图片，直接返回
+                total_images = (1 if v3_results['hero'] else 0) + len(inline_images)
+                if total_images >= 2:  # 至少有hero + 1个inline
+                    print(f"v3 assignment provided {total_images} images")
+                    return v3_image_dict
                 else:
-                    print(f"⚠️ Smart assignment returned insufficient images ({len(smart_image_dict)}), falling back to static mapping")
+                    print(f"Warning: v3 assignment returned insufficient images ({total_images}), falling back to static mapping")
             
         except Exception as e:
-            print(f"⚠️ Smart Image Manager failed: {e}, falling back to static mapping")
+            print(f"Warning: v3 Image Aggregator failed: {e}, falling back to static mapping")
     
-    # Step 2: 回退到静态图片映射系统
-    print(f"📁 Using fallback static image mapping for: {keyword}")
+    # Step 2: 智能回退到静态图片系统
+    return get_fallback_static_images(keyword, category)
+
+
+def get_fallback_static_images(keyword, category):
+    """智能回退系统：基于现有静态图片自动匹配最佳图片"""
+    print(f"Using intelligent static image fallback for: {keyword} (category: {category})")
+    
+    # 映射分类名称
+    category_map = {
+        'smart_plugs': 'smart-plugs',
+        'smart_bulbs': 'smart-bulbs',
+        'security_cameras': 'security-cameras', 
+        'robot_vacuums': 'robot-vacuums',
+        'smart_thermostats': 'smart-thermostats',
+        'smart_speakers': 'smart-speakers',
+        'smart_security': 'smart-security',
+        'cleaning_devices': 'robot-vacuums',
+        'lighting_devices': 'smart-bulbs',
+        'general_smart_home': 'general'
+    }
+    
+    mapped_category = category_map.get(category, 'general')
     base_url = "/images/products/"
     
-    # 扩展的产品图片映射 - 基于真实Amazon产品 (保留原有逻辑)
-    comprehensive_image_mapping = {
-        # Smart Plugs类别
-        "smart plug": {
-            "hero_image": f"{base_url}smart-plugs/amazon-smart-plug-hero.jpg",
-            "product_1": f"{base_url}smart-plugs/amazon-smart-plug-main.jpg",
-            "product_2": f"{base_url}smart-plugs/tp-link-kasa-hs103.jpg",
-            "product_3": f"{base_url}smart-plugs/govee-wifi-smart-plug.jpg",
-            "comparison": f"{base_url}smart-plugs/smart-plug-comparison-2025.jpg",
-            "installation": f"{base_url}smart-plugs/smart-plug-setup-guide.jpg",
-            "app_screenshot": f"{base_url}smart-plugs/alexa-app-smart-plug.jpg",
-            "energy_monitoring": f"{base_url}smart-plugs/energy-monitoring-dashboard.jpg"
-        },
-        "alexa plug": {
-            "hero_image": f"{base_url}smart-plugs/amazon-smart-plug-alexa.jpg",
-            "product_1": f"{base_url}smart-plugs/amazon-smart-plug-main.jpg",
-            "product_2": f"{base_url}smart-plugs/echo-flex-built-in-plug.jpg",
-            "comparison": f"{base_url}smart-plugs/alexa-compatible-plugs.jpg",
-            "voice_control": f"{base_url}smart-plugs/alexa-voice-control-demo.jpg"
-        },
-        "wifi plug": {
-            "hero_image": f"{base_url}smart-plugs/wifi-smart-plug-collection.jpg",
-            "product_1": f"{base_url}smart-plugs/tp-link-kasa-hs103.jpg",
-            "product_2": f"{base_url}smart-plugs/wyze-plug-outdoor.jpg",
-            "network_setup": f"{base_url}smart-plugs/wifi-setup-guide.jpg"
-        },
-        
-        # Smart Bulbs类别
-        "smart bulb": {
-            "hero_image": f"{base_url}smart-bulbs/philips-hue-white-color-hero.jpg",
-            "product_1": f"{base_url}smart-bulbs/philips-hue-a19-white-color.jpg",
-            "product_2": f"{base_url}smart-bulbs/lifx-a19-wifi-smart-bulb.jpg",
-            "product_3": f"{base_url}smart-bulbs/wyze-color-bulb.jpg",
-            "comparison": f"{base_url}smart-bulbs/smart-bulb-comparison-chart.jpg",
-            "color_demo": f"{base_url}smart-bulbs/color-changing-demo.jpg",
-            "app_control": f"{base_url}smart-bulbs/hue-app-interface.jpg"
-        },
-        "color bulb": {
-            "hero_image": f"{base_url}smart-bulbs/color-changing-bulbs-showcase.jpg",
-            "product_1": f"{base_url}smart-bulbs/philips-hue-a19-white-color.jpg",
-            "product_2": f"{base_url}smart-bulbs/lifx-a19-wifi-smart-bulb.jpg",
-            "color_scenes": f"{base_url}smart-bulbs/color-scenes-living-room.jpg"
-        },
-        "led bulb": {
-            "hero_image": f"{base_url}smart-bulbs/led-smart-bulbs-energy-efficient.jpg",
-            "product_1": f"{base_url}smart-bulbs/sengled-wifi-led-bulb.jpg",
-            "product_2": f"{base_url}smart-bulbs/ge-cync-led-bulb.jpg",
-            "energy_comparison": f"{base_url}smart-bulbs/led-energy-savings-chart.jpg"
-        },
-        
-        # Security Cameras类别
-        "security camera": {
-            "hero_image": f"{base_url}security-cameras/outdoor-security-camera-hero.jpg",
-            "product_1": f"{base_url}security-cameras/arlo-pro-4-outdoor.jpg",
-            "product_2": f"{base_url}security-cameras/ring-spotlight-cam-battery.jpg",
-            "product_3": f"{base_url}security-cameras/wyze-cam-v3-outdoor.jpg",
-            "comparison": f"{base_url}security-cameras/security-camera-comparison-2025.jpg",
-            "installation": f"{base_url}security-cameras/outdoor-camera-mounting-guide.jpg",
-            "night_vision": f"{base_url}security-cameras/night-vision-comparison.jpg"
-        },
-        "outdoor camera": {
-            "hero_image": f"{base_url}security-cameras/outdoor-wireless-cameras.jpg",
-            "product_1": f"{base_url}security-cameras/arlo-pro-4-outdoor.jpg",
-            "product_2": f"{base_url}security-cameras/reolink-argus-3-solar.jpg",
-            "weather_resistance": f"{base_url}security-cameras/weatherproof-rating-guide.jpg"
-        },
-        "doorbell camera": {
-            "hero_image": f"{base_url}security-cameras/video-doorbell-collection.jpg",
-            "product_1": f"{base_url}security-cameras/ring-video-doorbell-pro-2.jpg",
-            "product_2": f"{base_url}security-cameras/arlo-video-doorbell.jpg",
-            "installation": f"{base_url}security-cameras/doorbell-wiring-guide.jpg"
-        },
-        
-        # Robot Vacuums类别
-        "robot vacuum": {
-            "hero_image": f"{base_url}robot-vacuums/robot-vacuum-cleaning-hero.jpg",
-            "product_1": f"{base_url}robot-vacuums/roomba-j7-plus-self-emptying.jpg",
-            "product_2": f"{base_url}robot-vacuums/roborock-s7-maxv-ultra.jpg",
-            "product_3": f"{base_url}robot-vacuums/shark-iq-robot-xl.jpg",
-            "comparison": f"{base_url}robot-vacuums/robot-vacuum-comparison-2025.jpg",
-            "mapping": f"{base_url}robot-vacuums/smart-mapping-technology.jpg",
-            "pet_hair": f"{base_url}robot-vacuums/pet-hair-cleaning-test.jpg"
-        },
-        "roomba": {
-            "hero_image": f"{base_url}robot-vacuums/irobot-roomba-collection.jpg",
-            "product_1": f"{base_url}robot-vacuums/roomba-j7-plus-self-emptying.jpg",
-            "product_2": f"{base_url}robot-vacuums/roomba-i7-plus.jpg",
-            "app_control": f"{base_url}robot-vacuums/irobot-app-interface.jpg"
-        },
-        
-        # Smart Thermostats类别
-        "smart thermostat": {
-            "hero_image": f"{base_url}smart-thermostats/smart-thermostat-hero.jpg",
-            "product_1": f"{base_url}smart-thermostats/google-nest-learning-thermostat.jpg",
-            "product_2": f"{base_url}smart-thermostats/ecobee-smartthermostat-voice.jpg",
-            "product_3": f"{base_url}smart-thermostats/honeywell-t9-wifi-thermostat.jpg",
-            "comparison": f"{base_url}smart-thermostats/thermostat-comparison-chart.jpg",
-            "installation": f"{base_url}smart-thermostats/thermostat-wiring-guide.jpg",
-            "energy_savings": f"{base_url}smart-thermostats/energy-savings-report.jpg"
-        },
-        "nest thermostat": {
-            "hero_image": f"{base_url}smart-thermostats/google-nest-thermostat-family.jpg",
-            "product_1": f"{base_url}smart-thermostats/google-nest-learning-thermostat.jpg",
-            "product_2": f"{base_url}smart-thermostats/nest-thermostat-e.jpg",
-            "learning_features": f"{base_url}smart-thermostats/nest-learning-algorithm.jpg"
-        },
-        
-        # Smart Speakers类别
-        "smart speaker": {
-            "hero_image": f"{base_url}smart-speakers/smart-speaker-collection.jpg",
-            "product_1": f"{base_url}smart-speakers/amazon-echo-dot-5th-gen.jpg",
-            "product_2": f"{base_url}smart-speakers/google-nest-audio.jpg",
-            "product_3": f"{base_url}smart-speakers/apple-homepod-mini.jpg",
-            "comparison": f"{base_url}smart-speakers/smart-speaker-comparison.jpg"
-        },
-        "alexa echo": {
-            "hero_image": f"{base_url}smart-speakers/amazon-echo-family.jpg",
-            "product_1": f"{base_url}smart-speakers/amazon-echo-dot-5th-gen.jpg",
-            "product_2": f"{base_url}smart-speakers/amazon-echo-show-8.jpg",
-            "skills": f"{base_url}smart-speakers/alexa-skills-showcase.jpg"
-        }
+    # 从真实存在的图片中智能选择
+    static_images = discover_static_images(mapped_category)
+    
+    # 构建图片字典
+    result = {
+        "hero_image": static_images.get('hero', f"{base_url}{mapped_category}/generic-{mapped_category.rstrip('s')}.jpg"),
+        "hero_image_alt": f"Best {keyword} 2025 - Complete buying guide and reviews"
     }
     
-    # 增强的默认图片设置 - 按分类提供
-    category_defaults = {
-        "smart_plugs": {
-            "hero_image": f"{base_url}smart-plugs/generic-smart-plug.jpg",
-            "product_1": f"{base_url}smart-plugs/generic-smart-plug.jpg",
-            "product_2": f"{base_url}smart-plugs/smart-plug-variety.jpg",
-            "comparison": f"{base_url}smart-plugs/plug-comparison-generic.jpg"
-        },
-        "smart_bulbs": {
-            "hero_image": f"{base_url}smart-bulbs/generic-smart-bulb.jpg",
-            "product_1": f"{base_url}smart-bulbs/generic-smart-bulb.jpg",
-            "product_2": f"{base_url}smart-bulbs/smart-bulb-variety.jpg",
-            "comparison": f"{base_url}smart-bulbs/bulb-comparison-generic.jpg"
-        },
-        "security_cameras": {
-            "hero_image": f"{base_url}security-cameras/generic-security-camera.jpg",
-            "product_1": f"{base_url}security-cameras/generic-security-camera.jpg",
-            "product_2": f"{base_url}security-cameras/camera-variety.jpg",
-            "comparison": f"{base_url}security-cameras/camera-comparison-generic.jpg"
-        },
-        "robot_vacuums": {
-            "hero_image": f"{base_url}robot-vacuums/generic-robot-vacuum.jpg",
-            "product_1": f"{base_url}robot-vacuums/generic-robot-vacuum.jpg",
-            "product_2": f"{base_url}robot-vacuums/vacuum-variety.jpg",
-            "comparison": f"{base_url}robot-vacuums/vacuum-comparison-generic.jpg"
-        },
-        "smart_thermostats": {
-            "hero_image": f"{base_url}smart-thermostats/generic-smart-thermostat.jpg",
-            "product_1": f"{base_url}smart-thermostats/generic-smart-thermostat.jpg",
-            "product_2": f"{base_url}smart-thermostats/thermostat-variety.jpg",
-            "comparison": f"{base_url}smart-thermostats/thermostat-comparison-generic.jpg"
-        },
-        "smart_speakers": {
-            "hero_image": f"{base_url}smart-speakers/generic-smart-speaker.jpg",
-            "product_1": f"{base_url}smart-speakers/generic-smart-speaker.jpg",
-            "product_2": f"{base_url}smart-speakers/speaker-variety.jpg",
-            "comparison": f"{base_url}smart-speakers/speaker-comparison-generic.jpg"
-        }
-    }
+    # 添加产品图片
+    product_images = static_images.get('products', [])
+    for i, img_path in enumerate(product_images[:3], 1):
+        result[f"product_{i}"] = img_path
+        result[f"product_{i}_alt"] = f"Top rated {keyword} - Choice {i} for smart homes"
     
-    # 通用默认图片（最后备选）
-    universal_default = {
-        "hero_image": f"{base_url}general/smart-home-hero.jpg",
-        "product_1": f"{base_url}general/smart-home-devices.jpg",
-        "product_2": f"{base_url}general/home-automation.jpg",
-        "product_3": f"{base_url}general/connected-home.jpg",
-        "comparison": f"{base_url}general/smart-home-comparison.jpg"
-    }
+    # 添加对比图片
+    if static_images.get('comparison'):
+        result['comparison'] = static_images['comparison'] 
+        result['comparison_alt'] = f"{keyword} comparison chart - Features and pricing 2025"
     
-    # 智能匹配算法
-    keyword_lower = keyword.lower()
-    
-    # 1. 精确匹配关键词
-    for key_pattern, images in comprehensive_image_mapping.items():
-        if key_pattern in keyword_lower:
-            return _add_alt_tags(images, keyword, key_pattern)
-    
-    # 2. 基于分类的默认图片
-    if category in category_defaults:
-        return _add_alt_tags(category_defaults[category], keyword, category)
-    
-    # 3. 通用默认图片
-    return _add_alt_tags(universal_default, keyword, "smart home")
+    return result
 
-def _add_alt_tags(image_dict, keyword, context):
-    """为图片字典添加SEO优化的Alt标签"""
-    enhanced_dict = image_dict.copy()
+def discover_static_images(category):
+    """自动发现指定分类下的现有静态图片"""
+    import glob
+    from pathlib import Path
     
-    # Alt标签模板
-    alt_templates = {
-        "hero_image": f"Best {keyword} 2025 - Complete buying guide and reviews",
-        "product_1": f"Top rated {keyword} - Premium choice for smart homes",
-        "product_2": f"Best value {keyword} - Budget-friendly smart home solution",
-        "product_3": f"Professional grade {keyword} - Advanced features",
-        "comparison": f"{keyword} comparison chart - Features and pricing 2025",
-        "installation": f"{keyword} installation guide - Step by step setup",
-        "app_screenshot": f"{keyword} app interface - Mobile control features",
-        "energy_monitoring": f"{keyword} energy monitoring - Power usage tracking",
-        "color_demo": f"{keyword} color changing demonstration",
-        "night_vision": f"{keyword} night vision comparison",
-        "mapping": f"{keyword} smart mapping technology",
-        "pet_hair": f"{keyword} pet hair cleaning performance"
+    static_dir = Path("static/images/products") / category
+    if not static_dir.exists():
+        static_dir = Path("static/images/products/general")
+    
+    images = {
+        'hero': '',
+        'products': [],
+        'comparison': ''
     }
     
-    # 为每个图片添加alt标签
-    keys_to_process = list(enhanced_dict.keys())  # 创建键的副本避免迭代时修改字典
-    for key in keys_to_process:
-        if key in alt_templates:
-            enhanced_dict[f"{key}_alt"] = alt_templates[key]
-        else:
-            enhanced_dict[f"{key}_alt"] = f"{keyword} - {context} smart home device"
+    # 查找hero图片 (hero, main, collection等)
+    hero_patterns = ['*hero*', '*main*', '*collection*']
+    for pattern in hero_patterns:
+        matches = list(static_dir.glob(pattern))
+        if matches:
+            images['hero'] = f"/images/products/{category}/{matches[0].name}"
+            break
     
-    return enhanced_dict
+    # 查找产品图片
+    product_files = list(static_dir.glob("*.jpg")) + list(static_dir.glob("*.png")) + list(static_dir.glob("*.webp"))
+    for img_file in product_files:
+        if not any(x in img_file.name.lower() for x in ['hero', 'comparison', 'chart']):
+            images['products'].append(f"/images/products/{category}/{img_file.name}")
+    
+    # 查找对比图片
+    comparison_patterns = ['*comparison*', '*chart*']
+    for pattern in comparison_patterns:
+        matches = list(static_dir.glob(pattern))
+        if matches:
+            images['comparison'] = f"/images/products/{category}/{matches[0].name}"
+            break
+    
+    return images
 
 def create_image_directory_structure():
     """创建完整的产品图片目录结构"""

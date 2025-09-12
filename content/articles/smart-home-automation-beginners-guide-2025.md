@@ -14,7 +14,7 @@ imageAlt: "Beginner-friendly smart home setup showing smart plugs, lights, and v
 featured: true
 toc: true
 affiliate: true
-featured_image: "/images/products/smart-plugs/amazon-smart-plug-hero.jpg"
+featured_image: "/images/smart home automation/smart-home-automation-beginners-guide-2025/hero_generated.webp"
 ---
 
 # Smart Home Automation for Beginners: Your Complete 2025 Starter Guide

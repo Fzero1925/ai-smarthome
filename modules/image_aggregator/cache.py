@@ -71,9 +71,19 @@ def dl(url: str, out_dir: Path, filename: str) -> str:
         # Remove original if conversion successful
         if webp_path.exists():
             original_path.unlink()
-            return str(webp_path.relative_to(Path.cwd()))
+            # Return path relative to project root, using forward slashes for web compatibility
+            try:
+                rel_path = webp_path.relative_to(Path.cwd())
+                return str(rel_path).replace('\\', '/')
+            except ValueError:
+                # Fallback to absolute path if relative path calculation fails
+                return str(webp_path).replace('\\', '/')
         else:
-            return str(original_path.relative_to(Path.cwd()))
+            try:
+                rel_path = original_path.relative_to(Path.cwd())
+                return str(rel_path).replace('\\', '/')
+            except ValueError:
+                return str(original_path).replace('\\', '/')
             
     except requests.exceptions.RequestException as e:
         print(f"Download error for {url}: {e}")

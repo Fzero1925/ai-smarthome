@@ -19,8 +19,8 @@ def search(query: str, limit: int = 10) -> List[Dict]:
         List of image metadata dicts
     """
     try:
-        # Openverse API endpoint
-        url = "https://api.openverse.engineering/v1/images/"
+        # Openverse API endpoint (updated URL)
+        url = "https://api.openverse.org/v1/images/"
         
         params = {
             'q': query,
@@ -34,8 +34,20 @@ def search(query: str, limit: int = 10) -> List[Dict]:
             'User-Agent': 'AI-SmartHomeHub/1.0 (contact@ai-smarthomehub.com)'
         }
         
-        response = requests.get(url, params=params, headers=headers, timeout=10)
-        response.raise_for_status()
+        # Add SSL error handling with fallback
+        try:
+            response = requests.get(url, params=params, headers=headers, timeout=10, verify=True)
+            response.raise_for_status()
+        except requests.exceptions.SSLError as ssl_error:
+            print(f"SSL verification failed for Openverse API: {ssl_error}")
+            print("Trying with SSL verification disabled...")
+            try:
+                response = requests.get(url, params=params, headers=headers, timeout=10, verify=False)
+                response.raise_for_status()
+            except Exception as fallback_error:
+                raise Exception(f"Both SSL and non-SSL requests failed: {fallback_error}")
+        except Exception as e:
+            raise e
         
         data = response.json()
         results = []
@@ -83,7 +95,7 @@ def get_image_details(image_id: str) -> Dict:
         Detailed image metadata dict
     """
     try:
-        url = f"https://api.openverse.engineering/v1/images/{image_id}/"
+        url = f"https://api.openverse.org/v1/images/{image_id}/"
         
         headers = {
             'User-Agent': 'AI-SmartHomeHub/1.0 (contact@ai-smarthomehub.com)'
