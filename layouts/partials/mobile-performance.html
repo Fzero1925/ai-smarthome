@@ -1,0 +1,138 @@
+<!-- Mobile Core Web Vitals Optimization -->
+<!-- Enhanced performance optimizations for mobile devices -->
+
+<!-- 1. Viewport and Mobile-specific Meta Tags -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+<!-- 2. Performance Hints for Mobile -->
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+<!-- 3. Preload Critical Mobile Resources -->
+{{ if .Site.Params.performance.mobile.preload_critical }}
+  <!-- Preload above-the-fold images for mobile -->
+  {{ if .Params.featured_image }}
+  <link rel="preload" href="{{ .Params.featured_image }}" as="image" media="(max-width: 768px)">
+  {{ end }}
+  
+  <!-- Preload critical fonts for mobile -->
+  <link rel="preload" href="/fonts/inter-variable.woff2" as="font" type="font/woff2" crossorigin>
+{{ end }}
+
+<!-- 4. Resource Hints for Mobile Optimization -->
+{{ if .Site.Params.performance.mobile.resource_hints }}
+  <!-- Prefetch next likely pages -->
+  {{ range first 3 .Site.RegularPages }}
+  <link rel="prefetch" href="{{ .Permalink }}">
+  {{ end }}
+  
+  <!-- DNS prefetch for mobile-specific services -->
+  <link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+  <link rel="dns-prefetch" href="//googleads.g.doubleclick.net">
+  <link rel="dns-prefetch" href="//tpc.googlesyndication.com">
+{{ end }}
+
+<!-- 5. Mobile-specific Critical CSS -->
+<style>
+  /* Critical mobile styles to prevent layout shift */
+  @media (max-width: 768px) {
+    body {
+      font-size: 16px; /* Prevent zoom on iOS */
+      -webkit-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Optimize mobile navigation */
+    .mobile-nav {
+      transform: translateZ(0); /* Force GPU acceleration */
+      will-change: transform;
+    }
+    
+    /* Optimize mobile images */
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    /* Reduce mobile padding for better space usage */
+    .container {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    
+    /* Optimize mobile typography */
+    h1 { font-size: 1.8rem; line-height: 1.3; }
+    h2 { font-size: 1.5rem; line-height: 1.4; }
+    h3 { font-size: 1.3rem; line-height: 1.4; }
+  }
+  
+  /* Loading indicator for better perceived performance */
+  .loading-skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+  
+  @keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+</style>
+
+<!-- 6. Mobile Performance Monitoring -->
+<script>
+  // Core Web Vitals monitoring for mobile
+  if ('PerformanceObserver' in window) {
+    // Monitor Largest Contentful Paint (LCP)
+    new PerformanceObserver((list) => {
+      list.getEntries().forEach((entry) => {
+        if (entry.entryType === 'largest-contentful-paint') {
+          console.log('LCP:', entry.startTime);
+          // Send to analytics if needed
+          if (window.gtag) {
+            gtag('event', 'web_vitals', {
+              event_category: 'Web Vitals',
+              event_label: 'LCP',
+              value: Math.round(entry.startTime)
+            });
+          }
+        }
+      });
+    }).observe({ entryTypes: ['largest-contentful-paint'] });
+    
+    // Monitor First Input Delay (FID)
+    new PerformanceObserver((list) => {
+      list.getEntries().forEach((entry) => {
+        console.log('FID:', entry.processingStart - entry.startTime);
+        if (window.gtag) {
+          gtag('event', 'web_vitals', {
+            event_category: 'Web Vitals',
+            event_label: 'FID',
+            value: Math.round(entry.processingStart - entry.startTime)
+          });
+        }
+      });
+    }).observe({ entryTypes: ['first-input'] });
+    
+    // Monitor Cumulative Layout Shift (CLS)
+    let clsValue = 0;
+    new PerformanceObserver((list) => {
+      for (const entry of list.getEntries()) {
+        if (!entry.hadRecentInput) {
+          clsValue += entry.value;
+        }
+      }
+      console.log('CLS:', clsValue);
+      if (window.gtag) {
+        gtag('event', 'web_vitals', {
+          event_category: 'Web Vitals',
+          event_label: 'CLS',
+          value: Math.round(clsValue * 1000)
+        });
+      }
+    }).observe({ entryTypes: ['layout-shift'] });
+  }
+</script>

@@ -31,6 +31,11 @@
   <link rel="preconnect" href="{{ . }}">
   {{ end }}
   
+  <!-- Mobile Performance Optimization -->
+  {{ if .Site.Params.performance.mobile.core_web_vitals_monitoring }}
+  {{ partial "mobile-performance.html" . }}
+  {{ end }}
+  
   <!-- SEO Title Optimization -->
   <title>{{ if .Title }}{{ .Title }}{{ .Site.Params.seo.title_separator }}{{ .Site.Title }}{{ else }}{{ .Site.Title }}{{ end }}</title>
   

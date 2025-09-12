@@ -175,7 +175,7 @@
 
     <!-- Move featured image below header to avoid overlaying nav/meta -->
     {{ if .Params.featured_image }}
-    <div class="featured-image-container">
+    <div class="featured-image-container" style="display: flex !important; justify-content: center !important; align-items: center !important; text-align: center !important; margin: 2rem auto !important; max-width: 100% !important;">
       <img src="{{ .Params.featured_image }}" 
            alt="{{ if .Params.featured_image_alt }}{{ .Params.featured_image_alt }}{{ else }}{{ .Title }}{{ end }}"
            class="featured-image"
@@ -183,7 +183,8 @@
            decoding="async"
            width="800"
            height="240"
-           fetchpriority="high">
+           fetchpriority="high"
+           style="display: block !important; margin: 0 auto !important; max-width: 800px !important; width: 100% !important; height: auto !important; object-fit: cover !important;">
     </div>
     {{ end }}
 
@@ -343,6 +344,38 @@
   .breadcrumb-item + .breadcrumb-item::before {
     margin: 0 0.3rem;
   }
+}
+
+/* FORCE CENTER FEATURED IMAGE - Override any conflicting styles */
+.featured-image-container {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  clear: both !important;
+  position: relative !important;
+}
+
+.featured-image {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  display: block !important;
+  text-align: center !important;
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  float: none !important;
+}
+
+/* Container level centering */
+.article .container .featured-image-container {
+  margin: 2rem auto !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 </style>
 

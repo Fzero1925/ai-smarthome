@@ -71,6 +71,15 @@ params:
       dns_prefetch: ['//fonts.googleapis.com', '//www.google-analytics.com', '//www.googletagmanager.com']
       preconnect: ['//fonts.gstatic.com', '//www.google-analytics.com']
       
+    # Mobile-specific optimizations
+    mobile:
+      preload_critical: true
+      resource_hints: true
+      adaptive_loading: true
+      touch_optimization: true
+      viewport_optimization: true
+      core_web_vitals_monitoring: true
+      
   # Analytics and Monetization
   analytics:
     google_analytics: 'G-XXXXXXXXXX'  # Replace with your actual GA4 ID
