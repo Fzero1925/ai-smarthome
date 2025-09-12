@@ -14,14 +14,7 @@ body {
     padding-top: 64px;
 }
 
-/* Only stick the top site header if present; do not affect article headers */
-header.site-header {
-    background: #fff;
-    border-bottom: 1px solid #e5e5e5;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
+/* Removed header.site-header sticky positioning to avoid conflict with navbar fixed positioning */
 
 /* Anchor offset for fixed navbar (in-page links) */
 h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
@@ -31,15 +24,17 @@ h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
     scroll-margin-top: 64px;
 }
 
-/* Ensure navbar stays visible on scroll on all pages */
+/* Ensure navbar stays visible on scroll on all pages - enhanced for visibility */
 .navbar {
-    position: fixed;
+    position: fixed !important;
     top: 0;
     left: 0;
     right: 0;
     z-index: 10000;
     width: 100%;
     background: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    min-height: 64px;
 }
 
 .container {
