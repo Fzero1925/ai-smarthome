@@ -1,79 +1,35 @@
 <?xml version='1.0' encoding='utf-8'?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug-hero.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug-hero.jpg</image:loc>
-      <image:caption>Amazon Amazon Smart Plug Hero - Professional smart plug review and buying guide for smart home automation</image:caption>
-      <image:title>Amazon Smart Plug Hero - Smart Plug for Home Automation</image:title>
-    </image:image>
-    <lastmod>2025-09-11T09:25:38.719568</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug-main.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug-main.jpg</image:loc>
-      <image:caption>Amazon Amazon Smart Plug Main - Professional smart plug review and buying guide for smart home automation</image:caption>
-      <image:title>Amazon Smart Plug Main - Smart Plug for Home Automation</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.459013</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug.jpg</image:loc>
-      <image:caption>Amazon Amazon Smart Plug - Professional smart plug review and buying guide for smart home automation</image:caption>
-      <image:title>Amazon Smart Plug - Smart Plug for Home Automation</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.459503</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/generic-smart-plug.jpg</loc>
     <image:image>
       <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/generic-smart-plug.jpg</image:loc>
       <image:caption>Generic Smart Plug - Smart Plug review with detailed specifications and smart home integration guide</image:caption>
       <image:title>Generic Smart Plug - Smart Plug for Home Automation</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.727569</lastmod>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/govee-smart-plug.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/tp-link-kasa.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/govee-smart-plug.jpg</image:loc>
-      <image:caption>Govee Smart Plug - Smart Plug review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Govee Smart Plug - Smart Plug for Home Automation</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/tp-link-kasa.jpg</image:loc>
+      <image:caption>TP-Link Tp Link Kasa - Reliable smart plug with Wi-Fi connectivity and app control</image:caption>
+      <image:title>Tp Link Kasa - Smart Plug for Home Automation</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.461502</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/govee-wifi-smart-plug.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug-hero.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/govee-wifi-smart-plug.jpg</image:loc>
-      <image:caption>Govee Wifi Smart Plug - Smart Plug review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Govee Wifi Smart Plug - Smart Plug for Home Automation</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug-hero.jpg</image:loc>
+      <image:caption>Amazon Amazon Smart Plug Hero - Professional smart plug review and buying guide for smart home automation</image:caption>
+      <image:title>Amazon Smart Plug Hero - Smart Plug for Home Automation</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.462500</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/smart-plug-comparison-2025.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/smart-plug-comparison-2025.jpg</image:loc>
-      <image:caption>Smart Plug comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
-      <image:title>Smart Plug Comparison 2025 - Smart Plug for Home Automation</image:title>
-    </image:image>
-    <lastmod>2025-09-11T09:25:38.735569</lastmod>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -84,40 +40,62 @@
       <image:caption>TP-Link Tp Link Kasa Hs103 - Reliable smart plug with Wi-Fi connectivity and app control</image:caption>
       <image:title>Tp Link Kasa Hs103 - Smart Plug for Home Automation</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.463502</lastmod>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/tp-link-kasa.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/govee-smart-plug.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/tp-link-kasa.jpg</image:loc>
-      <image:caption>TP-Link Tp Link Kasa - Reliable smart plug with Wi-Fi connectivity and app control</image:caption>
-      <image:title>Tp Link Kasa - Smart Plug for Home Automation</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/govee-smart-plug.jpg</image:loc>
+      <image:caption>Govee Smart Plug - Smart Plug review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Govee Smart Plug - Smart Plug for Home Automation</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.465582</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/generic-smart-bulb.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/generic-smart-bulb.jpg</image:loc>
-      <image:caption>Generic Smart Bulb - Smart Bulb review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Generic Smart Bulb - Smart LED Bulb with App Control</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.449504</lastmod>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/lifx-a19-wifi-smart-bulb.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/smart-plug-comparison-2025.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/lifx-a19-wifi-smart-bulb.jpg</image:loc>
-      <image:caption>Lifx A19 Wifi Smart Bulb - Smart Bulb review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Lifx A19 Wifi Smart Bulb - Smart LED Bulb with App Control</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/smart-plug-comparison-2025.jpg</image:loc>
+      <image:caption>Smart Plug comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
+      <image:title>Smart Plug Comparison 2025 - Smart Plug for Home Automation</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.451499</lastmod>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug.jpg</image:loc>
+      <image:caption>Amazon Amazon Smart Plug - Professional smart plug review and buying guide for smart home automation</image:caption>
+      <image:title>Amazon Smart Plug - Smart Plug for Home Automation</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug-main.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug-main.jpg</image:loc>
+      <image:caption>Amazon Amazon Smart Plug Main - Professional smart plug review and buying guide for smart home automation</image:caption>
+      <image:title>Amazon Smart Plug Main - Smart Plug for Home Automation</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/govee-wifi-smart-plug.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/govee-wifi-smart-plug.jpg</image:loc>
+      <image:caption>Govee Wifi Smart Plug - Smart Plug review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Govee Wifi Smart Plug - Smart Plug for Home Automation</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -128,31 +106,9 @@
       <image:caption>Lifx Color - Smart Bulb review with detailed specifications and smart home integration guide</image:caption>
       <image:title>Lifx Color - Smart LED Bulb with App Control</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.452774</lastmod>
+    <lastmod>2025-09-12T02:15:08.520295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-a19-white-color.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-a19-white-color.jpg</image:loc>
-      <image:caption>Philips Philips Hue A19 White Color - Premium smart bulb with advanced features and smart home integration</image:caption>
-      <image:title>Philips Hue A19 White Color - Smart LED Bulb with App Control</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.453499</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-white-color-hero.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-white-color-hero.jpg</image:loc>
-      <image:caption>Philips Philips Hue White Color Hero - Premium smart bulb with advanced features and smart home integration</image:caption>
-      <image:title>Philips Hue White Color Hero - Smart LED Bulb with App Control</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.455501</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-white.jpg</loc>
@@ -161,7 +117,40 @@
       <image:caption>Philips Philips Hue White - Premium smart bulb with advanced features and smart home integration</image:caption>
       <image:title>Philips Hue White - Smart LED Bulb with App Control</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.456519</lastmod>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/lifx-a19-wifi-smart-bulb.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/lifx-a19-wifi-smart-bulb.jpg</image:loc>
+      <image:caption>Lifx A19 Wifi Smart Bulb - Smart Bulb review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Lifx A19 Wifi Smart Bulb - Smart LED Bulb with App Control</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.520295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/generic-smart-bulb.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/generic-smart-bulb.jpg</image:loc>
+      <image:caption>Generic Smart Bulb - Smart Bulb review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Generic Smart Bulb - Smart LED Bulb with App Control</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.520295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-white-color-hero.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-white-color-hero.jpg</image:loc>
+      <image:caption>Philips Philips Hue White Color Hero - Premium smart bulb with advanced features and smart home integration</image:caption>
+      <image:title>Philips Hue White Color Hero - Smart LED Bulb with App Control</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -172,42 +161,20 @@
       <image:caption>Smart Bulb comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
       <image:title>Smart Bulb Comparison Chart - Smart LED Bulb with App Control</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.457500</lastmod>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/ecobee-smart.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-a19-white-color.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/ecobee-smart.jpg</image:loc>
-      <image:caption>Ecobee Smart - Smart Thermostat review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Ecobee Smart - Smart Thermostat for Energy Savings</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-a19-white-color.jpg</image:loc>
+      <image:caption>Philips Philips Hue A19 White Color - Premium smart bulb with advanced features and smart home integration</image:caption>
+      <image:title>Philips Hue A19 White Color - Smart LED Bulb with App Control</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.762569</lastmod>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/ecobee-smartthermostat-voice.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/ecobee-smartthermostat-voice.jpg</image:loc>
-      <image:caption>Ecobee Smartthermostat Voice - Smart Thermostat review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Ecobee Smartthermostat Voice - Smart Thermostat for Energy Savings</image:title>
-    </image:image>
-    <lastmod>2025-09-11T09:25:38.766571</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/generic-smart-thermostat.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/generic-smart-thermostat.jpg</image:loc>
-      <image:caption>Generic Smart Thermostat - Smart Thermostat review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Generic Smart Thermostat - Smart Thermostat for Energy Savings</image:title>
-    </image:image>
-    <lastmod>2025-09-11T09:25:38.768574</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/google-nest-learning-thermostat.jpg</loc>
@@ -216,7 +183,7 @@
       <image:caption>Google Google Nest Learning Thermostat - AI-powered smart thermostat with voice control and smart home compatibility</image:caption>
       <image:title>Google Nest Learning Thermostat - Smart Thermostat for Energy Savings</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.770571</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -227,7 +194,40 @@
       <image:caption>Google Google Nest - AI-powered smart thermostat with voice control and smart home compatibility</image:caption>
       <image:title>Google Nest - Smart Thermostat for Energy Savings</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.773964</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/generic-smart-thermostat.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/generic-smart-thermostat.jpg</image:loc>
+      <image:caption>Generic Smart Thermostat - Smart Thermostat review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Generic Smart Thermostat - Smart Thermostat for Energy Savings</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/ecobee-smart.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/ecobee-smart.jpg</image:loc>
+      <image:caption>Ecobee Smart - Smart Thermostat review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Ecobee Smart - Smart Thermostat for Energy Savings</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/thermostat-comparison-chart.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/thermostat-comparison-chart.jpg</image:loc>
+      <image:caption>Smart Thermostat comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
+      <image:title>Thermostat Comparison Chart - Smart Thermostat for Energy Savings</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -238,31 +238,20 @@
       <image:caption>Smart Thermostat Hero - Complete smart thermostat overview with specifications and smart home compatibility</image:caption>
       <image:title>Smart Thermostat Hero - Smart Thermostat for Energy Savings</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.777450</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/thermostat-comparison-chart.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/ecobee-smartthermostat-voice.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/thermostat-comparison-chart.jpg</image:loc>
-      <image:caption>Smart Thermostat comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
-      <image:title>Thermostat Comparison Chart - Smart Thermostat for Energy Savings</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/ecobee-smartthermostat-voice.jpg</image:loc>
+      <image:caption>Ecobee Smartthermostat Voice - Smart Thermostat review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Ecobee Smartthermostat Voice - Smart Thermostat for Energy Savings</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.780080</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/security-cameras/arlo-pro-4-outdoor.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/security-cameras/arlo-pro-4-outdoor.jpg</image:loc>
-      <image:caption>Arlo Pro 4 Outdoor - Security Camera review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Arlo Pro 4 Outdoor - Smart Security Camera System</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.443161</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://www.ai-smarthomehub.com/images/products/security-cameras/generic-security-camera.jpg</loc>
@@ -271,29 +260,7 @@
       <image:caption>Generic Security Camera - Security Camera review with detailed specifications and smart home integration guide</image:caption>
       <image:title>Generic Security Camera - Smart Security Camera System</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.443499</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/security-cameras/outdoor-security-camera-hero.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/security-cameras/outdoor-security-camera-hero.jpg</image:loc>
-      <image:caption>Outdoor Security Camera Hero - Complete security camera overview with specifications and smart home compatibility</image:caption>
-      <image:title>Outdoor Security Camera Hero - Smart Security Camera System</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.445500</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/security-cameras/ring-spotlight-cam-battery.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/security-cameras/ring-spotlight-cam-battery.jpg</image:loc>
-      <image:caption>Ring Spotlight Cam Battery - Security Camera review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Ring Spotlight Cam Battery - Smart Security Camera System</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.446526</lastmod>
+    <lastmod>2025-09-12T02:15:08.520295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -304,7 +271,51 @@
       <image:caption>Security Camera comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
       <image:title>Security Camera Comparison 2025 - Smart Security Camera System</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.447711</lastmod>
+    <lastmod>2025-09-12T02:15:08.520295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/security-cameras/ring-spotlight-cam-battery.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/security-cameras/ring-spotlight-cam-battery.jpg</image:loc>
+      <image:caption>Ring Spotlight Cam Battery - Security Camera review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Ring Spotlight Cam Battery - Smart Security Camera System</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.520295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/security-cameras/arlo-pro-4-outdoor.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/security-cameras/arlo-pro-4-outdoor.jpg</image:loc>
+      <image:caption>Arlo Pro 4 Outdoor - Security Camera review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Arlo Pro 4 Outdoor - Smart Security Camera System</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.520295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/security-cameras/outdoor-security-camera-hero.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/security-cameras/outdoor-security-camera-hero.jpg</image:loc>
+      <image:caption>Outdoor Security Camera Hero - Complete security camera overview with specifications and smart home compatibility</image:caption>
+      <image:title>Outdoor Security Camera Hero - Smart Security Camera System</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.520295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/robot-vacuums/robot-vacuum-cleaning-hero.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/robot-vacuums/robot-vacuum-cleaning-hero.jpg</image:loc>
+      <image:caption>Robot Vacuum Cleaning Hero - Complete robot vacuum overview with specifications and smart home compatibility</image:caption>
+      <image:title>Robot Vacuum Cleaning Hero - Robot Vacuum for Smart Cleaning</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.519295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
@@ -315,7 +326,7 @@
       <image:caption>Generic Robot Vacuum - Robot Vacuum review with detailed specifications and smart home integration guide</image:caption>
       <image:title>Generic Robot Vacuum - Robot Vacuum for Smart Cleaning</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.669569</lastmod>
+    <lastmod>2025-09-12T02:15:08.519295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -326,31 +337,9 @@
       <image:caption>Roborock S7 Maxv Ultra - Robot Vacuum review with detailed specifications and smart home integration guide</image:caption>
       <image:title>Roborock S7 Maxv Ultra - Robot Vacuum for Smart Cleaning</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.438499</lastmod>
+    <lastmod>2025-09-12T02:15:08.519295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/robot-vacuums/robot-vacuum-cleaning-hero.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/robot-vacuums/robot-vacuum-cleaning-hero.jpg</image:loc>
-      <image:caption>Robot Vacuum Cleaning Hero - Complete robot vacuum overview with specifications and smart home compatibility</image:caption>
-      <image:title>Robot Vacuum Cleaning Hero - Robot Vacuum for Smart Cleaning</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.440500</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/robot-vacuums/robot-vacuum-comparison-2025.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/robot-vacuums/robot-vacuum-comparison-2025.jpg</image:loc>
-      <image:caption>Robot Vacuum comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
-      <image:title>Robot Vacuum Comparison 2025 - Robot Vacuum for Smart Cleaning</image:title>
-    </image:image>
-    <lastmod>2025-09-11T09:25:38.677684</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
   </url>
   <url>
     <loc>https://www.ai-smarthomehub.com/images/products/robot-vacuums/roomba-j7-plus-self-emptying.jpg</loc>
@@ -359,18 +348,18 @@
       <image:caption>Roomba J7 Plus Self Emptying - Robot Vacuum review with detailed specifications and smart home integration guide</image:caption>
       <image:title>Roomba J7 Plus Self Emptying - Robot Vacuum for Smart Cleaning</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.441601</lastmod>
+    <lastmod>2025-09-12T02:15:08.520295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-speakers/amazon-echo-dot-5th-gen.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/robot-vacuums/robot-vacuum-comparison-2025.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-speakers/amazon-echo-dot-5th-gen.jpg</image:loc>
-      <image:caption>Amazon Amazon Echo Dot 5Th Gen - Professional smart speaker review and buying guide for smart home automation</image:caption>
-      <image:title>Amazon Echo Dot 5Th Gen - Smart Speaker with Voice Assistant</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/robot-vacuums/robot-vacuum-comparison-2025.jpg</image:loc>
+      <image:caption>Robot Vacuum comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
+      <image:title>Robot Vacuum Comparison 2025 - Robot Vacuum for Smart Cleaning</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.467646</lastmod>
+    <lastmod>2025-09-12T02:15:08.519295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
@@ -381,18 +370,18 @@
       <image:caption>Generic Smart Speaker - Smart Speaker review with detailed specifications and smart home integration guide</image:caption>
       <image:title>Generic Smart Speaker - Smart Speaker with Voice Assistant</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.751604</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-speakers/google-nest-audio.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-speakers/amazon-echo-dot-5th-gen.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-speakers/google-nest-audio.jpg</image:loc>
-      <image:caption>Google Google Nest Audio - AI-powered smart speaker with voice control and smart home compatibility</image:caption>
-      <image:title>Google Nest Audio - Smart Speaker with Voice Assistant</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-speakers/amazon-echo-dot-5th-gen.jpg</image:loc>
+      <image:caption>Amazon Amazon Echo Dot 5Th Gen - Professional smart speaker review and buying guide for smart home automation</image:caption>
+      <image:title>Amazon Echo Dot 5Th Gen - Smart Speaker with Voice Assistant</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.469553</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
@@ -403,7 +392,18 @@
       <image:caption>Smart Speaker Collection - Smart Speaker review with detailed specifications and smart home integration guide</image:caption>
       <image:title>Smart Speaker Collection - Smart Speaker with Voice Assistant</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.471074</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-speakers/google-nest-audio.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-speakers/google-nest-audio.jpg</image:loc>
+      <image:caption>Google Google Nest Audio - AI-powered smart speaker with voice control and smart home compatibility</image:caption>
+      <image:title>Google Nest Audio - Smart Speaker with Voice Assistant</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
@@ -414,7 +414,7 @@
       <image:caption>Smart Speaker comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
       <image:title>Smart Speaker Comparison - Smart Speaker with Voice Assistant</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.758570</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -425,7 +425,7 @@
       <image:caption>Default Article - Smart Home Device review with detailed specifications and smart home integration guide</image:caption>
       <image:title>Default Article - Smart Home Device Review</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.637571</lastmod>
+    <lastmod>2025-09-12T02:15:08.519295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -436,64 +436,31 @@
       <image:caption>Logo - Smart Home Device review with detailed specifications and smart home integration guide</image:caption>
       <image:title>Logo - Smart Home Device Review</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.641571</lastmod>
+    <lastmod>2025-09-12T02:15:08.519295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/general/connected-home.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/smart-plugs/df022a7f_1280x720.webp</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/general/connected-home.jpg</image:loc>
-      <image:caption>Connected Home - Smart Home Device review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Connected Home - Smart Home Device Review</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/smart-plugs/df022a7f_1280x720.webp</image:loc>
+      <image:caption>Df022A7F 1280X720 - Smart Plug review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Df022A7F 1280X720 - Smart Plug for Home Automation</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.653571</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/general/home-automation.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/general/home-automation.jpg</image:loc>
-      <image:caption>Home Automation - Smart Home Device review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Home Automation - Smart Home Device Review</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.434529</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/general/smart-home-comparison.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/general/smart-home-comparison.jpg</image:loc>
-      <image:caption>Smart Home Device comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
-      <image:title>Smart Home Comparison - Smart Home Device Review</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.436501</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/general/smart-home-devices.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/robot-vacuums/robot-vacuum-cleaning-hero.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/general/smart-home-devices.jpg</image:loc>
-      <image:caption>Smart Home Devices - Smart Home Device review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Smart Home Devices - Smart Home Device Review</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/robot-vacuums/robot-vacuum-cleaning-hero.jpg</image:loc>
+      <image:caption>Robot Vacuum Cleaning Hero - Complete robot vacuum overview with specifications and smart home compatibility</image:caption>
+      <image:title>Robot Vacuum Cleaning Hero - Robot Vacuum for Smart Cleaning</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.662570</lastmod>
+    <lastmod>2025-09-12T02:15:08.519295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/general/smart-home-hero.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/general/smart-home-hero.jpg</image:loc>
-      <image:caption>Smart Home Hero - Complete smart home device overview with specifications and smart home compatibility</image:caption>
-      <image:title>Smart Home Hero - Smart Home Device Review</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.437499</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://www.ai-smarthomehub.com/images/products/robot-vacuums/generic-robot-vacuum.jpg</loc>
@@ -502,7 +469,7 @@
       <image:caption>Generic Robot Vacuum - Robot Vacuum review with detailed specifications and smart home integration guide</image:caption>
       <image:title>Generic Robot Vacuum - Robot Vacuum for Smart Cleaning</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.669569</lastmod>
+    <lastmod>2025-09-12T02:15:08.519295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -513,31 +480,9 @@
       <image:caption>Roborock S7 Maxv Ultra - Robot Vacuum review with detailed specifications and smart home integration guide</image:caption>
       <image:title>Roborock S7 Maxv Ultra - Robot Vacuum for Smart Cleaning</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.438499</lastmod>
+    <lastmod>2025-09-12T02:15:08.519295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/robot-vacuums/robot-vacuum-cleaning-hero.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/robot-vacuums/robot-vacuum-cleaning-hero.jpg</image:loc>
-      <image:caption>Robot Vacuum Cleaning Hero - Complete robot vacuum overview with specifications and smart home compatibility</image:caption>
-      <image:title>Robot Vacuum Cleaning Hero - Robot Vacuum for Smart Cleaning</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.440500</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/robot-vacuums/robot-vacuum-comparison-2025.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/robot-vacuums/robot-vacuum-comparison-2025.jpg</image:loc>
-      <image:caption>Robot Vacuum comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
-      <image:title>Robot Vacuum Comparison 2025 - Robot Vacuum for Smart Cleaning</image:title>
-    </image:image>
-    <lastmod>2025-09-11T09:25:38.677684</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
   </url>
   <url>
     <loc>https://www.ai-smarthomehub.com/images/products/robot-vacuums/roomba-j7-plus-self-emptying.jpg</loc>
@@ -546,139 +491,40 @@
       <image:caption>Roomba J7 Plus Self Emptying - Robot Vacuum review with detailed specifications and smart home integration guide</image:caption>
       <image:title>Roomba J7 Plus Self Emptying - Robot Vacuum for Smart Cleaning</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.441601</lastmod>
+    <lastmod>2025-09-12T02:15:08.520295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/security-cameras/arlo-pro-4-outdoor.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/robot-vacuums/robot-vacuum-comparison-2025.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/security-cameras/arlo-pro-4-outdoor.jpg</image:loc>
-      <image:caption>Arlo Pro 4 Outdoor - Security Camera review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Arlo Pro 4 Outdoor - Smart Security Camera System</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/robot-vacuums/robot-vacuum-comparison-2025.jpg</image:loc>
+      <image:caption>Robot Vacuum comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
+      <image:title>Robot Vacuum Comparison 2025 - Robot Vacuum for Smart Cleaning</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.443161</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/security-cameras/generic-security-camera.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/security-cameras/generic-security-camera.jpg</image:loc>
-      <image:caption>Generic Security Camera - Security Camera review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Generic Security Camera - Smart Security Camera System</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.443499</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/security-cameras/outdoor-security-camera-hero.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/security-cameras/outdoor-security-camera-hero.jpg</image:loc>
-      <image:caption>Outdoor Security Camera Hero - Complete security camera overview with specifications and smart home compatibility</image:caption>
-      <image:title>Outdoor Security Camera Hero - Smart Security Camera System</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.445500</lastmod>
+    <lastmod>2025-09-12T02:15:08.519295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/security-cameras/ring-spotlight-cam-battery.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/generic-smart-plug.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/security-cameras/ring-spotlight-cam-battery.jpg</image:loc>
-      <image:caption>Ring Spotlight Cam Battery - Security Camera review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Ring Spotlight Cam Battery - Smart Security Camera System</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/generic-smart-plug.jpg</image:loc>
+      <image:caption>Generic Smart Plug - Smart Plug review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Generic Smart Plug - Smart Plug for Home Automation</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.446526</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/security-cameras/security-camera-comparison-2025.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/security-cameras/security-camera-comparison-2025.jpg</image:loc>
-      <image:caption>Security Camera comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
-      <image:title>Security Camera Comparison 2025 - Smart Security Camera System</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.447711</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/generic-smart-bulb.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/generic-smart-bulb.jpg</image:loc>
-      <image:caption>Generic Smart Bulb - Smart Bulb review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Generic Smart Bulb - Smart LED Bulb with App Control</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.449504</lastmod>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/lifx-a19-wifi-smart-bulb.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/tp-link-kasa.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/lifx-a19-wifi-smart-bulb.jpg</image:loc>
-      <image:caption>Lifx A19 Wifi Smart Bulb - Smart Bulb review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Lifx A19 Wifi Smart Bulb - Smart LED Bulb with App Control</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/tp-link-kasa.jpg</image:loc>
+      <image:caption>TP-Link Tp Link Kasa - Reliable smart plug with Wi-Fi connectivity and app control</image:caption>
+      <image:title>Tp Link Kasa - Smart Plug for Home Automation</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.451499</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/lifx-color.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/lifx-color.jpg</image:loc>
-      <image:caption>Lifx Color - Smart Bulb review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Lifx Color - Smart LED Bulb with App Control</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.452774</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-a19-white-color.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-a19-white-color.jpg</image:loc>
-      <image:caption>Philips Philips Hue A19 White Color - Premium smart bulb with advanced features and smart home integration</image:caption>
-      <image:title>Philips Hue A19 White Color - Smart LED Bulb with App Control</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.453499</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-white-color-hero.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-white-color-hero.jpg</image:loc>
-      <image:caption>Philips Philips Hue White Color Hero - Premium smart bulb with advanced features and smart home integration</image:caption>
-      <image:title>Philips Hue White Color Hero - Smart LED Bulb with App Control</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.455501</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-white.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-white.jpg</image:loc>
-      <image:caption>Philips Philips Hue White - Premium smart bulb with advanced features and smart home integration</image:caption>
-      <image:title>Philips Hue White - Smart LED Bulb with App Control</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.456519</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/smart-bulb-comparison-chart.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/smart-bulb-comparison-chart.jpg</image:loc>
-      <image:caption>Smart Bulb comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
-      <image:title>Smart Bulb Comparison Chart - Smart LED Bulb with App Control</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.457500</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -689,73 +535,7 @@
       <image:caption>Amazon Amazon Smart Plug Hero - Professional smart plug review and buying guide for smart home automation</image:caption>
       <image:title>Amazon Smart Plug Hero - Smart Plug for Home Automation</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.719568</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug-main.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug-main.jpg</image:loc>
-      <image:caption>Amazon Amazon Smart Plug Main - Professional smart plug review and buying guide for smart home automation</image:caption>
-      <image:title>Amazon Smart Plug Main - Smart Plug for Home Automation</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.459013</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug.jpg</image:loc>
-      <image:caption>Amazon Amazon Smart Plug - Professional smart plug review and buying guide for smart home automation</image:caption>
-      <image:title>Amazon Smart Plug - Smart Plug for Home Automation</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.459503</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/generic-smart-plug.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/generic-smart-plug.jpg</image:loc>
-      <image:caption>Generic Smart Plug - Smart Plug review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Generic Smart Plug - Smart Plug for Home Automation</image:title>
-    </image:image>
-    <lastmod>2025-09-11T09:25:38.727569</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/govee-smart-plug.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/govee-smart-plug.jpg</image:loc>
-      <image:caption>Govee Smart Plug - Smart Plug review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Govee Smart Plug - Smart Plug for Home Automation</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.461502</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/govee-wifi-smart-plug.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/govee-wifi-smart-plug.jpg</image:loc>
-      <image:caption>Govee Wifi Smart Plug - Smart Plug review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Govee Wifi Smart Plug - Smart Plug for Home Automation</image:title>
-    </image:image>
-    <lastmod>2025-09-12T09:04:41.462500</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/smart-plug-comparison-2025.jpg</loc>
-    <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/smart-plug-comparison-2025.jpg</image:loc>
-      <image:caption>Smart Plug comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
-      <image:title>Smart Plug Comparison 2025 - Smart Plug for Home Automation</image:title>
-    </image:image>
-    <lastmod>2025-09-11T09:25:38.735569</lastmod>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -766,42 +546,141 @@
       <image:caption>TP-Link Tp Link Kasa Hs103 - Reliable smart plug with Wi-Fi connectivity and app control</image:caption>
       <image:title>Tp Link Kasa Hs103 - Smart Plug for Home Automation</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.463502</lastmod>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/tp-link-kasa.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/govee-smart-plug.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/tp-link-kasa.jpg</image:loc>
-      <image:caption>TP-Link Tp Link Kasa - Reliable smart plug with Wi-Fi connectivity and app control</image:caption>
-      <image:title>Tp Link Kasa - Smart Plug for Home Automation</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/govee-smart-plug.jpg</image:loc>
+      <image:caption>Govee Smart Plug - Smart Plug review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Govee Smart Plug - Smart Plug for Home Automation</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.465582</lastmod>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/smart-plug-comparison-2025.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/smart-plug-comparison-2025.jpg</image:loc>
+      <image:caption>Smart Plug comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
+      <image:title>Smart Plug Comparison 2025 - Smart Plug for Home Automation</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-security/7ec44764_1280x720.webp</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-security/7ec44764_1280x720.webp</image:loc>
-      <image:caption>7Ec44764 1280X720 - Smart Home Device review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>7Ec44764 1280X720 - Smart Home Device Review</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug.jpg</image:loc>
+      <image:caption>Amazon Amazon Smart Plug - Professional smart plug review and buying guide for smart home automation</image:caption>
+      <image:title>Amazon Smart Plug - Smart Plug for Home Automation</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.743569</lastmod>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-speakers/amazon-echo-dot-5th-gen.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug-main.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-speakers/amazon-echo-dot-5th-gen.jpg</image:loc>
-      <image:caption>Amazon Amazon Echo Dot 5Th Gen - Professional smart speaker review and buying guide for smart home automation</image:caption>
-      <image:title>Amazon Echo Dot 5Th Gen - Smart Speaker with Voice Assistant</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/amazon-smart-plug-main.jpg</image:loc>
+      <image:caption>Amazon Amazon Smart Plug Main - Professional smart plug review and buying guide for smart home automation</image:caption>
+      <image:title>Amazon Smart Plug Main - Smart Plug for Home Automation</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.467646</lastmod>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/govee-wifi-smart-plug.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-plugs/govee-wifi-smart-plug.jpg</image:loc>
+      <image:caption>Govee Wifi Smart Plug - Smart Plug review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Govee Wifi Smart Plug - Smart Plug for Home Automation</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/lifx-color.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/lifx-color.jpg</image:loc>
+      <image:caption>Lifx Color - Smart Bulb review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Lifx Color - Smart LED Bulb with App Control</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.520295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-white.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-white.jpg</image:loc>
+      <image:caption>Philips Philips Hue White - Premium smart bulb with advanced features and smart home integration</image:caption>
+      <image:title>Philips Hue White - Smart LED Bulb with App Control</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/lifx-a19-wifi-smart-bulb.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/lifx-a19-wifi-smart-bulb.jpg</image:loc>
+      <image:caption>Lifx A19 Wifi Smart Bulb - Smart Bulb review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Lifx A19 Wifi Smart Bulb - Smart LED Bulb with App Control</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.520295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/generic-smart-bulb.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/generic-smart-bulb.jpg</image:loc>
+      <image:caption>Generic Smart Bulb - Smart Bulb review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Generic Smart Bulb - Smart LED Bulb with App Control</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.520295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-white-color-hero.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-white-color-hero.jpg</image:loc>
+      <image:caption>Philips Philips Hue White Color Hero - Premium smart bulb with advanced features and smart home integration</image:caption>
+      <image:title>Philips Hue White Color Hero - Smart LED Bulb with App Control</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/smart-bulb-comparison-chart.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/smart-bulb-comparison-chart.jpg</image:loc>
+      <image:caption>Smart Bulb comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
+      <image:title>Smart Bulb Comparison Chart - Smart LED Bulb with App Control</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-a19-white-color.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-bulbs/philips-hue-a19-white-color.jpg</image:loc>
+      <image:caption>Philips Philips Hue A19 White Color - Premium smart bulb with advanced features and smart home integration</image:caption>
+      <image:title>Philips Hue A19 White Color - Smart LED Bulb with App Control</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.521295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.ai-smarthomehub.com/images/products/smart-speakers/generic-smart-speaker.jpg</loc>
@@ -810,18 +689,18 @@
       <image:caption>Generic Smart Speaker - Smart Speaker review with detailed specifications and smart home integration guide</image:caption>
       <image:title>Generic Smart Speaker - Smart Speaker with Voice Assistant</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.751604</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-speakers/google-nest-audio.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-speakers/amazon-echo-dot-5th-gen.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-speakers/google-nest-audio.jpg</image:loc>
-      <image:caption>Google Google Nest Audio - AI-powered smart speaker with voice control and smart home compatibility</image:caption>
-      <image:title>Google Nest Audio - Smart Speaker with Voice Assistant</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-speakers/amazon-echo-dot-5th-gen.jpg</image:loc>
+      <image:caption>Amazon Amazon Echo Dot 5Th Gen - Professional smart speaker review and buying guide for smart home automation</image:caption>
+      <image:title>Amazon Echo Dot 5Th Gen - Smart Speaker with Voice Assistant</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.469553</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
@@ -832,7 +711,18 @@
       <image:caption>Smart Speaker Collection - Smart Speaker review with detailed specifications and smart home integration guide</image:caption>
       <image:title>Smart Speaker Collection - Smart Speaker with Voice Assistant</image:title>
     </image:image>
-    <lastmod>2025-09-12T09:04:41.471074</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-speakers/google-nest-audio.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-speakers/google-nest-audio.jpg</image:loc>
+      <image:caption>Google Google Nest Audio - AI-powered smart speaker with voice control and smart home compatibility</image:caption>
+      <image:title>Google Nest Audio - Smart Speaker with Voice Assistant</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
@@ -843,40 +733,117 @@
       <image:caption>Smart Speaker comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
       <image:title>Smart Speaker Comparison - Smart Speaker with Voice Assistant</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.758570</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/ecobee-smart.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/security-cameras/generic-security-camera.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/ecobee-smart.jpg</image:loc>
-      <image:caption>Ecobee Smart - Smart Thermostat review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Ecobee Smart - Smart Thermostat for Energy Savings</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/security-cameras/generic-security-camera.jpg</image:loc>
+      <image:caption>Generic Security Camera - Security Camera review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Generic Security Camera - Smart Security Camera System</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.762569</lastmod>
+    <lastmod>2025-09-12T02:15:08.520295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/security-cameras/security-camera-comparison-2025.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/security-cameras/security-camera-comparison-2025.jpg</image:loc>
+      <image:caption>Security Camera comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
+      <image:title>Security Camera Comparison 2025 - Smart Security Camera System</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.520295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/security-cameras/ring-spotlight-cam-battery.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/security-cameras/ring-spotlight-cam-battery.jpg</image:loc>
+      <image:caption>Ring Spotlight Cam Battery - Security Camera review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Ring Spotlight Cam Battery - Smart Security Camera System</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.520295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/security-cameras/arlo-pro-4-outdoor.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/security-cameras/arlo-pro-4-outdoor.jpg</image:loc>
+      <image:caption>Arlo Pro 4 Outdoor - Security Camera review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Arlo Pro 4 Outdoor - Smart Security Camera System</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.520295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/security-cameras/outdoor-security-camera-hero.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/security-cameras/outdoor-security-camera-hero.jpg</image:loc>
+      <image:caption>Outdoor Security Camera Hero - Complete security camera overview with specifications and smart home compatibility</image:caption>
+      <image:title>Outdoor Security Camera Hero - Smart Security Camera System</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.520295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/general/smart-home-devices.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/general/smart-home-devices.jpg</image:loc>
+      <image:caption>Smart Home Devices - Smart Home Device review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Smart Home Devices - Smart Home Device Review</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.519295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/general/smart-home-comparison.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/general/smart-home-comparison.jpg</image:loc>
+      <image:caption>Smart Home Device comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
+      <image:title>Smart Home Comparison - Smart Home Device Review</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.519295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/ecobee-smartthermostat-voice.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/general/home-automation.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/ecobee-smartthermostat-voice.jpg</image:loc>
-      <image:caption>Ecobee Smartthermostat Voice - Smart Thermostat review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Ecobee Smartthermostat Voice - Smart Thermostat for Energy Savings</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/general/home-automation.jpg</image:loc>
+      <image:caption>Home Automation - Smart Home Device review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Home Automation - Smart Home Device Review</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.766571</lastmod>
+    <lastmod>2025-09-12T02:15:08.519295</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/generic-smart-thermostat.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/general/connected-home.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/generic-smart-thermostat.jpg</image:loc>
-      <image:caption>Generic Smart Thermostat - Smart Thermostat review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Generic Smart Thermostat - Smart Thermostat for Energy Savings</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/general/connected-home.jpg</image:loc>
+      <image:caption>Connected Home - Smart Home Device review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Connected Home - Smart Home Device Review</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.768574</lastmod>
+    <lastmod>2025-09-12T02:15:08.519295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/general/smart-home-hero.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/general/smart-home-hero.jpg</image:loc>
+      <image:caption>Smart Home Hero - Complete smart home device overview with specifications and smart home compatibility</image:caption>
+      <image:title>Smart Home Hero - Smart Home Device Review</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.519295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -887,7 +854,7 @@
       <image:caption>Google Google Nest Learning Thermostat - AI-powered smart thermostat with voice control and smart home compatibility</image:caption>
       <image:title>Google Nest Learning Thermostat - Smart Thermostat for Energy Savings</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.770571</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -898,7 +865,40 @@
       <image:caption>Google Google Nest - AI-powered smart thermostat with voice control and smart home compatibility</image:caption>
       <image:title>Google Nest - Smart Thermostat for Energy Savings</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.773964</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/generic-smart-thermostat.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/generic-smart-thermostat.jpg</image:loc>
+      <image:caption>Generic Smart Thermostat - Smart Thermostat review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Generic Smart Thermostat - Smart Thermostat for Energy Savings</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/ecobee-smart.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/ecobee-smart.jpg</image:loc>
+      <image:caption>Ecobee Smart - Smart Thermostat review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Ecobee Smart - Smart Thermostat for Energy Savings</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/thermostat-comparison-chart.jpg</loc>
+    <image:image>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/thermostat-comparison-chart.jpg</image:loc>
+      <image:caption>Smart Thermostat comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
+      <image:title>Thermostat Comparison Chart - Smart Thermostat for Energy Savings</image:title>
+    </image:image>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -909,30 +909,30 @@
       <image:caption>Smart Thermostat Hero - Complete smart thermostat overview with specifications and smart home compatibility</image:caption>
       <image:title>Smart Thermostat Hero - Smart Thermostat for Energy Savings</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.777450</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/thermostat-comparison-chart.jpg</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/ecobee-smartthermostat-voice.jpg</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/thermostat-comparison-chart.jpg</image:loc>
-      <image:caption>Smart Thermostat comparison guide - Compare top models, features, and prices for smart home setup</image:caption>
-      <image:title>Thermostat Comparison Chart - Smart Thermostat for Energy Savings</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-thermostats/ecobee-smartthermostat-voice.jpg</image:loc>
+      <image:caption>Ecobee Smartthermostat Voice - Smart Thermostat review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>Ecobee Smartthermostat Voice - Smart Thermostat for Energy Savings</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.780080</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.ai-smarthomehub.com/images/smart-plugs/df022a7f_1280x720.webp</loc>
+    <loc>https://www.ai-smarthomehub.com/images/products/smart-security/7ec44764_1280x720.webp</loc>
     <image:image>
-      <image:loc>https://www.ai-smarthomehub.com/images/smart-plugs/df022a7f_1280x720.webp</image:loc>
-      <image:caption>Df022A7F 1280X720 - Smart Plug review with detailed specifications and smart home integration guide</image:caption>
-      <image:title>Df022A7F 1280X720 - Smart Plug for Home Automation</image:title>
+      <image:loc>https://www.ai-smarthomehub.com/images/products/smart-security/7ec44764_1280x720.webp</image:loc>
+      <image:caption>7Ec44764 1280X720 - Smart Home Device review with detailed specifications and smart home integration guide</image:caption>
+      <image:title>7Ec44764 1280X720 - Smart Home Device Review</image:title>
     </image:image>
-    <lastmod>2025-09-11T09:25:38.783957</lastmod>
+    <lastmod>2025-09-12T02:15:08.522295</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.3</priority>
   </url>
 </urlset>
