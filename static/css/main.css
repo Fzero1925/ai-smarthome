@@ -744,7 +744,13 @@ h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
   flex-shrink: 0;
 }
 
-/* Hard override to guarantee article header never sticks or overlays nav - Enhanced */
+/* ULTIMATE OVERRIDE: article header never sticks or overlays nav */
+article header.article-header[style*="margin-top"],
+header.article-header[style*="margin-top"],
+.article-header[style*="margin-top"],
+article header.article-header[style],
+header.article-header[style],
+.article-header[style],
 article header.article-header,
 header.article-header,
 .article-header,
@@ -758,6 +764,13 @@ article .article-header {
   transform: none !important;
   display: block !important;
   float: none !important;
+  /* Force normal document flow behavior */
+  -webkit-position: static !important;
+  -moz-position: static !important;
+  -ms-position: static !important;
+  /* Prevent any weird positioning */
+  contain: none !important;
+  isolation: auto !important;
 }
 
 /* Responsive featured image */
