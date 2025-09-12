@@ -23,6 +23,14 @@ header.site-header {
     z-index: 100;
 }
 
+/* Anchor offset for fixed navbar (in-page links) */
+h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
+    scroll-margin-top: 64px; /* match navbar reserved height */
+}
+:target {
+    scroll-margin-top: 64px;
+}
+
 /* Ensure navbar stays visible on scroll on all pages */
 .navbar {
     position: fixed;
@@ -75,9 +83,15 @@ img {
     width: 100%;
     max-width: 800px;
     height: auto;
-    max-height: 360px;
+    max-height: 240px;
     object-fit: cover;
     margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .featured-image {
+    max-height: 160px;
+  }
 }
 
 /* Reserve space for ads to prevent CLS */

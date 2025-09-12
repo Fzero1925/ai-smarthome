@@ -79,7 +79,7 @@ params:
   advertising:
     google_adsense:
       client_id: 'ca-pub-XXXXXXXXXXXXXXXX'
-      enabled: true
+      enabled: false
       auto_ads: true
       show_top_slot: false
       
@@ -95,6 +95,10 @@ params:
       word_count: true
       estimated_time: true
       last_modified: true
+
+    # Page chrome
+    table_of_contents: true
+    quality_indicators: true
       
     # Review system
     reviews:

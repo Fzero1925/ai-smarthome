@@ -89,3 +89,4 @@ oldfile/
 *.tmp
 *.bak
 *_report.md
+trigger_result.json
