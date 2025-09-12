@@ -24,16 +24,6 @@
         {{ end }}
       </ul>
       
-      <!-- Search Box with Tailwind Tech Design -->
-      <div class="navbar-search">
-        <form class="search-form" role="search" action="/search/" method="GET">
-          <input type="search" name="q" class="search-input bg-tech-50 border-tech-200 focus:border-tech-500 focus:ring-2 focus:ring-tech-200 transition-all duration-300" placeholder="Search smart home devices..." aria-label="Search" required>
-          <button type="submit" class="search-button bg-gradient-to-r from-tech-500 to-tech-600 hover:from-tech-600 hover:to-tech-700 transform hover:scale-105 transition-all duration-300">
-            <i class="fa fa-search"></i>
-          </button>
-        </form>
-      </div>
-      
     </div>
   </div>
 </nav>
@@ -77,7 +67,7 @@
 .navbar-menu {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem; /* 减少间距，无搜索框后更紧凑 */
 }
 
 .navbar-nav {
@@ -85,7 +75,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 1.5rem;
+  gap: 1.25rem; /* 稍微减少菜单项间距，更紧凑 */
 }
 
 .nav-link {
@@ -103,44 +93,7 @@
   background-color: #f8f9fa;
 }
 
-.navbar-search {
-  position: relative;
-}
-
-.search-form {
-  display: flex;
-  align-items: center;
-}
-
-.search-input {
-  width: 250px;
-  padding: 0.5rem 1rem;
-  border: 2px solid #e9ecef;
-  border-radius: 25px 0 0 25px;
-  outline: none;
-  font-size: 0.9rem;
-  transition: border-color 0.3s ease;
-}
-
-.search-input:focus {
-  border-color: #007bff;
-}
-
-.search-button {
-  background: #007bff;
-  color: white;
-  border: 2px solid #007bff;
-  border-left: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0 25px 25px 0;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.search-button:hover {
-  background: #0056b3;
-  border-color: #0056b3;
-}
+/* 搜索功能已移除，导航栏更简洁 */
 
 
 @media (max-width: 992px) {
@@ -171,15 +124,11 @@
     gap: 0.5rem;
   }
   
-  .search-input {
-    width: 200px;
-  }
+  /* 搜索相关样式已清理 */
 }
 
 @media (max-width: 768px) {
-  .search-input {
-    width: 150px;
-  }
+  /* 搜索相关样式已清理 */
   
   .navbar .container {
     padding-left: 0.75rem;
