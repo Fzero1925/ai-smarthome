@@ -54,5 +54,19 @@
     "sources": [
       "search_volume_monitor"
     ]
+  },
+  {
+    "timestamp": "2025-09-12T01:11:14.615813+00:00",
+    "keyword": "robot vacuum black friday",
+    "category": "cleaning_devices",
+    "status": "success",
+    "trigger_type": "realtime",
+    "trend_score": 1.0,
+    "commercial_value": 0.9,
+    "urgency_score": 0.95,
+    "estimated_revenue": "$400-800/month",
+    "sources": [
+      "search_volume_monitor"
+    ]
   }
 ]
