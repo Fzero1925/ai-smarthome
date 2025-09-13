@@ -10,7 +10,10 @@ from typing import Dict, List
 from .providers_openverse import search as ov_search
 from .providers_commons import search as wm_search
 from .semantic_rank import rank_images
-from .cache import dl, write_meta, load_cached_results, save_cached_results
+from .cache import (
+    dl, write_meta, load_cached_results, save_cached_results,
+    filter_unique_images, is_url_used
+)
 from .build_info_card import make_info_card, make_category_card, make_compatibility_card
 
 
@@ -28,11 +31,13 @@ class ImageAssigner:
                 'openverse': True,
                 'wikimedia': True
             },
-            'semantic_threshold': 0.28,
+            'semantic_threshold': 0.35,  # Increased from 0.28 for better precision
             'download_dir': 'static/images',
             'formats': ['webp'],
             'min_hero_size': [1280, 720],
-            'min_inline_size': [960, 540]
+            'min_inline_size': [960, 540],
+            'fallback_threshold': 0.25,  # Lower threshold for fallback scenarios
+            'min_candidates': 3  # Minimum candidates required before fallback
         }
         
         try:
@@ -77,15 +82,31 @@ class ImageAssigner:
             print(f"No image candidates found for: {query}")
             return self._create_fallback_result(keyword, entities, slug)
         
-        # Rank by semantic similarity
-        ranked = rank_images(query, candidates, self.config.get('semantic_threshold', 0.28))
-        
+        # Rank by semantic similarity with higher precision threshold
+        primary_threshold = self.config.get('semantic_threshold', 0.35)
+        ranked = rank_images(query, candidates, primary_threshold)
+
+        # If not enough high-quality matches, try with fallback threshold
+        if len(ranked) < self.config.get('min_candidates', 3):
+            fallback_threshold = self.config.get('fallback_threshold', 0.25)
+            print(f"Only {len(ranked)} images above {primary_threshold:.2f}, trying fallback threshold {fallback_threshold:.2f}")
+            ranked = rank_images(query, candidates, fallback_threshold)
+
         if not ranked:
             print(f"No images above threshold for: {query}")
             return self._create_fallback_result(keyword, entities, slug)
-        
-        # Download and organize images
-        result = self._download_images(ranked, keyword, entities, slug)
+
+        # Apply URL deduplication to ensure uniqueness across the site
+        unique_ranked = filter_unique_images(ranked, max_images=10)
+
+        if not unique_ranked:
+            print(f"No unique images available for: {query}")
+            return self._create_fallback_result(keyword, entities, slug)
+
+        print(f"Using {len(unique_ranked)} unique images out of {len(ranked)} ranked candidates")
+
+        # Download and organize images using unique candidates
+        result = self._download_images(unique_ranked, keyword, entities, slug)
         
         # Cache results
         save_cached_results(cache_key, result)
@@ -93,17 +114,43 @@ class ImageAssigner:
         return result
     
     def _build_query(self, entities: Dict, keyword: str) -> str:
-        """Build search query from entities and keyword"""
-        # Start with the keyword as primary search term
-        base_query = keyword
-        
-        # Only add category if it's different from keyword
+        """Build unique search query from entities and keyword"""
+        query_parts = [keyword]
+
+        # Add protocol information for specificity
+        protocol = entities.get('protocol', '')
+        if protocol and protocol.lower() not in keyword.lower():
+            query_parts.append(protocol)
+
+        # Add use case for context differentiation
+        use_case = entities.get('use_case', '')
+        if use_case and len(use_case) < 30:  # Avoid overly long descriptions
+            # Clean and add use case
+            clean_use_case = use_case.replace('_', ' ').strip()
+            if clean_use_case and clean_use_case.lower() not in keyword.lower():
+                query_parts.append(clean_use_case)
+
+        # Add category only if it adds meaningful differentiation
         category = entities.get('category', '').replace('-', ' ')
-        if category and category not in base_query.lower():
-            # For smart home, just use the keyword - category is often redundant
-            return base_query
-        
-        return base_query
+        if category and category not in keyword.lower():
+            # Only add category for broad keywords that need more specificity
+            keyword_words = set(keyword.lower().split())
+            generic_words = {'smart', 'home', 'device', 'gadget', 'product'}
+            if len(keyword_words.intersection(generic_words)) > 0:
+                query_parts.append(category)
+
+        # Join parts with space, limit total length for API compatibility
+        full_query = ' '.join(query_parts)
+
+        # Limit query length to avoid API issues (max ~100 chars)
+        if len(full_query) > 100:
+            # Keep keyword + most important modifier
+            if len(query_parts) > 2:
+                full_query = f"{keyword} {query_parts[1]}"
+            else:
+                full_query = keyword
+
+        return full_query.strip()
     
     def _search_providers(self, query: str) -> List[Dict]:
         """Search all enabled image providers"""

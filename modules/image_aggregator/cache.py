@@ -7,8 +7,9 @@ import json
 import hashlib
 import requests
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict, Optional, Set
 from PIL import Image
+import time
 
 
 def dl(url: str, out_dir: Path, filename: str) -> str:
@@ -71,6 +72,8 @@ def dl(url: str, out_dir: Path, filename: str) -> str:
         # Remove original if conversion successful
         if webp_path.exists():
             original_path.unlink()
+            # Mark URL as used to prevent duplication
+            mark_url_as_used(url)
             # Return path relative to project root, using forward slashes for web compatibility
             try:
                 rel_path = webp_path.relative_to(Path.cwd())
@@ -79,6 +82,8 @@ def dl(url: str, out_dir: Path, filename: str) -> str:
                 # Fallback to absolute path if relative path calculation fails
                 return str(webp_path).replace('\\', '/')
         else:
+            # Mark URL as used even if WebP conversion failed
+            mark_url_as_used(url)
             try:
                 rel_path = original_path.relative_to(Path.cwd())
                 return str(rel_path).replace('\\', '/')
@@ -114,61 +119,182 @@ def write_meta(image_path: str, metadata: Dict) -> None:
         print(f"Metadata write error for {image_path}: {e}")
 
 
-def get_cache_key(query: str) -> str:
+def get_cache_key(cache_key: str) -> str:
     """
-    Generate cache key for query
-    
+    Generate MD5 hash for cache key
+
     Args:
-        query: Search query
-        
+        cache_key: Complete cache key (e.g., "query_slug")
+
     Returns:
-        Cache key string
+        MD5 hash string
     """
-    return hashlib.md5(query.encode('utf-8')).hexdigest()
+    return hashlib.md5(cache_key.encode('utf-8')).hexdigest()
 
 
-def load_cached_results(query: str, cache_dir: str = "data/image_cache") -> Optional[list]:
+def load_cached_results(cache_key: str, cache_dir: str = "data/image_cache") -> Optional[Dict]:
     """
     Load cached search results
-    
+
     Args:
-        query: Search query
+        cache_key: Complete cache key (e.g., "query_slug")
         cache_dir: Cache directory
-        
+
     Returns:
-        Cached results or None
+        Cached results dict or None
     """
     try:
-        cache_path = Path(cache_dir) / f"{get_cache_key(query)}.json"
-        
+        # Use the full cache_key instead of just query
+        cache_path = Path(cache_dir) / f"{get_cache_key(cache_key)}.json"
+
         if cache_path.exists():
             with open(cache_path, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        
+                cached_data = json.load(f)
+                print(f"Cache hit for: {cache_key}")
+                return cached_data
+
+        print(f"Cache miss for: {cache_key}")
         return None
-        
+
     except Exception as e:
         print(f"Cache load error: {e}")
         return None
 
 
-def save_cached_results(query: str, results: list, cache_dir: str = "data/image_cache") -> None:
+def save_cached_results(cache_key: str, results: Dict, cache_dir: str = "data/image_cache") -> None:
     """
     Save search results to cache
-    
+
     Args:
-        query: Search query
-        results: Search results
+        cache_key: Complete cache key (e.g., "query_slug")
+        results: Search results dict
         cache_dir: Cache directory
     """
     try:
         cache_dir = Path(cache_dir)
         cache_dir.mkdir(parents=True, exist_ok=True)
-        
-        cache_path = cache_dir / f"{get_cache_key(query)}.json"
-        
+
+        # Use the full cache_key instead of just query
+        cache_path = cache_dir / f"{get_cache_key(cache_key)}.json"
+
         with open(cache_path, 'w', encoding='utf-8') as f:
             json.dump(results, f, indent=2, ensure_ascii=False)
-            
+
+        print(f"Cache saved for: {cache_key}")
+
     except Exception as e:
         print(f"Cache save error: {e}")
+
+
+# URL Deduplication System
+def load_used_urls(tracking_file: str = "data/image_cache/used_urls.json") -> Set[str]:
+    """
+    Load set of already used image URLs
+
+    Args:
+        tracking_file: Path to URL tracking file
+
+    Returns:
+        Set of used URLs
+    """
+    try:
+        tracking_path = Path(tracking_file)
+        if tracking_path.exists():
+            with open(tracking_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                return set(data.get('used_urls', []))
+        return set()
+    except Exception as e:
+        print(f"Error loading used URLs: {e}")
+        return set()
+
+
+def save_used_urls(used_urls: Set[str], tracking_file: str = "data/image_cache/used_urls.json") -> None:
+    """
+    Save set of used image URLs
+
+    Args:
+        used_urls: Set of used URLs
+        tracking_file: Path to URL tracking file
+    """
+    try:
+        tracking_path = Path(tracking_file)
+        tracking_path.parent.mkdir(parents=True, exist_ok=True)
+
+        data = {
+            'used_urls': list(used_urls),
+            'last_updated': time.time(),
+            'total_count': len(used_urls)
+        }
+
+        with open(tracking_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+
+    except Exception as e:
+        print(f"Error saving used URLs: {e}")
+
+
+def mark_url_as_used(url: str, tracking_file: str = "data/image_cache/used_urls.json") -> None:
+    """
+    Mark a URL as used to prevent duplication
+
+    Args:
+        url: Image URL to mark as used
+        tracking_file: Path to URL tracking file
+    """
+    try:
+        used_urls = load_used_urls(tracking_file)
+        used_urls.add(url)
+        save_used_urls(used_urls, tracking_file)
+        print(f"Marked URL as used: {url}")
+    except Exception as e:
+        print(f"Error marking URL as used: {e}")
+
+
+def is_url_used(url: str, tracking_file: str = "data/image_cache/used_urls.json") -> bool:
+    """
+    Check if a URL has already been used
+
+    Args:
+        url: Image URL to check
+        tracking_file: Path to URL tracking file
+
+    Returns:
+        True if URL is already used, False otherwise
+    """
+    try:
+        used_urls = load_used_urls(tracking_file)
+        return url in used_urls
+    except Exception as e:
+        print(f"Error checking URL usage: {e}")
+        return False
+
+
+def filter_unique_images(candidates: list, max_images: int = 10) -> list:
+    """
+    Filter image candidates to ensure uniqueness across the site
+
+    Args:
+        candidates: List of image metadata dicts
+        max_images: Maximum number of unique images to return
+
+    Returns:
+        List of unique image candidates
+    """
+    try:
+        used_urls = load_used_urls()
+        unique_candidates = []
+
+        for candidate in candidates:
+            url = candidate.get('url', '')
+            if url and url not in used_urls:
+                unique_candidates.append(candidate)
+                if len(unique_candidates) >= max_images:
+                    break
+
+        print(f"Filtered {len(candidates)} candidates to {len(unique_candidates)} unique images")
+        return unique_candidates
+
+    except Exception as e:
+        print(f"Error filtering unique images: {e}")
+        return candidates[:max_images]  # Fallback to original list
