@@ -35,7 +35,7 @@ class RSSFeedAnalyzer:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         
-        # Define RSS feeds for tech publications
+        # Define RSS feeds for tech publications (EXPANDED to 12+ sources)
         self.rss_feeds = {
             'the_verge': {
                 'url': 'https://www.theverge.com/rss/index.xml',
@@ -43,7 +43,7 @@ class RSSFeedAnalyzer:
                 'smart_home_keywords': ['smart home', 'alexa', 'google home', 'homekit', 'iot', 'nest']
             },
             'engadget': {
-                'url': 'https://www.engadget.com/rss.xml', 
+                'url': 'https://www.engadget.com/rss.xml',
                 'name': 'Engadget',
                 'smart_home_keywords': ['smart', 'home automation', 'connected', 'wifi', 'bluetooth']
             },
@@ -61,6 +61,47 @@ class RSSFeedAnalyzer:
                 'url': 'https://www.androidpolice.com/feed/',
                 'name': 'Android Police',
                 'smart_home_keywords': ['android auto', 'google assistant', 'smart display', 'nest']
+            },
+            # NEW ADDITIONS for better coverage
+            'techcrunch': {
+                'url': 'https://techcrunch.com/feed/',
+                'name': 'TechCrunch',
+                'smart_home_keywords': ['smart home', 'iot', 'connected devices', 'home automation', 'smart tech']
+            },
+            'wired': {
+                'url': 'https://www.wired.com/feed/',
+                'name': 'WIRED',
+                'smart_home_keywords': ['smart home', 'gadgets', 'security', 'automation', 'iot']
+            },
+            'gizmodo': {
+                'url': 'https://gizmodo.com/rss',
+                'name': 'Gizmodo',
+                'smart_home_keywords': ['smart home', 'tech reviews', 'gadgets', 'home tech', 'automation']
+            },
+            'digital_trends': {
+                'url': 'https://www.digitaltrends.com/feed/',
+                'name': 'Digital Trends',
+                'smart_home_keywords': ['smart home', 'home theater', 'security systems', 'smart appliances']
+            },
+            'mashable': {
+                'url': 'https://mashable.com/feeds/rss/all',
+                'name': 'Mashable',
+                'smart_home_keywords': ['tech', 'smart devices', 'home automation', 'gadget reviews']
+            },
+            'tom_guide': {
+                'url': 'https://www.tomsguide.com/feeds/all',
+                'name': "Tom's Guide",
+                'smart_home_keywords': ['smart home', 'best', 'reviews', 'buying guide', 'home security']
+            },
+            'pcmag': {
+                'url': 'https://www.pcmag.com/feed/',
+                'name': 'PCMag',
+                'smart_home_keywords': ['smart home', 'reviews', 'tech news', 'gadget testing', 'best picks']
+            },
+            'zdnet': {
+                'url': 'https://www.zdnet.com/news/rss.xml',
+                'name': 'ZDNet',
+                'smart_home_keywords': ['smart home', 'enterprise tech', 'iot security', 'automation']
             }
         }
         

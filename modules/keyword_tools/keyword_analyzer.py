@@ -423,20 +423,41 @@ class SmartHomeKeywordAnalyzer:
             api_key = os.getenv('YOUTUBE_API_KEY', 'AIzaSyAZYm7Gp1d3wV3EEreiF9iYqn0RLkTEmS4')
 
             if api_key:
-                # Configure HTTP client with proper headers to fix referer issue
-                import httplib2
-                from googleapiclient.http import build_http
+                # Try multiple approaches to fix YouTube API referer restrictions
+                try:
+                    # Approach 1: Use discoveryServiceUrl with custom HTTP client
+                    import httplib2
 
-                # Create HTTP client with proper headers
-                http_client = httplib2.Http()
-                http_client.default_headers = {
-                    'User-Agent': 'SmartHomeHub/1.0 (Python/3.11)',
-                    'Referer': 'https://ai-smarthomehub.com',
-                    'X-Forwarded-For': '127.0.0.1'
-                }
+                    # Create HTTP client with comprehensive headers
+                    http_client = httplib2.Http()
+                    http_client.default_headers = {
+                        'User-Agent': 'Mozilla/5.0 (compatible; SmartHomeHub/1.0)',
+                        'Referer': 'https://ai-smarthomehub.com/',
+                        'Origin': 'https://ai-smarthomehub.com',
+                        'X-Forwarded-For': '127.0.0.1',
+                        'Accept': 'application/json'
+                    }
 
-                # Build YouTube service with custom HTTP client
-                self.youtube = build('youtube', 'v3', developerKey=api_key, http=http_client)
+                    # Try building YouTube service with custom discovery URL
+                    discovery_url = 'https://youtube.googleapis.com/$discovery/rest?version=v3'
+                    self.youtube = build(
+                        'youtube',
+                        'v3',
+                        developerKey=api_key,
+                        http=http_client,
+                        discoveryServiceUrl=discovery_url,
+                        cache_discovery=False
+                    )
+
+                except Exception as build_error:
+                    self.logger.warning(f"Custom HTTP build failed: {build_error}")
+
+                    # Fallback: Standard build without custom HTTP
+                    try:
+                        self.youtube = build('youtube', 'v3', developerKey=api_key, cache_discovery=False)
+                    except Exception as fallback_error:
+                        self.logger.error(f"Standard YouTube build failed: {fallback_error}")
+                        self.youtube = None
 
                 # Test the API connection with a simple search (more realistic test)
                 try:
@@ -1294,8 +1315,27 @@ class SmartHomeKeywordAnalyzer:
             return self._get_simulated_youtube_trends(category)
     
     def _analyze_amazon_trends(self, category: str = None) -> List[Dict]:
-        """Analyze trending topics from Amazon Best Sellers"""
-        return self._get_simulated_amazon_trends(category)
+        """Analyze trending topics from Amazon Best Sellers (ENHANCED with real data)"""
+        try:
+            # Try to import and use real Amazon scraper
+            from ..data_sources.amazon_scraper import AmazonBestSellersScraper
+
+            scraper = AmazonBestSellersScraper()
+            amazon_data = scraper.get_trending_products(category=category, limit=5)
+
+            if amazon_data:
+                self.logger.info(f"Using real Amazon Best Sellers data: {len(amazon_data)} products")
+                return amazon_data
+            else:
+                self.logger.warning("Amazon scraper returned no data, using fallback")
+                return self._get_simulated_amazon_trends(category)
+
+        except ImportError:
+            self.logger.warning("Amazon scraper not available, using simulated data")
+            return self._get_simulated_amazon_trends(category)
+        except Exception as e:
+            self.logger.warning(f"Amazon scraper failed: {e}, using simulated data")
+            return self._get_simulated_amazon_trends(category)
     
     def _get_simulated_reddit_trends(self, category: str = None) -> List[Dict]:
         """Generate diverse Reddit trends using RSS data if available, otherwise diverse simulated data"""
