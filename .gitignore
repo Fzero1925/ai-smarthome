@@ -17,6 +17,10 @@ __pycache__/
 # Data cache directories
 data/keyword_cache/
 data/stats/
+data/keyword_stems.db
+data/content_simhash.db
+data/deduplication_log.csv
+data/deduplicated_keywords_*.csv
 *.json.bak
 
 # Log files
