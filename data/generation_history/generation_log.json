@@ -124,5 +124,61 @@
     "sources": [
       "seasonal_analysis"
     ]
+  },
+  {
+    "timestamp": "2025-09-13T01:08:28.660619+00:00",
+    "keyword": "robot vacuum black friday",
+    "category": "cleaning_devices",
+    "status": "success",
+    "trigger_type": "realtime",
+    "trend_score": 1.0,
+    "commercial_value": 0.9,
+    "urgency_score": 0.95,
+    "estimated_revenue": "$400-800/month",
+    "sources": [
+      "search_volume_monitor"
+    ]
+  },
+  {
+    "timestamp": "2025-09-13T01:08:28.955858+00:00",
+    "keyword": "smart plug energy monitoring 2025",
+    "category": "smart_plugs",
+    "status": "success",
+    "trigger_type": "realtime",
+    "trend_score": 0.9709818870437359,
+    "commercial_value": 0.9500000000000001,
+    "urgency_score": 0.7,
+    "estimated_revenue": "$189–$315/mo",
+    "sources": [
+      "google_trends"
+    ]
+  },
+  {
+    "timestamp": "2025-09-13T02:20:07.837785+00:00",
+    "keyword": "smart plug energy monitoring",
+    "category": "smart_plugs",
+    "status": "success",
+    "trigger_type": "realtime",
+    "trend_score": 0.67,
+    "commercial_value": 0.9,
+    "urgency_score": 0.95,
+    "estimated_revenue": "$400-800/month",
+    "sources": [
+      "search_volume_monitor"
+    ]
+  },
+  {
+    "timestamp": "2025-09-13T02:20:08.051822+00:00",
+    "keyword": "outdoor security camera wireless",
+    "category": "security_devices",
+    "status": "success",
+    "trigger_type": "realtime",
+    "trend_score": 0.6,
+    "commercial_value": 0.9,
+    "urgency_score": 0.95,
+    "estimated_revenue": "$400-800/month",
+    "sources": [
+      "search_volume_monitor"
+    ]
   }
 ]
