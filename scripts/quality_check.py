@@ -145,11 +145,30 @@ class ComprehensiveQualityChecker:
             
             # PQS v3 Hard Gates (if enabled)
             if self.pqs_mode:
-                pqs_validations = [
-                    self._pqs_check_hard_gates(content, front_matter, article_content),
-                    self._pqs_calculate_score(content, front_matter, article_content, validations)
-                ]
-                validations.extend(pqs_validations)
+                # First check hard gates
+                hard_gates_result = self._pqs_check_hard_gates(content, front_matter, article_content)
+                validations.append(hard_gates_result)
+
+                # Only calculate score if hard gates passed
+                if hard_gates_result['status'] != 'error':
+                    score_result = self._pqs_calculate_score(content, front_matter, article_content, validations, hard_gates_result)
+                    validations.append(score_result)
+                else:
+                    # Hard gates failed - create a failing score result
+                    validations.append({
+                        'status': 'error',
+                        'issues': ['PQS HARD GATES BLOCK - Article cannot be published'],
+                        'metadata': {
+                            'pqs_total_score': 0,
+                            'pqs_threshold': self.pqs_config.get('thresholds', {}).get('publish_score', 85),
+                            'pqs_hard_gates_passed': False,
+                            'hard_gate_failures': len(hard_gates_result.get('issues', [])),
+                            'pqs_subscores': {
+                                'depth': 0, 'evidence': 0, 'images': 0,
+                                'structure': 0, 'readability': 0, 'compliance': 0
+                            }
+                        }
+                    })
             
             # Collect issues and warnings
             for validation in validations:
@@ -571,32 +590,36 @@ class ComprehensiveQualityChecker:
         if len(images) < self.pqs_config.get('thresholds', {}).get('min_inline_images', 2):
             issues.append(f"HARD GATE FAIL: Insufficient inline images ({len(images)} < 2)")
 
-        # Validate inline image files exist under static/
+        # Validate inline image files exist under static/ and check ALT quality
         for alt_text, img_path in images:
             try:
+                # Check file existence
                 if img_path.startswith('/'):
                     fs_path = os.path.join('static', img_path.lstrip('/'))
                 else:
                     fs_path = os.path.join('static', img_path)
                 if not os.path.exists(fs_path):
                     issues.append(f"HARD GATE FAIL: Inline image not found: {img_path}")
+
+                # Enhanced ALT text validation
+                if not alt_text or len(alt_text.strip()) < 8:
+                    issues.append(f"HARD GATE FAIL: ALT text too short (<8 chars): '{alt_text}'")
+                elif len(alt_text) > 120:
+                    issues.append(f"HARD GATE FAIL: ALT text too long (>120 chars): '{alt_text[:50]}...'")
+
+                # Check for entity tokens in ALT text
+                category = fm_data.get('category', fm_data.get('categories', ['generic']))
+                if isinstance(category, list):
+                    category = category[0] if category else 'generic'
+
+                entity_tokens = self.pqs_config.get('entities_tokens', {}).get(category, []) + \
+                               self.pqs_config.get('entities_tokens', {}).get('generic', [])
+
+                if entity_tokens and not any(token.lower() in alt_text.lower() for token in entity_tokens):
+                    issues.append(f"HARD GATE FAIL: ALT text lacks entity tokens: '{alt_text[:50]}...'")
+
             except Exception:
                 pass
-        
-        # Check ALT text for entity tokens
-        category = fm_data.get('category', fm_data.get('categories', ['generic']))
-        if isinstance(category, list):
-            category = category[0] if category else 'generic'
-        
-        entity_tokens = self.pqs_config.get('entities_tokens', {}).get(category, []) + \
-                       self.pqs_config.get('entities_tokens', {}).get('generic', [])
-        
-        for alt_text, _ in images:
-            if not alt_text or len(alt_text) < 8 or len(alt_text) > 120:
-                issues.append(f"HARD GATE FAIL: ALT text length invalid: '{alt_text[:50]}...'")
-            elif not any(token.lower() in alt_text.lower() for token in entity_tokens):
-                issues.append(f"HARD GATE FAIL: ALT text lacks entity tokens: '{alt_text[:50]}...'")
-        
         # Hard Gate 2: Evidence links >= 2
         external_pattern = r'\[([^\]]+)\]\((https?://[^)]+)\)'
         external_links = re.findall(external_pattern, article_content)
@@ -609,13 +632,30 @@ class ComprehensiveQualityChecker:
         if not has_jsonld:
             issues.append("HARD GATE FAIL: Missing JSON-LD structured data")
         
-        # Hard Gate 4: Comparison/framework structure
-        has_table = '|' in article_content and len([ln for ln in article_content.splitlines() if ln.strip().startswith('|')]) >= 6
+        # Hard Gate 4: MANDATORY Comparison Table (Fix for "空心推荐" problem)
+        table_rows = [ln.strip() for ln in article_content.splitlines() if ln.strip().startswith('|')]
+        has_proper_table = len(table_rows) >= 6  # Header + separator + at least 4 data rows
+
+        # Check if table has required columns (model/protocol/features)
+        has_model_column = False
+        has_protocol_column = False
+        if table_rows:
+            header_row = table_rows[0].lower()
+            has_model_column = any(word in header_row for word in ['model', 'product', 'device', 'name'])
+            has_protocol_column = any(word in header_row for word in ['protocol', 'connectivity', 'wifi', 'zigbee', 'matter'])
+
+        if not has_proper_table:
+            issues.append(f"HARD GATE FAIL: Missing proper comparison table (found {len(table_rows)} rows, need ≥6)")
+        elif not (has_model_column and has_protocol_column):
+            issues.append("HARD GATE FAIL: Comparison table must include Model and Protocol columns")
+
+        # Alternative: Check for structured product recommendations with specific models
+        has_specific_models = len(re.findall(r'(?i)(model|version)\s+[\w\d-]{3,}', article_content)) >= 3
         has_itemlist = 'ItemList' in content
-        has_framework = re.search(r'(?i)(who should buy|who should not buy|alternatives)', article_content)
-        
-        if not (has_table or has_itemlist or has_framework):
-            issues.append("HARD GATE FAIL: Missing comparison table/ItemList/framework structure")
+
+        # Allow alternatives but prefer table
+        if not has_proper_table and not has_itemlist and not has_specific_models:
+            issues.append("HARD GATE FAIL: No structured comparison - need table OR ≥3 specific model names")
         
         # Hard Gate 5: Keyword density check
         primary_kw = fm_data.get('keyword', fm_data.get('title', '').split('|')[0])
@@ -630,9 +670,54 @@ class ComprehensiveQualityChecker:
         
         # Hard Gate 6: Entity coverage >= 3
         text_lower = article_content.lower()
+        category = fm_data.get('category', fm_data.get('categories', ['generic']))
+        if isinstance(category, list):
+            category = category[0] if category else 'generic'
+
+        entity_tokens = self.pqs_config.get('entities_tokens', {}).get(category, []) + \
+                       self.pqs_config.get('entities_tokens', {}).get('generic', [])
+
         entity_hits = [token for token in entity_tokens if token.lower() in text_lower]
         if len(set(entity_hits)) < 3:
             issues.append(f"HARD GATE FAIL: Insufficient entity coverage ({len(set(entity_hits))} < 3)")
+
+        # Hard Gate 7: Compliance Disclosure Positioning (First 2 screens)
+        disclosure_patterns = [
+            r'(?i)(affiliate|commission|earn.*from.*purchas|as an amazon associate)',
+            r'(?i)(disclosure|披露)',
+            r'(?i)(no.*physical.*test|research.*based|specification.*analysis)'
+        ]
+
+        # Check if disclosure appears in first ~600 characters (roughly first screen)
+        first_screen = article_content[:600]
+        has_early_disclosure = any(re.search(pattern, first_screen) for pattern in disclosure_patterns)
+
+        # Check if methodology/no-testing disclosure exists anywhere
+        has_methodology_disclosure = any(re.search(pattern, article_content) for pattern in disclosure_patterns)
+
+        if not has_methodology_disclosure:
+            issues.append("HARD GATE FAIL: Missing methodology/no-testing disclosure statement")
+        elif not has_early_disclosure:
+            issues.append("HARD GATE FAIL: Disclosure must appear within first 600 characters")
+
+        # Hard Gate 8: Basic Readability Requirements
+        word_count = len(article_content.split())
+        if word_count < 1500:
+            issues.append(f"HARD GATE FAIL: Article too short ({word_count} words, minimum 1500)")
+
+        # Check paragraph length (basic readability)
+        paragraphs = [p.strip() for p in article_content.split('\n\n') if p.strip()]
+        long_paragraphs = [p for p in paragraphs if len(p.split()) > 120]
+        if len(long_paragraphs) > len(paragraphs) * 0.3:  # More than 30% long paragraphs
+            issues.append(f"HARD GATE FAIL: Too many long paragraphs ({len(long_paragraphs)}, max 30% of total)")
+
+        # Check sentence structure (avoid AI-like patterns)
+        sentences = re.split(r'[.!?]+', article_content)
+        valid_sentences = [s.strip() for s in sentences if len(s.strip()) > 20]
+        if valid_sentences:
+            avg_sentence_len = sum(len(s.split()) for s in valid_sentences) / len(valid_sentences)
+            if avg_sentence_len > 35:  # Very long average sentences = AI-like
+                issues.append(f"HARD GATE FAIL: Sentences too long (avg {avg_sentence_len:.1f} words, max 35)")
         
         status = 'error' if issues else 'pass'
         return {
@@ -644,11 +729,13 @@ class ComprehensiveQualityChecker:
             }
         }
     
-    def _pqs_calculate_score(self, content: str, front_matter: str, article_content: str, validations: List) -> Dict:
-        """PQS v3 100-point scoring system"""
+    def _pqs_calculate_score(self, content: str, front_matter: str, article_content: str, validations: List, hard_gates_result: Dict = None) -> Dict:
+        """PQS v3 100-point scoring system - Only runs if Hard Gates passed"""
         if not self.pqs_mode:
             return {'status': 'pass', 'issues': [], 'metadata': {}}
-        
+
+        # Hard Gates must have passed for this method to be called
+        # This method only calculates the detailed score
         # Content depth (30 points)
         depth_score = 0
         if re.search(r'(?i)(conclusion|summary)', article_content):

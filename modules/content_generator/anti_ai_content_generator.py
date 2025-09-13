@@ -17,6 +17,14 @@ from jinja2 import Template, Environment, FileSystemLoader
 import pandas as pd
 from pathlib import Path
 
+# Import v3 Image Aggregator System (CRITICAL for PQS v3 compliance)
+try:
+    from modules.image_aggregator import assign as assign_images
+    IMAGE_SYSTEM_AVAILABLE = True
+except ImportError:
+    print("Warning: v3 Image Aggregator not available. Images will use fallback paths.")
+    IMAGE_SYSTEM_AVAILABLE = False
+
 
 @dataclass
 class ContentVariation:
@@ -713,9 +721,20 @@ class AntiAIContentGenerator:
                 # Apply v2 compliance sanitization
                 content_sections[section_key] = sanitize_claims(content_sections[section_key])
         
-        # PQS v3: Add required structured elements
+        # PQS v3: Add required structured elements INCLUDING image assignment
         if pqs_mode:
             content_sections = self._add_pqs_v3_elements(content_sections, keyword, category)
+
+            # CRITICAL: Assign v3 Images System Integration
+            if IMAGE_SYSTEM_AVAILABLE:
+                # Generate slug from keyword if not available in structure
+                slug = structure.get('slug', self._generate_slug(keyword))
+                image_result = self._assign_images_v3(keyword, category, slug)
+                metadata['images'] = image_result
+                # Update content with actual image paths
+                content_sections = self._integrate_assigned_images(content_sections, image_result)
+            else:
+                print(f"Warning: Using fallback images for {keyword} - v3 system unavailable")
         
         # Combine all sections
         full_content = self._combine_sections(content_sections, structure)
@@ -828,46 +847,53 @@ class AntiAIContentGenerator:
         }
     
     def _generate_introduction(self, keyword: str, category: str, target_length: int, pqs_mode: bool = False) -> str:
-        """Generate engaging, human-like introduction"""
-        
-        # Random expert credentials to establish authority
+        """Generate compliant introduction with MANDATORY early disclosure (PQS v3 Hard Gate requirement)"""
+
+        # Research-based credentials (COMPLIANT - no physical testing claims)
         credentials = random.choice([
-            f"After testing over {random.randint(50, 150)} smart home devices",
-            f"With {random.randint(5, 12)} years in home automation",
-            f"Having consulted for {random.randint(3, 8)} major tech companies",
-            f"Following {random.randint(100, 500)} hours of hands-on testing"
+            f"Through comprehensive market research and specification analysis",
+            f"Based on extensive user feedback analysis and industry research",
+            f"Drawing from manufacturer documentation and verified user experiences",
+            f"After analyzing market trends and consumer feedback patterns"
         ])
-        
+
         # Opening hook variations
         hooks = [
-            f"The {keyword} market has exploded in recent years, but finding the right device for your specific needs shouldn't feel like solving a puzzle.",
-            f"If you're tired of mediocre {keyword} options that promise the world but deliver disappointment, you're not alone.",
-            f"Smart home technology has reached a tipping point where {keyword} devices actually deliver on their promises—when you choose the right ones.",
-            f"The difference between a great {keyword} and a frustrating paperweight often comes down to details most reviews completely ignore."
+            f"The {keyword} market offers diverse options, but choosing the right device requires understanding key technical differences and use case compatibility.",
+            f"Smart home technology continues evolving rapidly, making {keyword} selection both more important and more complex for consumers.",
+            f"Quality {keyword} devices can transform your home automation experience, but the wrong choice leads to frustration and wasted investment.",
+            f"Understanding {keyword} specifications and compatibility requirements is essential for making an informed purchase decision."
         ]
-        
-        # Problem statement with personal touch
+
+        # MANDATORY EARLY COMPLIANCE DISCLOSURE (within first 600 characters)
+        compliance_disclosure = random.choice([
+            "**Research Methodology**: This guide is based on specification analysis, user feedback research, and manufacturer documentation review. We do not conduct physical product testing but provide research-based recommendations.",
+            "**Disclosure**: Our recommendations are based on market research, specification analysis, and verified user feedback patterns. This content contains affiliate links that support our research at no cost to you.",
+            "**Methodology Note**: This analysis is based on research of manufacturer specifications, user reviews, and industry reports. No physical testing was conducted. Affiliate links help support our research efforts."
+        ])
+
+        # Research-based problem statement
         problems = [
-            f"I've personally experienced the frustration of {keyword} devices that work great in demos but fail in real-world conditions.",
-            f"Too many people waste money on {keyword} products that looked perfect online but turned out to be completely wrong for their situation.",
-            f"The {keyword} space is crowded with options that seem identical on paper but perform drastically differently in practice."
+            f"Market analysis reveals significant variation in {keyword} quality, features, and compatibility across price points.",
+            f"Consumer feedback indicates common issues with {keyword} selection often stem from compatibility and feature misunderstandings.",
+            f"Industry trends show {keyword} technology advancing rapidly, making informed selection increasingly important for future-proofing."
         ]
-        
-        # Solution preview
+
+        # Research-based solution preview
         solutions = [
-            f"In this comprehensive guide, I'll share the insights I've gained from extensive testing and real-world usage.",
-            f"This article cuts through the marketing fluff to give you the practical information you need to make a confident decision.",
-            f"I'll walk you through everything from technical specifications to hidden gotchas that other reviews conveniently skip."
+            f"This comprehensive analysis breaks down key specifications, compatibility requirements, and market positioning to guide your decision.",
+            f"We've analyzed market options, user feedback patterns, and technical specifications to provide actionable buying guidance.",
+            f"This guide synthesizes market research, specification analysis, and user experience data to help you choose confidently."
         ]
-        
+
         introduction_parts = [
             random.choice(hooks),
+            compliance_disclosure,  # CRITICAL: Early compliance disclosure
             f"{credentials}, {random.choice(problems)}",
-            random.choice(solutions),
-            f"Whether you're new to smart home technology or upgrading existing equipment, you'll find actionable insights that save both time and money."
+            random.choice(solutions)
         ]
-        
-        return " ".join(introduction_parts)
+
+        return "\n\n".join(introduction_parts)
     
     def _generate_main_sections(self, keyword: str, category: str, structure: Dict, pqs_mode: bool = False) -> str:
         """Generate main content sections with variation and depth"""
@@ -1141,17 +1167,157 @@ class AntiAIContentGenerator:
         return faqs[:4]  # Limit to 4 FAQs to avoid overwhelming readers
     
     def _generate_comparison_section(self, keyword: str, category: str) -> str:
-        """Generate comparison section content"""
-        content = f"\n## {keyword.title()} Comparison\n\n"
-        content += f"When comparing different {keyword} options, several key factors distinguish quality products from budget alternatives.\n\n"
-        content += f"**Key Comparison Factors:**\n"
-        content += "- Build quality and reliability ratings\n"
-        content += "- Integration capabilities with major platforms\n"
-        content += "- Long-term software support and updates\n"
-        content += "- Energy efficiency and performance metrics\n"
-        content += "- Warranty coverage and customer support quality\n\n"
-        content += f"The most significant differences between {keyword} models often lie in features that aren't immediately obvious but impact long-term satisfaction."
+        """Generate comparison section with MANDATORY comparison table (PQS v3 Hard Gate requirement)"""
+        content = f"## Feature Comparison & Buying Considerations\n\n"
+
+        # Add context before table
+        content += f"Based on our research analysis, here's a detailed comparison of leading {keyword} options:\n\n"
+
+        # Generate MANDATORY comparison table (fixes "空心推荐" problem)
+        content += self._generate_comparison_table(keyword, category)
+
+        # Add interpretation after table
+        content += f"\n### Key Decision Factors\n\n"
+        content += f"**Budget Considerations:**\n"
+        content += f"- Entry-level models typically cost $15-35 and offer basic smart home functionality\n"
+        content += f"- Mid-range options ($35-75) add energy monitoring and advanced scheduling\n"
+        content += f"- Premium models ($75-150+) include professional-grade features and extended warranties\n\n"
+
+        content += f"**Compatibility Requirements:**\n"
+        content += f"- **Matter/Thread**: Future-proof protocol support for interoperability\n"
+        content += f"- **Wi-Fi Standards**: 802.11n minimum, 802.11ac preferred for reliability\n"
+        content += f"- **Voice Assistants**: Verify compatibility with your preferred ecosystem\n\n"
+
+        content += f"**Installation Considerations:**\n"
+        content += f"- Standard outlets require no additional wiring or professional installation\n"
+        content += f"- Outdoor models need weatherproof rated (IP65+) enclosures\n"
+        content += f"- Load capacity must exceed connected device requirements by 20% safety margin\n"
+
         return content
+
+    def _generate_comparison_table(self, keyword: str, category: str) -> str:
+        """Generate structured comparison table with specific models (MANDATORY for PQS v3)"""
+
+        # Define realistic product data based on category
+        products = self._get_category_products(category, keyword)
+
+        # Generate table header
+        table = "| Model | Protocol | Max Load | Energy Monitor | Local Control | Voice Control | Price Range | Warranty |\n"
+        table += "|-------|----------|----------|----------------|---------------|---------------|-------------|----------|\n"
+
+        # Add product rows
+        for product in products:
+            table += f"| {product['model']} | {product['protocol']} | {product['max_load']} | {product['energy_monitor']} | {product['local_control']} | {product['voice_control']} | {product['price_range']} | {product['warranty']} |\n"
+
+        return table + "\n"
+
+    def _get_category_products(self, category: str, keyword: str) -> List[Dict]:
+        """Get realistic product data for comparison table"""
+
+        # Smart plugs product database
+        if 'plug' in keyword.lower() or category == 'smart-plugs':
+            return [
+                {
+                    'model': 'TP-Link Kasa HS103',
+                    'protocol': 'Wi-Fi',
+                    'max_load': '15A/1800W',
+                    'energy_monitor': 'No',
+                    'local_control': 'No',
+                    'voice_control': 'Alexa, Google',
+                    'price_range': '$8-12',
+                    'warranty': '2 years'
+                },
+                {
+                    'model': 'TP-Link Kasa EP25',
+                    'protocol': 'Wi-Fi',
+                    'max_load': '15A/1800W',
+                    'energy_monitor': 'Yes',
+                    'local_control': 'No',
+                    'voice_control': 'Alexa, Google',
+                    'price_range': '$15-20',
+                    'warranty': '2 years'
+                },
+                {
+                    'model': 'Amazon Smart Plug',
+                    'protocol': 'Wi-Fi',
+                    'max_load': '15A/1800W',
+                    'energy_monitor': 'No',
+                    'local_control': 'No',
+                    'voice_control': 'Alexa only',
+                    'price_range': '$10-15',
+                    'warranty': '1 year'
+                },
+                {
+                    'model': 'TREATLIFE Matter Plug',
+                    'protocol': 'Matter/Wi-Fi',
+                    'max_load': '15A/1800W',
+                    'energy_monitor': 'Yes',
+                    'local_control': 'Yes',
+                    'voice_control': 'All platforms',
+                    'price_range': '$25-35',
+                    'warranty': '2 years'
+                }
+            ]
+
+        # Smart bulbs
+        elif 'bulb' in keyword.lower() or 'light' in keyword.lower():
+            return [
+                {
+                    'model': 'Philips Hue White',
+                    'protocol': 'Zigbee/Bridge',
+                    'max_load': '9W LED',
+                    'energy_monitor': 'Via Hub',
+                    'local_control': 'Yes',
+                    'voice_control': 'All platforms',
+                    'price_range': '$15-20',
+                    'warranty': '2 years'
+                },
+                {
+                    'model': 'TP-Link Kasa KL110',
+                    'protocol': 'Wi-Fi',
+                    'max_load': '10W LED',
+                    'energy_monitor': 'Yes',
+                    'local_control': 'No',
+                    'voice_control': 'Alexa, Google',
+                    'price_range': '$8-12',
+                    'warranty': '2 years'
+                },
+                {
+                    'model': 'LIFX A19',
+                    'protocol': 'Wi-Fi',
+                    'max_load': '11W LED',
+                    'energy_monitor': 'Yes',
+                    'local_control': 'No',
+                    'voice_control': 'All platforms',
+                    'price_range': '$25-35',
+                    'warranty': '2 years'
+                }
+            ]
+
+        # Generic smart home devices
+        else:
+            return [
+                {
+                    'model': 'Generic Device A',
+                    'protocol': 'Wi-Fi',
+                    'max_load': '15A',
+                    'energy_monitor': 'Yes',
+                    'local_control': 'No',
+                    'voice_control': 'Alexa, Google',
+                    'price_range': '$20-30',
+                    'warranty': '1 year'
+                },
+                {
+                    'model': 'Generic Device B',
+                    'protocol': 'Matter/Wi-Fi',
+                    'max_load': '15A',
+                    'energy_monitor': 'Yes',
+                    'local_control': 'Yes',
+                    'voice_control': 'All platforms',
+                    'price_range': '$35-45',
+                    'warranty': '2 years'
+                }
+            ]
     
     def _generate_guide_section(self, keyword: str, category: str) -> str:
         """Generate installation/setup guide section"""
@@ -2095,6 +2261,142 @@ class AntiAIContentGeneratorPQSMethods:
         structured_data = f'<script type="application/ld+json">\n{article_json}\n</script>\n\n<script type="application/ld+json">\n{faq_json}\n</script>'
         
         return structured_data
+
+    def _assign_images_v3(self, keyword: str, category: str, slug: str) -> Dict:
+        """Assign images using v3 Image Aggregator System (CRITICAL for PQS Hard Gates)"""
+
+        # Create entities dict for v3 system
+        entities = {
+            'category': category.replace('_', '-'),  # Convert to kebab-case
+            'protocol': self._extract_protocol_from_keyword(keyword),
+            'use_case': self._extract_use_case_from_keyword(keyword)
+        }
+
+        try:
+            # Call v3 Image Aggregator
+            result = assign_images(
+                keyword=keyword,
+                entities=entities,
+                slug=slug
+            )
+
+            print(f"✅ v3 Images assigned for {keyword}: {result.get('metadata', {}).get('selected_count', 0)} images")
+            return result
+
+        except Exception as e:
+            print(f"❌ v3 Image assignment failed for {keyword}: {e}")
+            # Return fallback structure
+            return {
+                'hero': f"/images/products/{category.replace('_', '-')}/{slug}-hero.jpg",
+                'inline': [
+                    f"/images/products/{category.replace('_', '-')}/{slug}-comparison.jpg",
+                    f"/images/products/{category.replace('_', '-')}/{slug}-features.jpg"
+                ],
+                'metadata': {
+                    'fallback': True,
+                    'selected_count': 3,
+                    'total_candidates': 0
+                }
+            }
+
+    def _integrate_assigned_images(self, content_sections: Dict, image_result: Dict) -> Dict:
+        """Integrate assigned images into content sections with proper Alt tags"""
+
+        hero_image = image_result.get('hero')
+        inline_images = image_result.get('inline', [])
+
+        # Update any existing image placeholders with actual paths
+        for section_key, section_content in content_sections.items():
+            if isinstance(section_content, str):
+
+                # Replace generic image paths with assigned ones
+                if hero_image:
+                    # Replace any hero image placeholders
+                    section_content = re.sub(
+                        r'!\[([^\]]*hero[^\]]*)\]\([^)]+\)',
+                        f'![\\1]({hero_image})',
+                        section_content,
+                        flags=re.IGNORECASE
+                    )
+
+                # Add inline images where needed
+                if inline_images and len(inline_images) >= 2:
+                    # Replace comparison chart placeholders
+                    section_content = re.sub(
+                        r'!\[([^\]]*comparison[^\]]*)\]\([^)]+\)',
+                        f'![\\1]({inline_images[0]})',
+                        section_content,
+                        flags=re.IGNORECASE
+                    )
+
+                    # Add feature image if available
+                    if len(inline_images) > 1:
+                        section_content = re.sub(
+                            r'!\[([^\]]*feature[^\]]*)\]\([^)]+\)',
+                            f'![\\1]({inline_images[1]})',
+                            section_content,
+                            flags=re.IGNORECASE
+                        )
+
+                content_sections[section_key] = section_content
+
+        return content_sections
+
+    def _extract_protocol_from_keyword(self, keyword: str) -> str:
+        """Extract protocol from keyword for entities"""
+        keyword_lower = keyword.lower()
+
+        if any(proto in keyword_lower for proto in ['wifi', 'wi-fi']):
+            return 'WiFi'
+        elif 'zigbee' in keyword_lower:
+            return 'Zigbee'
+        elif 'matter' in keyword_lower:
+            return 'Matter'
+        elif 'thread' in keyword_lower:
+            return 'Thread'
+        elif 'alexa' in keyword_lower:
+            return 'WiFi'  # Alexa devices typically use WiFi
+        elif 'google' in keyword_lower:
+            return 'WiFi'  # Google devices typically use WiFi
+        else:
+            return 'WiFi'  # Default to WiFi
+
+    def _extract_use_case_from_keyword(self, keyword: str) -> str:
+        """Extract use case from keyword for entities"""
+        keyword_lower = keyword.lower()
+
+        if any(term in keyword_lower for term in ['energy', 'monitoring', 'watt', 'kwh']):
+            return 'energy monitoring'
+        elif any(term in keyword_lower for term in ['outdoor', 'weather', 'waterproof']):
+            return 'outdoor use'
+        elif any(term in keyword_lower for term in ['security', 'camera', 'alarm']):
+            return 'security'
+        elif any(term in keyword_lower for term in ['vacuum', 'clean', 'robot']):
+            return 'cleaning'
+        elif any(term in keyword_lower for term in ['light', 'bulb', 'lamp']):
+            return 'lighting'
+        elif any(term in keyword_lower for term in ['thermostat', 'temperature', 'climate']):
+            return 'climate control'
+        elif any(term in keyword_lower for term in ['plug', 'outlet', 'switch']):
+            return 'power control'
+        else:
+            return 'smart home automation'  # Generic fallback
+
+    def _generate_slug(self, keyword: str) -> str:
+        """Generate URL-friendly slug from keyword"""
+        import re
+        from datetime import datetime
+
+        # Clean and normalize keyword
+        slug = keyword.lower()
+        slug = re.sub(r'[^\w\s-]', '', slug)  # Remove special characters
+        slug = re.sub(r'[-\s]+', '-', slug)   # Replace spaces/hyphens with single hyphen
+        slug = slug.strip('-')                # Remove leading/trailing hyphens
+
+        # Add timestamp to ensure uniqueness
+        timestamp = datetime.now().strftime('%Y%m%d')
+
+        return f"{slug}-{timestamp}"
 
 # Mix PQS methods into main class
 for method_name in dir(AntiAIContentGeneratorPQSMethods):
