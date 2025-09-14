@@ -17,6 +17,14 @@ from datetime import datetime
 from typing import Dict, List, Optional, Tuple, Any
 from collections import defaultdict
 
+# 导入自动修复器
+try:
+    from auto_quality_fixer import AutoQualityFixer
+    AUTO_FIXER_AVAILABLE = True
+except ImportError as e:
+    AUTO_FIXER_AVAILABLE = False
+    print(f"⚠️ AutoQualityFixer not available: {e}")
+
 # 解决Windows编码问题
 if sys.platform == "win32":
     sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
@@ -859,6 +867,7 @@ def main():
                         help='Minimum quality score threshold (0.0-1.0)')
     parser.add_argument('--fail-fast', action='store_true', help='Stop at first failure')
     parser.add_argument('--single-file', action='store_true', help='Check single file instead of directory')
+    parser.add_argument('--auto-fix', action='store_true', help='Automatically fix articles that fail quality checks')
     
     args = parser.parse_args()
     
@@ -938,6 +947,59 @@ def main():
                 pqs_score = result['metadata']['pqs_total_score']
                 pqs_threshold = result['metadata']['pqs_threshold']
                 hard_gates_passed = result['metadata'].get('pqs_hard_gates_passed', False)
+
+                # 🔧 Auto-fix integration for failed articles
+                if args.auto_fix and AUTO_FIXER_AVAILABLE and result['status'] == 'FAIL' and pqs_score == 0:
+                    print(f"  🔧 Article failed quality check (PQS: {pqs_score}/100), attempting auto-fix...")
+                    try:
+                        fixer = AutoQualityFixer()
+                        # Extract keyword from filename
+                        keyword = os.path.splitext(os.path.basename(filepath))[0].replace('-', ' ')
+                        fix_success, final_score = fixer.fix_quality_loop(filepath, keyword)
+                        fix_result = {'success': fix_success, 'final_score': final_score}
+
+                        if fix_result.get('success', False):
+                            print(f"  ✅ Auto-fix successful! Re-checking quality...")
+                            # Re-run quality check
+                            fixed_result = checker.check_article_quality(filepath)
+
+                            if fixed_result['status'] != 'FAIL':
+                                print(f"  🎉 Fixed article now passes quality check!")
+                                # Update the result to reflect the fix
+                                results[-1] = fixed_result
+                                result = fixed_result
+                            else:
+                                print(f"  ⚠️ Auto-fix applied but article still needs manual review")
+                        else:
+                            print(f"  ❌ Auto-fix failed: {fix_result.get('reason', 'Unknown error')}")
+
+                    except Exception as fix_error:
+                        print(f"  ❌ Auto-fix error: {fix_error}")
+
+            elif args.auto_fix and AUTO_FIXER_AVAILABLE and result['status'] == 'FAIL':
+                # Handle non-PQS mode failures
+                print(f"  🔧 Article failed quality check (Score: {quality_score:.1%}), attempting auto-fix...")
+                try:
+                    fixer = AutoQualityFixer()
+                    keyword = os.path.splitext(os.path.basename(filepath))[0].replace('-', ' ')
+                    fix_success, final_score = fixer.fix_quality_loop(filepath, keyword)
+                    fix_result = {'success': fix_success, 'final_score': final_score}
+
+                    if fix_result.get('success', False):
+                        print(f"  ✅ Auto-fix successful! Re-checking quality...")
+                        fixed_result = checker.check_article_quality(filepath)
+
+                        if fixed_result.get('quality_score', 0) >= args.min_score:
+                            print(f"  🎉 Fixed article now passes quality check!")
+                            results[-1] = fixed_result
+                            result = fixed_result
+                        else:
+                            print(f"  ⚠️ Auto-fix applied but score still below threshold")
+                    else:
+                        print(f"  ❌ Auto-fix failed: {fix_result.get('reason', 'Unknown error')}")
+
+                except Exception as fix_error:
+                    print(f"  ❌ Auto-fix error: {fix_error}")
                 
                 gate_status = "✅ PASSED" if hard_gates_passed else "❌ FAILED"
                 print(f"  🎯 PQS Score: {pqs_score}/100 (threshold: {pqs_threshold}) | Hard Gates: {gate_status}")

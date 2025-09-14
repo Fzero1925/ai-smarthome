@@ -1,7 +1,10 @@
 {
   "used_urls": [
-    "https://example.com/test-image.jpg"
+    "https://live.staticflickr.com/1596/26662765135_e3c91bb0bb_b.jpg",
+    "https://live.staticflickr.com/3359/5735351316_38cb598bde_b.jpg",
+    "https://example.com/test-image.jpg",
+    "https://live.staticflickr.com/7265/7796114560_703ec0af4b_b.jpg"
   ],
-  "last_updated": 1757757310.155877,
-  "total_count": 1
+  "last_updated": 1757775448.299902,
+  "total_count": 4
 }

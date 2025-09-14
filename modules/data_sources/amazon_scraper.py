@@ -11,6 +11,10 @@ import logging
 from bs4 import BeautifulSoup
 import time
 import random
+import json
+from urllib.parse import urljoin
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 class AmazonBestSellersScraper:
     """
@@ -32,16 +36,31 @@ class AmazonBestSellersScraper:
             'smart_locks': 'https://www.amazon.com/Best-Sellers-Door-Locks/zgbs/hi/495348'
         }
 
-        # Headers to avoid being blocked
-        self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.5',
-            'Accept-Encoding': 'gzip, deflate',
-            'Connection': 'keep-alive',
-            'Upgrade-Insecure-Requests': '1',
-            'Cache-Control': 'max-age=0'
-        }
+        # ENHANCED: Rotating User-Agent pool for better anti-detection
+        self.user_agents = [
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Safari/605.1.15',
+        ]
+
+        # Setup session with retry strategy
+        self.session = requests.Session()
+        retry_strategy = Retry(
+            total=3,
+            backoff_factor=1,
+            status_forcelist=[429, 500, 502, 503, 504],
+        )
+        adapter = HTTPAdapter(max_retries=retry_strategy)
+        self.session.mount("http://", adapter)
+        self.session.mount("https://", adapter)
+
+        # Rate limiting parameters
+        self.min_delay = 3  # Minimum delay between requests
+        self.max_delay = 8  # Maximum delay between requests
+        self.last_request_time = 0
 
         # Smart home keywords for relevance filtering
         self.smart_home_keywords = [
@@ -111,10 +130,15 @@ class AmazonBestSellersScraper:
         try:
             url = self.category_urls[category]
 
-            # Add random delay to avoid rate limiting
-            time.sleep(random.uniform(1, 3))
+            # Enhanced rate limiting with respect to last request
+            self._respect_rate_limit()
 
-            response = requests.get(url, headers=self.headers, timeout=15)
+            # Use rotating user agent and session
+            headers = self._get_rotating_headers()
+
+            self.logger.info(f"Scraping {category} from Amazon with User-Agent: {headers['User-Agent'][:50]}...")
+
+            response = self.session.get(url, headers=headers, timeout=15)
             response.raise_for_status()
 
             # Parse HTML content
@@ -269,6 +293,54 @@ class AmazonBestSellersScraper:
                 return True
 
         return False
+
+    def _respect_rate_limit(self):
+        """
+        实施智能速率限制，避免触发Amazon反爬虫检测
+        """
+        current_time = time.time()
+        elapsed = current_time - self.last_request_time
+
+        # 确保请求间隔在最小延迟以上
+        if elapsed < self.min_delay:
+            sleep_time = self.min_delay - elapsed + random.uniform(0, 2)
+            self.logger.debug(f"Rate limiting: sleeping {sleep_time:.2f}s")
+            time.sleep(sleep_time)
+
+        self.last_request_time = time.time()
+
+    def _get_rotating_headers(self) -> Dict[str, str]:
+        """
+        获取轮换的请求头，模拟不同浏览器
+
+        Returns:
+            随机选择的请求头字典
+        """
+        base_headers = {
+            'User-Agent': random.choice(self.user_agents),
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+            'Sec-Fetch-Dest': 'document',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'none',
+            'Cache-Control': 'max-age=0'
+        }
+
+        # 随机添加一些可选头部
+        optional_headers = {
+            'DNT': '1',
+            'Sec-GPC': '1',
+        }
+
+        if random.random() < 0.3:  # 30%概率添加可选头部
+            for key, value in optional_headers.items():
+                if random.random() < 0.5:
+                    base_headers[key] = value
+
+        return base_headers
 
     def _get_fallback_amazon_data(self, category: str = None, limit: int = 10) -> List[Dict]:
         """

@@ -35,13 +35,14 @@ class RSSFeedAnalyzer:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         
-        # Define RSS feeds for tech publications (EXPANDED to 12+ sources)
+        # Define RSS feeds for tech publications (OPTIMIZED - failed sources removed)
         self.rss_feeds = {
-            'the_verge': {
-                'url': 'https://www.theverge.com/rss/index.xml',
-                'name': 'The Verge',
-                'smart_home_keywords': ['smart home', 'alexa', 'google home', 'homekit', 'iot', 'nest']
-            },
+            # REMOVED: the_verge - 403 Forbidden access
+            # 'the_verge': {
+            #     'url': 'https://www.theverge.com/rss/index.xml',
+            #     'name': 'The Verge',
+            #     'smart_home_keywords': ['smart home', 'alexa', 'google home', 'homekit', 'iot', 'nest']
+            # },
             'engadget': {
                 'url': 'https://www.engadget.com/rss.xml',
                 'name': 'Engadget',
@@ -57,11 +58,12 @@ class RSSFeedAnalyzer:
                 'name': 'Ars Technica',
                 'smart_home_keywords': ['home automation', 'iot security', 'smart device', 'privacy']
             },
-            'android_police': {
-                'url': 'https://www.androidpolice.com/feed/',
-                'name': 'Android Police',
-                'smart_home_keywords': ['android auto', 'google assistant', 'smart display', 'nest']
-            },
+            # REMOVED: android_police - Connection issues
+            # 'android_police': {
+            #     'url': 'https://www.androidpolice.com/feed/',
+            #     'name': 'Android Police',
+            #     'smart_home_keywords': ['android auto', 'google assistant', 'smart display', 'nest']
+            # },
             # NEW ADDITIONS for better coverage
             'techcrunch': {
                 'url': 'https://techcrunch.com/feed/',
@@ -93,10 +95,30 @@ class RSSFeedAnalyzer:
                 'name': "Tom's Guide",
                 'smart_home_keywords': ['smart home', 'best', 'reviews', 'buying guide', 'home security']
             },
-            'pcmag': {
-                'url': 'https://www.pcmag.com/feed/',
-                'name': 'PCMag',
-                'smart_home_keywords': ['smart home', 'reviews', 'tech news', 'gadget testing', 'best picks']
+            # REMOVED: pcmag - 404 Not Found
+            # 'pcmag': {
+            #     'url': 'https://www.pcmag.com/feed/',
+            #     'name': 'PCMag',
+            #     'smart_home_keywords': ['smart home', 'reviews', 'tech news', 'gadget testing', 'best picks']
+            # },
+
+            # VERIFIED BACKUP SOURCES (tested and working)
+            'android_central': {
+                'url': 'https://www.androidcentral.com/feed',
+                'name': 'Android Central',
+                'smart_home_keywords': ['android', 'google assistant', 'smart home', 'nest', 'automation']
+            },
+            'tech_radar': {
+                'url': 'https://www.techradar.com/rss',
+                'name': 'TechRadar',
+                'smart_home_keywords': ['smart home', 'best', 'reviews', 'buying guides', 'tech news']
+            },
+
+            # Additional verified reliable source
+            'cnet_smart_home': {
+                'url': 'https://www.cnet.com/rss/smart-home/',
+                'name': 'CNET Smart Home',
+                'smart_home_keywords': ['smart home', 'automation', 'security', 'energy', 'appliances']
             },
             'zdnet': {
                 'url': 'https://www.zdnet.com/news/rss.xml',

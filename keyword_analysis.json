@@ -1,41 +1,14 @@
 [
   {
-    "keyword": "smart plug energy monitoring wifi",
-    "category": "smart-plugs",
-    "trend_score": 0.94,
-    "commercial_intent": 0.0,
-    "search_volume": 0,
-    "difficulty": "Unknown",
-    "reason": "#1 Best Seller in Smart Plugs category - energy monitoring becoming essential feature",
+    "keyword": "smart plug test monitoring",
+    "category": "smart_plugs",
+    "trend_score": 0.9,
+    "competition_score": 0.5,
+    "commercial_intent": 0.8,
+    "search_volume": 15000,
+    "difficulty": "Medium",
+    "reason": "实时触发生成 - normal 优先级",
     "priority": 1,
-    "quality_level": "premium",
-    "filepath": "content/articles\\smart-plug-energy-monitoring-wifi-20250912.md",
-    "word_count": 1849
-  },
-  {
-    "keyword": "robot vacuum pet hair reviews",
-    "category": "robot_vacuums",
-    "trend_score": 0.92,
-    "commercial_intent": 0.0,
-    "search_volume": 0,
-    "difficulty": "Unknown",
-    "reason": "Seasonal spike in pet hair cleaning discussions, especially for long-haired cats and shedding dogs",
-    "priority": 2,
-    "quality_level": "premium",
-    "filepath": "content/articles\\robot-vacuum-pet-hair-reviews-20250912.md",
-    "word_count": 1925
-  },
-  {
-    "keyword": "outdoor security camera solar powered",
-    "category": "security_cameras",
-    "trend_score": 0.91,
-    "commercial_intent": 0.0,
-    "search_volume": 0,
-    "difficulty": "Unknown",
-    "reason": "Rising demand for solar-powered outdoor security solutions",
-    "priority": 3,
-    "quality_level": "premium",
-    "filepath": "content/articles\\outdoor-security-camera-solar-powered-20250912.md",
-    "word_count": 1915
+    "filepath": "content/articles\\smart-plug-test-monitoring-2025.md"
   }
 ]

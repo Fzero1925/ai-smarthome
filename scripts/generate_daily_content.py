@@ -10,6 +10,8 @@ import os
 import sys
 import argparse
 import codecs
+import time
+import psutil
 from datetime import datetime
 from pathlib import Path
 
@@ -1012,17 +1014,23 @@ author: "Smart Home Team"
     return filepath
 
 def main():
+    # 🔍 Performance Monitoring Start
+    start_time = time.time()
+    process = psutil.Process()
+    initial_memory = process.memory_info().rss / 1024 / 1024  # MB
+
     parser = argparse.ArgumentParser(description='Generate daily content articles')
     parser.add_argument('--count', type=int, default=1, help='Number of articles to generate')
     parser.add_argument('--output-dir', default='content/articles', help='Output directory for articles')
     parser.add_argument('--keyword', type=str, help='Specific keyword to generate article for')
     parser.add_argument('--category', type=str, help='Category for the keyword')
     parser.add_argument('--priority', type=str, help='Priority level (urgent, normal)')
-    
+
     args = parser.parse_args()
-    
+
     print(f"🚀 Starting daily content generation...")
     print(f"📊 Target: {args.count} articles")
+    print(f"🔍 Monitoring: Memory={initial_memory:.1f}MB, CPU={psutil.cpu_percent():.1f}%")
     
     # 如果指定了特定关键词，直接使用
     if args.keyword and args.category:
@@ -1101,6 +1109,51 @@ def main():
             json.dump(used_keywords, f, indent=2, ensure_ascii=False)
         print(f"📊 Saved keyword analysis for {len(used_keywords)} articles")
     
+    # 🔍 Performance Monitoring End
+    end_time = time.time()
+    final_memory = process.memory_info().rss / 1024 / 1024  # MB
+    total_time = end_time - start_time
+    memory_used = final_memory - initial_memory
+
+    print(f"\n📊 Performance Report:")
+    print(f"   ⏱️  Total time: {total_time:.2f}s")
+    print(f"   🏭 Throughput: {len(generated_files) * 3600 / total_time:.1f} articles/hour")
+    print(f"   💾 Memory usage: {memory_used:+.1f}MB (peak: {final_memory:.1f}MB)")
+    print(f"   📈 Avg per article: {total_time / max(len(generated_files), 1):.1f}s")
+
+    # Save performance metrics
+    perf_data = {
+        'timestamp': datetime.now().isoformat(),
+        'total_time': total_time,
+        'articles_generated': len(generated_files),
+        'throughput_per_hour': len(generated_files) * 3600 / total_time if total_time > 0 else 0,
+        'memory_used_mb': memory_used,
+        'peak_memory_mb': final_memory,
+        'avg_time_per_article': total_time / max(len(generated_files), 1)
+    }
+
+    try:
+        perf_file = project_root / 'data' / 'performance_metrics.json'
+        perf_file.parent.mkdir(exist_ok=True)
+
+        # Load existing data
+        existing_data = []
+        if perf_file.exists():
+            try:
+                with open(perf_file, 'r', encoding='utf-8') as f:
+                    existing_data = json.load(f)
+            except:
+                pass
+
+        # Keep only last 50 runs
+        existing_data.append(perf_data)
+        existing_data = existing_data[-50:]
+
+        with open(perf_file, 'w', encoding='utf-8') as f:
+            json.dump(existing_data, f, indent=2)
+    except Exception as e:
+        print(f"⚠️  Failed to save performance metrics: {e}")
+
     print(f"🎉 Successfully generated {len(generated_files)} articles")
     return len(generated_files) > 0
 
