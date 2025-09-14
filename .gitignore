@@ -60,34 +60,36 @@ Thumbs.db
 # Claude Code local settings (keep local only)
 .claude/settings.local.json
 
-# BUSINESS CRITICAL - Keep these files private  
+# Development and project management documents
+docs/
+开发进度总结-*.md
+
+# Hugo generated and statistics files
+hugo_stats.json
+generated_files.txt
+keyword_analysis.json
+hugo-optimization-config.yaml
+
+# Local batch scripts
+*.bat
+
+# Empty configuration directories
+configs/
+
+# Development tools configuration
+.claude/
+.vscode/
+
+# BUSINESS CRITICAL - Keep these files private
 CLAUDE.md
 BUSINESS_STRATEGY.md
 TECHNICAL_DOCS.md
 
-# Core business logic and algorithms (sensitive IP) - Comment out to allow commits
-# modules/
-# scripts/
-# *.py
+# Development documentation
+dev-docs/
 
-# Sensitive configuration and deployment - Allow workflows for automation
-# .github/workflows/
-# requirements.txt
-
-# Business intelligence data - Allow some data files
-# data/
+# Vercel deployment directory (contains sensitive deployment info)
 .vercel
-
-# Allow essential files for website functionality
-!modules/
-!scripts/
-!.github/workflows/
-!requirements.txt
-!*.py
-
-# Test and development files (not for production)
-test/
-oldfile/
 
 # Generated temporary files
 *.tmp
