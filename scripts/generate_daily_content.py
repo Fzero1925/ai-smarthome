@@ -71,15 +71,33 @@ def get_product_images(keyword, category):
                 for i, img_path in enumerate(inline_images[:3], 1):
                     v3_image_dict[f'product_{i}'] = img_path
                     v3_image_dict[f'product_{i}_alt'] = f"{keyword.title()} product view {i}"
-                
-                # 如果v3配图成功且有足够图片，直接返回
-                total_images = (1 if v3_results['hero'] else 0) + len(inline_images)
-                if total_images >= 2:  # 至少有hero + 1个inline
-                    print(f"v3 assignment provided {total_images} images")
-                    return v3_image_dict
-                else:
-                    print(f"Warning: v3 assignment returned insufficient images ({total_images}), falling back to static mapping")
-            
+
+                # CRITICAL FIX: 确保至少有3张产品图片，不足时重复使用
+                # 文章模板需要 product_1, product_2, product_3
+                available_images = []
+                if v3_results['hero']:
+                    available_images.append(v3_results['hero'])
+                available_images.extend(inline_images)
+
+                # 确保至少有3张图片给模板使用
+                while len(available_images) < 3 and available_images:
+                    available_images.append(available_images[0])  # 重复使用第一张图
+
+                # 重新分配，确保product_1, product_2, product_3都存在
+                for i in range(1, 4):  # product_1, product_2, product_3
+                    if i <= len(available_images):
+                        v3_image_dict[f'product_{i}'] = available_images[i-1]
+                        v3_image_dict[f'product_{i}_alt'] = f"{keyword.title()} product view {i}"
+                    else:
+                        # 如果还是不够，使用hero图片作为回退
+                        v3_image_dict[f'product_{i}'] = v3_results['hero'] if v3_results['hero'] else '/images/products/general/smart-home-device-1.jpg'
+                        v3_image_dict[f'product_{i}_alt'] = f"{keyword.title()} product view {i}"
+
+                print(f"v3 assignment provided {len(available_images)} unique images, ensured 3 product slots")
+                return v3_image_dict
+            else:
+                print(f"Warning: v3 assignment returned no hero image, falling back to static mapping")
+
         except Exception as e:
             print(f"Warning: v3 Image Aggregator failed: {e}, falling back to static mapping")
     

@@ -1,7 +1,7 @@
 [
   {
-    "keyword": "smart plug test monitoring",
-    "category": "smart_plugs",
+    "keyword": "smart plug energy monitoring",
+    "category": "smart-plugs",
     "trend_score": 0.9,
     "competition_score": 0.5,
     "commercial_intent": 0.8,
@@ -9,6 +9,6 @@
     "difficulty": "Medium",
     "reason": "实时触发生成 - normal 优先级",
     "priority": 1,
-    "filepath": "content/articles\\smart-plug-test-monitoring-2025.md"
+    "filepath": "content/articles\\smart-plug-energy-monitoring-2025.md"
   }
 ]

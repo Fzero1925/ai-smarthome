@@ -7,5 +7,23 @@
     "memory_used_mb": 72.79296875,
     "peak_memory_mb": 448.0625,
     "avg_time_per_article": 37.776979207992554
+  },
+  {
+    "timestamp": "2025-09-14T12:21:13.010434",
+    "total_time": 29.176509857177734,
+    "articles_generated": 0,
+    "throughput_per_hour": 0.0,
+    "memory_used_mb": 66.73046875,
+    "peak_memory_mb": 442.2421875,
+    "avg_time_per_article": 29.176509857177734
+  },
+  {
+    "timestamp": "2025-09-14T12:23:55.063083",
+    "total_time": 0.023447751998901367,
+    "articles_generated": 1,
+    "throughput_per_hour": 153532.84187621382,
+    "memory_used_mb": 0.05078125,
+    "peak_memory_mb": 374.49609375,
+    "avg_time_per_article": 0.023447751998901367
   }
 ]
