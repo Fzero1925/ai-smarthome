@@ -67,8 +67,10 @@ class ImageAssigner:
         # Build search query
         query = self._build_query(entities, keyword)
         
-        # Check cache first
-        cache_key = f"{query}_{slug}"
+        # Check cache first - include keyword hash for better isolation
+        import hashlib
+        keyword_hash = hashlib.md5(keyword.encode('utf-8')).hexdigest()[:8]
+        cache_key = f"{query}_{slug}_{keyword_hash}"
         cached_results = load_cached_results(cache_key)
         
         if cached_results:

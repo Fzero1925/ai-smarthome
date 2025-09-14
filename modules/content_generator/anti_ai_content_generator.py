@@ -2393,8 +2393,8 @@ class AntiAIContentGeneratorPQSMethods:
         slug = re.sub(r'[-\s]+', '-', slug)   # Replace spaces/hyphens with single hyphen
         slug = slug.strip('-')                # Remove leading/trailing hyphens
 
-        # Add timestamp to ensure uniqueness
-        timestamp = datetime.now().strftime('%Y%m%d')
+        # Add timestamp with higher precision to ensure uniqueness (YYYY-MM-DD-HHMM)
+        timestamp = datetime.now().strftime('%Y%m%d-%H%M')
 
         return f"{slug}-{timestamp}"
 
