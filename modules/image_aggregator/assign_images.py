@@ -116,43 +116,36 @@ class ImageAssigner:
         return result
     
     def _build_query(self, entities: Dict, keyword: str) -> str:
-        """Build unique search query from entities and keyword"""
-        query_parts = [keyword]
+        """Build unique search query prioritizing keyword differentiation"""
+        # CRITICAL: Keep original keyword intact to preserve differentiation
+        # "robot vacuum black friday" vs "robot vacuum pet hair" must stay different!
 
-        # Add protocol information for specificity
-        protocol = entities.get('protocol', '')
-        if protocol and protocol.lower() not in keyword.lower():
-            query_parts.append(protocol)
+        # Start with the complete keyword - this is our unique identifier
+        base_query = keyword.strip()
 
-        # Add use case for context differentiation
-        use_case = entities.get('use_case', '')
-        if use_case and len(use_case) < 30:  # Avoid overly long descriptions
-            # Clean and add use case
-            clean_use_case = use_case.replace('_', ' ').strip()
-            if clean_use_case and clean_use_case.lower() not in keyword.lower():
-                query_parts.append(clean_use_case)
+        # Only add minimal context if keyword is too generic
+        keyword_words = set(keyword.lower().split())
+        generic_words = {'smart', 'home', 'device', 'gadget', 'product', 'best', 'top'}
 
-        # Add category only if it adds meaningful differentiation
-        category = entities.get('category', '').replace('-', ' ')
-        if category and category not in keyword.lower():
-            # Only add category for broad keywords that need more specificity
-            keyword_words = set(keyword.lower().split())
-            generic_words = {'smart', 'home', 'device', 'gadget', 'product'}
-            if len(keyword_words.intersection(generic_words)) > 0:
-                query_parts.append(category)
+        # If keyword has generic terms, add one specific context
+        if len(keyword_words.intersection(generic_words)) > 1:
+            # Add category for context only if very generic
+            category = entities.get('category', '').replace('-', ' ')
+            if category and category not in keyword.lower() and len(base_query) < 50:
+                base_query = f"{keyword} {category}"
 
-        # Join parts with space, limit total length for API compatibility
-        full_query = ' '.join(query_parts)
+        # Clean up query for API compatibility
+        clean_query = base_query.replace('_', ' ')
+        clean_query = ' '.join(clean_query.split())  # Remove extra spaces
 
-        # Limit query length to avoid API issues (max ~100 chars)
-        if len(full_query) > 100:
-            # Keep keyword + most important modifier
-            if len(query_parts) > 2:
-                full_query = f"{keyword} {query_parts[1]}"
-            else:
-                full_query = keyword
+        # If still too long, prioritize the most distinctive parts
+        if len(clean_query) > 60:
+            words = clean_query.split()
+            if len(words) > 5:
+                # Keep first 4 words which usually contain the key differentiation
+                clean_query = ' '.join(words[:4])
 
-        return full_query.strip()
+        return clean_query
     
     def _search_providers(self, query: str) -> List[Dict]:
         """Search all enabled image providers"""
@@ -298,13 +291,14 @@ class ImageAssigner:
         }
         
         try:
-            # Generate hero card based on category
-            hero_features = self._get_category_features(entities)
+            # Generate hero card based on category with keyword differentiation
+            hero_features = self._get_category_features(entities, keyword)
             if hero_features:
                 hero_path = make_category_card(
                     category=entities.get('category', keyword),
                     features=hero_features,
-                    output_path=str(out_dir / 'hero_generated.webp')
+                    output_path=str(out_dir / 'hero_generated.webp'),
+                    keyword=keyword  # CRITICAL: Pass keyword for visual differentiation
                 )
                 if hero_path:
                     result['hero'] = hero_path
@@ -376,14 +370,16 @@ class ImageAssigner:
         
         return result
     
-    def _get_category_features(self, entities: Dict) -> List[str]:
-        """Get relevant features for category card"""
+    def _get_category_features(self, entities: Dict, keyword: str = "") -> List[str]:
+        """Get relevant features for category card with keyword-specific customization"""
         category = entities.get('category', '').lower()
-        
-        category_features = {
+        keyword_lower = keyword.lower()
+
+        # Base category features
+        base_features = {
             'smart-plugs': [
                 "Remote on/off control via smartphone app",
-                "Energy monitoring and usage tracking", 
+                "Energy monitoring and usage tracking",
                 "Voice control with Alexa/Google Assistant",
                 "Scheduling and timer functionality",
                 "Away mode for security automation"
@@ -394,6 +390,13 @@ class ImageAssigner:
                 "Night vision for 24/7 monitoring",
                 "Two-way audio communication",
                 "Cloud and local storage options"
+            ],
+            'security-cameras': [
+                "Weatherproof outdoor installation",
+                "Motion detection with instant alerts",
+                "Night vision for 24/7 monitoring",
+                "Mobile app remote viewing",
+                "Local and cloud storage options"
             ],
             'smart-lights': [
                 "Dimming and brightness control",
@@ -410,14 +413,60 @@ class ImageAssigner:
                 "App control and monitoring"
             ]
         }
-        
-        return category_features.get(category, [
+
+        # Get base features
+        features = base_features.get(category, [
             "Smart home automation features",
             "Mobile app remote control",
             "Voice assistant compatibility",
             "Energy efficient operation",
             "Easy setup and configuration"
         ])
+
+        # CRITICAL: Customize features based on keyword context for differentiation
+
+        # Black Friday / Sales context
+        if any(term in keyword_lower for term in ['black friday', 'sale', 'deal', 'discount']):
+            features = [
+                "⚡ Limited-time promotional pricing",
+                "🛒 Bundle deals and package offers",
+                "📦 Free shipping on qualifying orders",
+                "💳 Extended warranty options available",
+                "🎯 Best value for holiday shoppers"
+            ]
+
+        # Pet-related context
+        elif any(term in keyword_lower for term in ['pet', 'dog', 'cat', 'fur', 'hair']):
+            if 'robot-vacuum' in category:
+                features = [
+                    "🐕 Specialized pet hair suction power",
+                    "🏠 Multi-pet household compatibility",
+                    "🔇 Quiet operation won't startle pets",
+                    "🚫 Anti-allergen filtration system",
+                    "📱 Schedule cleaning when pets are out"
+                ]
+
+        # Outdoor/Solar/Wireless context
+        elif any(term in keyword_lower for term in ['outdoor', 'solar', 'wireless', 'weather']):
+            features = [
+                "☀️ Solar panel charging capability",
+                "🌧️ IP65+ weatherproof protection",
+                "📡 Long-range wireless connectivity",
+                "🔋 Extended battery life outdoors",
+                "🛡️ UV and temperature resistant"
+            ]
+
+        # Security/Monitoring context
+        elif any(term in keyword_lower for term in ['security', 'surveillance', 'monitoring']):
+            features = [
+                "🎥 Professional-grade video quality",
+                "🚨 Real-time security alerts",
+                "🌙 Advanced night vision technology",
+                "☁️ Secure cloud storage encryption",
+                "👥 Multi-user access management"
+            ]
+
+        return features[:5]  # Limit to 5 features to fit on card
     
     def _extract_protocols(self, entities: Dict, keyword: str) -> List[str]:
         """Extract relevant protocols from entities and keyword"""

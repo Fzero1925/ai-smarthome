@@ -125,34 +125,69 @@ def make_info_card(title: str, bullet_points: List[str], output_path: str,
         return ""
 
 
-def make_category_card(category: str, features: List[str], output_path: str) -> str:
+def make_category_card(category: str, features: List[str], output_path: str, keyword: str = "") -> str:
     """
-    Create a category-specific information card
-    
+    Create a category-specific information card with keyword differentiation
+
     Args:
         category: Product category (e.g., "Smart Plugs")
         features: List of key features
         output_path: Output file path
-        
+        keyword: Original keyword for context-specific customization
+
     Returns:
         Output file path or empty string if failed
     """
-    # Color scheme based on category
-    color_schemes = {
+    # Enhanced color schemes with keyword-specific variations
+    base_schemes = {
         'smart-plugs': {'bg': '#f8f9fa', 'accent': '#28a745', 'text': '#212529'},
         'smart-cameras': {'bg': '#f8f9fa', 'accent': '#dc3545', 'text': '#212529'},
         'smart-lights': {'bg': '#f8f9fa', 'accent': '#ffc107', 'text': '#212529'},
         'robot-vacuums': {'bg': '#f8f9fa', 'accent': '#17a2b8', 'text': '#212529'},
+        'security-cameras': {'bg': '#f8f9fa', 'accent': '#dc3545', 'text': '#212529'},
         'default': {'bg': '#f8f9fa', 'accent': '#007bff', 'text': '#212529'}
     }
-    
-    scheme = color_schemes.get(category.lower(), color_schemes['default'])
-    
-    # Clean category name for title
-    title = category.replace('-', ' ').title()
-    if not title.endswith('s') and not title.endswith('es'):
-        title += 's'  # Pluralize if needed
-    
+
+    # Get base scheme
+    scheme = base_schemes.get(category.lower(), base_schemes['default'])
+
+    # CRITICAL: Customize based on keyword to create visual differentiation
+    keyword_lower = keyword.lower()
+
+    # Black Friday / Sales context - use promotional colors
+    if any(term in keyword_lower for term in ['black friday', 'sale', 'deal', 'discount', 'cyber monday']):
+        scheme = {'bg': '#1a1a1a', 'accent': '#ff6b35', 'text': '#ffffff'}  # Dark with orange accent
+
+    # Pet-related context - use warm, pet-friendly colors
+    elif any(term in keyword_lower for term in ['pet', 'dog', 'cat', 'fur', 'hair']):
+        scheme = {'bg': '#fff8e1', 'accent': '#8d6e63', 'text': '#3e2723'}  # Warm brown theme
+
+    # Outdoor/Solar context - use nature-inspired colors
+    elif any(term in keyword_lower for term in ['outdoor', 'solar', 'weather', 'wireless']):
+        scheme = {'bg': '#e8f5e8', 'accent': '#2e7d32', 'text': '#1b5e20'}  # Green nature theme
+
+    # Security context - use security-focused colors
+    elif any(term in keyword_lower for term in ['security', 'surveillance', 'monitoring', 'camera']):
+        scheme = {'bg': '#e3f2fd', 'accent': '#1565c0', 'text': '#0d47a1'}  # Professional blue
+
+    # Budget/affordable context - use value-oriented colors
+    elif any(term in keyword_lower for term in ['cheap', 'budget', 'affordable', 'under']):
+        scheme = {'bg': '#f3e5f5', 'accent': '#7b1fa2', 'text': '#4a148c'}  # Purple value theme
+
+    # Clean category name for title with keyword context
+    if any(term in keyword_lower for term in ['black friday', 'sale']):
+        title = f"{category.replace('-', ' ').title()} - Special Deals"
+    elif 'pet' in keyword_lower:
+        title = f"Pet-Friendly {category.replace('-', ' ').title()}"
+    elif 'outdoor' in keyword_lower:
+        title = f"Outdoor {category.replace('-', ' ').title()}"
+    elif 'security' in keyword_lower:
+        title = f"Security {category.replace('-', ' ').title()}"
+    else:
+        title = category.replace('-', ' ').title()
+        if not title.endswith('s') and not title.endswith('es'):
+            title += 's'  # Pluralize if needed
+
     return make_info_card(
         title=title,
         bullet_points=features,
