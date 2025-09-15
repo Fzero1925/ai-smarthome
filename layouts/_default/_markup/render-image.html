@@ -1,0 +1,10 @@
+{{- $alt := .Text -}}
+{{- if not $alt -}}
+  {{- $filename := path.BaseName .Destination -}}
+  {{- $alt = printf "%s相关图片" (humanize $filename) -}}
+{{- end -}}
+
+<img src="{{ .Destination | safeURL }}"
+     alt="{{ $alt }}"
+     loading="lazy"
+     {{- if .Title }} title="{{ .Title }}"{{ end -}}>

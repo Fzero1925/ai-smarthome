@@ -96,6 +96,11 @@ params:
     amazon:
       tracking_id: 'yourtag-20'
       
+  # RSS摘要配置
+  rss:
+    summary_length: 200  # 摘要长度限制
+    full_text: false     # 禁用全文输出
+
   # Content Configuration
   content:
     # Article defaults
@@ -108,13 +113,13 @@ params:
     # Page chrome
     table_of_contents: true
     quality_indicators: true
-      
+
     # Review system
     reviews:
       rating_system: false
       pros_cons: true
       verdict: true
-      
+
     # Product information
     products:
       affiliate_disclosure: true
@@ -183,12 +188,15 @@ markup:
     style: 'github'
     tabWidth: 4
 
+# RSS设置
+rssLimit: 10  # 限制RSS条目数量
+
 # Output Formats for SEO
 outputFormats:
   RSS:
     mediaType: 'application/rss+xml'
     baseName: 'feed'
-    
+
 outputs:
   home: ['HTML', 'RSS', 'JSON']
   section: ['HTML', 'RSS']
@@ -213,6 +221,12 @@ build:
   publishDir: 'public'
   writeStats: true
   
+# 图片处理
+imaging:
+  resampleFilter: "CatmullRom"
+  quality: 85
+  format: "webp"
+
 # Minification for Performance
 minify:
   disableCSS: false
@@ -221,7 +235,7 @@ minify:
   disableJSON: false
   disableSVG: false
   disableXML: false
-  
+
   minifyOutput: true
   
   tdewolff:
