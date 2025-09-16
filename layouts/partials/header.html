@@ -20,7 +20,7 @@
             <a href="{{ .URL | relURL }}"
                class="nav-link"
                role="menuitem"
-               {{ if .Description }}title="{{ .Description }}"{{ end }}>
+               {{ if .Params.description }}title="{{ .Params.description }}"{{ end }}>
               {{ .Name }}
             </a>
           </li>
@@ -70,7 +70,7 @@
           <li class="mobile-nav-item">
             <a href="{{ .URL | relURL }}" class="mobile-nav-link">
               {{ .Name }}
-              {{ if .Description }}<span class="mobile-nav-desc">{{ .Description }}</span>{{ end }}
+              {{ if .Params.description }}<span class="mobile-nav-desc">{{ .Params.description }}</span>{{ end }}
             </a>
           </li>
           {{ end }}
