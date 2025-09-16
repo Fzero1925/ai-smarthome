@@ -67,8 +67,6 @@ Power-user topics:
 
 Based on the last 90 days, here are the topics people need help with most:
 
-{{< hot-categories-grid >}}
-
 ---
 
 ## Browse by Task

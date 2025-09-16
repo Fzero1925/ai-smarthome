@@ -44,30 +44,20 @@ aliases:
 ### **Connectivity Issues**
 The most common smart home problems, solved:
 
-{{< how-to-category "connectivity" >}}
-
 ### **Device Setup**
 Get your new devices working properly:
-
-{{< how-to-category "setup" >}}
 
 ### **Automation & Control**
 Make your smart home truly intelligent:
 
-{{< how-to-category "automation" >}}
-
 ### **Platform Integration**
 Connect different ecosystems:
-
-{{< how-to-category "integration" >}}
 
 ---
 
 ## Most Requested Solutions
 
 Based on reader feedback and common issues, these are the solutions people need most:
-
-{{< popular-how-to-guides >}}
 
 ---
 
