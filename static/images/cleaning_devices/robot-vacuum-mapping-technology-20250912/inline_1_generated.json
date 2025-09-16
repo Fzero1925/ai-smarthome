@@ -1,9 +1,0 @@
-{
-  "source": "generated",
-  "type": "compatibility_card",
-  "protocols": [
-    "WiFi",
-    "Matter"
-  ],
-  "alt_text": "robot vacuum mapping technology compatibility guide"
-}

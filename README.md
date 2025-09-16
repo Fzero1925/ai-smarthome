@@ -9,22 +9,7 @@
 
 ## 🚀 Live Website
 
-**Production Site**: [AI Smart Home Hub](https://ai-smarthome.vercel.app/)
-
-### 📊 Current Status (2025-08-31 - CHINESE DOCS AVAILABLE)
-
-> **⚠️ 注意**: 请参考中文文档获取最新状态信息  
-> **主要中文文档**: `项目状态总览.md` | `商业运营状态.md` | `dev-docs/使用说明.md`
-
-- 🎉 **Recently Enhanced** - Interface simplified, global timing optimized for EU/US users  
-- ✅ **Fully Automated** - Complete automation pipeline deployed and operational
-- 🤖 **AI Content Generation** - Daily 1-3 articles with anti-AI detection (09:00 AM China time, optimized globally)
-- 📱 **Smart Notifications Enhanced** - Telegram alerts with keyword insights, quality reports, Chinese interface
-- 🔗 **Real Product Links** - Updated Amazon affiliate links for authentic recommendations  
-- 📈 **SEO Excellence** - Advanced keyword research, internal linking, and indexing
-- 🚀 **Performance Optimized** - <2s loading time, 95%+ automation success rate
-- 🛡️ **Enterprise Security** - GitHub Secrets integration, secure token management
-- 🌐 **Global Optimization** - Content generation timed for European/American morning readers
+**Production Site**: [AI Smart Home Hub](https://www.ai-smarthomehub.com/)
 
 
 ## 🎯 Our Mission
