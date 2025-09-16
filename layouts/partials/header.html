@@ -1,4 +1,4 @@
-<nav class="navbar" x-data="{ mobileMenuOpen: false }">
+<nav class="navbar" role="navigation" aria-label="Primary navigation" x-data="{ mobileMenuOpen: false }">
   <div class="container">
     <div class="navbar-brand">
       <a href="{{ .Site.BaseURL }}" class="brand-link">
@@ -13,6 +13,36 @@
       <i class="fa" :class="mobileMenuOpen ? 'fa-times' : 'fa-bars'"></i>
     </button>
     
+    <!-- Mobile: Core navigation items always visible -->
+    <div class="navbar-primary">
+      <ul class="navbar-nav-primary">
+        {{ $menuItems := .Site.Menus.main }}
+        {{ range first 4 $menuItems }}
+        <li class="nav-item-primary">
+          <a href="{{ .URL | relURL }}" class="nav-link-primary">
+            {{ .Name }}
+          </a>
+        </li>
+        {{ end }}
+        <!-- More menu for additional items -->
+        {{ if gt (len $menuItems) 4 }}
+        <li class="nav-item-primary nav-more" x-data="{ moreOpen: false }">
+          <button class="nav-link-primary" @click="moreOpen = !moreOpen" type="button">
+            More <i class="fa" :class="moreOpen ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+          </button>
+          <ul class="nav-more-dropdown" :class="{ 'show': moreOpen }" @click.outside="moreOpen = false">
+            {{ range after 4 $menuItems }}
+            <li>
+              <a href="{{ .URL | relURL }}" class="nav-link">{{ .Name }}</a>
+            </li>
+            {{ end }}
+          </ul>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+
+    <!-- Traditional hamburger menu for full menu on smaller screens -->
     <div class="navbar-menu" :class="{ 'show': mobileMenuOpen }" @click.outside="mobileMenuOpen = false">
       <ul class="navbar-nav">
         {{ range .Site.Menus.main }}
@@ -23,7 +53,7 @@
         </li>
         {{ end }}
       </ul>
-      
+
       <!-- Search Box with Tailwind Tech Design -->
       <div class="navbar-search">
         <form class="search-form" role="search" action="/search/" method="GET">
@@ -33,22 +63,29 @@
           </button>
         </form>
       </div>
-      
+
     </div>
   </div>
 </nav>
 
 <style>
 .navbar {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: saturate(180%) blur(20px);
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
   z-index: 10000;
   width: 100%;
   min-height: 64px;
+  transition: transform 0.3s ease;
+}
+
+/* Smart hide/show on mobile */
+@media (max-width: 992px) {
+  .navbar.nav-hidden {
+    transform: translateY(-100%);
+  }
 }
 
 .navbar .container {
@@ -163,12 +200,97 @@
   border-color: #0056b3;
 }
 
+/* Primary navigation styles */
+.navbar-primary {
+  display: none;
+}
+
+.navbar-nav-primary {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.nav-item-primary {
+  position: relative;
+}
+
+.nav-link-primary {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  color: #495057;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-link-primary:hover {
+  color: #007bff;
+  background-color: #f8f9fa;
+  text-decoration: none;
+}
+
+.nav-more-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  min-width: 120px;
+  display: none;
+  z-index: 1000;
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0;
+}
+
+.nav-more-dropdown.show {
+  display: block;
+}
+
+.nav-more-dropdown li {
+  margin: 0;
+}
+
+.nav-more-dropdown .nav-link {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #495057;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.nav-more-dropdown .nav-link:hover {
+  background-color: #f8f9fa;
+  color: #007bff;
+  text-decoration: none;
+}
 
 @media (max-width: 992px) {
   .navbar-toggle {
     display: block;
   }
-  
+
+  /* Show primary navigation on mobile instead of hiding everything */
+  .navbar-primary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    justify-content: center;
+  }
+
   .navbar-menu {
     display: none;
     position: absolute;
@@ -181,17 +303,17 @@
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     gap: 1rem;
   }
-  
+
   .navbar-menu.show {
     display: flex;
   }
-  
+
   .navbar-nav {
     flex-direction: column;
     width: 100%;
     gap: 0.5rem;
   }
-  
+
   .search-input {
     width: 200px;
   }
@@ -201,21 +323,113 @@
   .search-input {
     width: 150px;
   }
-  
+
   .navbar .container {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
   }
-  
+
   /* Mobile Brand Title Optimization */
   .brand-full {
     display: none;
   }
-  
+
   .brand-short {
     display: inline;
+  }
+
+  /* Adjust primary nav for smaller screens */
+  .navbar-nav-primary {
+    gap: 0.5rem;
+  }
+
+  .nav-link-primary {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Very small screens: reduce text further */
+  .nav-link-primary {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .navbar-nav-primary {
+    gap: 0.25rem;
+  }
+
+  /* Hide "More" on very small screens, rely on hamburger menu */
+  .nav-more {
+    display: none;
   }
 }
 </style>
 
-<!-- Alpine.js now handles mobile menu functionality - old JavaScript removed for cleaner code -->
+<!-- Smart Navigation JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Smart navigation hide/show functionality for mobile
+  if (window.innerWidth <= 992) {
+    const navbar = document.querySelector('.navbar');
+    let lastScrollY = window.scrollY;
+    let scrollDownDistance = 0;
+    let scrollUpDistance = 0;
+
+    // Throttle scroll events for performance
+    let ticking = false;
+
+    function updateNavbar() {
+      const currentScrollY = window.scrollY;
+      const scrollDelta = currentScrollY - lastScrollY;
+
+      if (scrollDelta > 0) {
+        // Scrolling down
+        scrollDownDistance += scrollDelta;
+        scrollUpDistance = 0;
+
+        // Hide navbar after scrolling down 24px and beyond initial 80px
+        if (currentScrollY > 80 && scrollDownDistance > 24) {
+          navbar.classList.add('nav-hidden');
+        }
+      } else if (scrollDelta < 0) {
+        // Scrolling up
+        scrollUpDistance += Math.abs(scrollDelta);
+        scrollDownDistance = 0;
+
+        // Show navbar after scrolling up 12px
+        if (scrollUpDistance > 12) {
+          navbar.classList.remove('nav-hidden');
+        }
+      }
+
+      lastScrollY = currentScrollY;
+      ticking = false;
+    }
+
+    function requestTick() {
+      if (!ticking) {
+        requestAnimationFrame(updateNavbar);
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', requestTick, { passive: true });
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 992) {
+        navbar.classList.remove('nav-hidden');
+      }
+    });
+  }
+});
+
+// Respect user's motion preferences
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const style = document.createElement('style');
+  style.textContent = '.navbar { transition: none !important; }';
+  document.head.appendChild(style);
+}
+</script>

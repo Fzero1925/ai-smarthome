@@ -113,14 +113,14 @@
   {{ if .Site.Params.performance.assets.inline_critical }}
   <style>
     /* Critical CSS for above-the-fold content - AdSense Optimized */
-    body{font-family:system-ui,-apple-system,sans-serif;margin:0;line-height:1.6;background:#fff;color:#212529;padding-top:64px}
-    /* Let header.html handle navbar positioning with fixed - removed conflicting sticky */
+    body{font-family:system-ui,-apple-system,sans-serif;margin:0;line-height:1.6;background:#fff;color:#212529}
+    /* Using sticky positioning for navbar - no padding-top needed */
     .container{max-width:1200px;margin:0 auto;padding:0 20px}
     main{min-height:70vh;padding:20px 0}
     
-    /* Mobile responsive padding for fixed navbar - consistent with main.css */
+    /* Mobile responsive - no padding needed with sticky positioning */
     @media (max-width: 768px) {
-      body{padding-top:64px} /* Match navbar height for mobile - unified */
+      body{padding-top:0} /* Sticky positioning requires no padding */
     }
     
     /* AdSense Content Layout Optimization */
@@ -335,21 +335,24 @@
 </head>
 
 <body>
+  <!-- Skip to content link for accessibility -->
+  <a class="skip-link" href="#main">Skip to content</a>
+
   <!-- Google Tag Manager (noscript) -->
   {{ if .Site.Params.analytics.google_tag_manager }}
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ .Site.Params.analytics.google_tag_manager }}"
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   {{ end }}
-  
-  <header>
+
+  <header role="banner">
     {{ partial "header.html" . }}
   </header>
   
-  <main>
+  <main id="main" role="main">
     {{ block "main" . }}{{ end }}
   </main>
   
-  <footer>
+  <footer role="contentinfo">
     {{ partial "footer.html" . }}
   </footer>
   
