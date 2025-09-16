@@ -48,26 +48,6 @@
         </ul>
       </div>
       
-      <div class="footer-section newsletter">
-        <h4><i class="fa fa-envelope"></i> Stay Updated</h4>
-        <p>Get the latest smart home reviews and deals delivered to your inbox.</p>
-        
-        <form class="newsletter-form" action="#" method="post">
-          <div class="input-group">
-            <input type="email" 
-                   name="email" 
-                   placeholder="Enter your email..." 
-                   required 
-                   aria-label="Email address for newsletter subscription">
-            <button type="submit" class="subscribe-btn">
-              <i class="fa fa-paper-plane"></i>
-            </button>
-          </div>
-          <small class="newsletter-disclaimer">
-            We respect your privacy. Unsubscribe at any time.
-          </small>
-        </form>
-      </div>
     </div>
     
     <div class="footer-bottom">
@@ -113,7 +93,7 @@
 
 .footer-content {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  grid-template-columns: 2fr 1fr 1fr;
   gap: 2rem;
   margin-bottom: 2rem;
 }
@@ -180,60 +160,6 @@
   padding-left: 5px;
 }
 
-.newsletter-form {
-  margin-top: 1rem;
-}
-
-.input-group {
-  display: flex;
-  margin-bottom: 0.5rem;
-  background: #ffffff;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-.newsletter-form input[type="email"] {
-  flex: 1;
-  padding: 0.75rem 1rem;
-  border: 2px solid #e9ecef;
-  border-right: none;
-  border-radius: 6px 0 0 6px;
-  background: #ffffff;
-  color: #2c3e50;
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.newsletter-form input[type="email"]:focus {
-  border-color: #80bdff;
-  box-shadow: 0 0 0 3px rgba(0,123,255,0.15);
-}
-
-.newsletter-form input[type="email"]::placeholder {
-  color: #6c757d;
-}
-
-.subscribe-btn {
-  background: #3498db;
-  color: white;
-  border: 2px solid #3498db;
-  padding: 0.75rem 1rem;
-  border-radius: 0 6px 6px 0;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.subscribe-btn:hover {
-  background: #2980b9;
-  border-color: #2980b9;
-}
-
-.newsletter-disclaimer {
-  color: #95a5a6;
-  font-size: 0.8rem;
-  display: block;
-  margin-top: 0.5rem;
-}
 
 .footer-bottom {
   border-top: 1px solid #34495e;
@@ -347,19 +273,6 @@
     padding-top: 2rem;
   }
   
-  .input-group {
-    flex-direction: column;
-  }
-  
-  .newsletter-form input[type="email"] {
-    border-radius: 6px;
-    border: 2px solid #34495e;
-    margin-bottom: 0.5rem;
-  }
-  
-  .subscribe-btn {
-    border-radius: 6px;
-  }
 }
 </style>
 
@@ -383,14 +296,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
-  // Newsletter form handling
-  const newsletterForm = document.querySelector('.newsletter-form');
-  if (newsletterForm) {
-    newsletterForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      // Add newsletter subscription logic here
-      alert('Newsletter subscription functionality will be implemented with backend integration.');
-    });
-  }
 });
 </script>

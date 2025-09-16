@@ -1,8 +1,8 @@
 ---
 title: "Fix Robot Vacuum No-Go Zones Not Saving (Roborock, Ecovacs, Eufy) — 2025 Guide"
 description: "A vendor-neutral, evidence-based playbook to make virtual boundaries stick across runs, firmware updates, and app caches."
-date: 2025-09-16
-lastmod: 2025-09-16
+date: 2025-06-16
+lastmod: 2025-06-16
 slug: "robot-vacuum-no-go-zones-not-saving-2025"
 draft: false
 categories: ["Robot Vacuums","Cleaning Devices"]

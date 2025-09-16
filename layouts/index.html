@@ -40,65 +40,54 @@
   <!-- Top AdSense Slot -->
   {{ partial "adsense.html" . }}
 
-  <!-- Featured Categories -->
+  <!-- Dynamic Popular Categories - 基于uiux-new.md建议的动态分类实现 -->
   <section class="featured-categories">
     <div class="container">
-      <h2><i class="fa fa-star"></i> Popular Categories</h2>
+      <div class="section-header">
+        <h2><i class="fa fa-star"></i> Popular Categories</h2>
+        <p class="section-subtitle">Explore smart home devices by type - automatically updated based on content</p>
+      </div>
+
+      {{/* 动态汇总分类并排序 - 基于uiux-new.md建议 */}}
+      {{ $terms := slice }}
+      {{ range $name, $tax := .Site.Taxonomies.categories }}
+        {{ $terms = $terms | append (dict "name" $name "slug" ($name | urlize) "count" (len $tax.Pages)) }}
+      {{ end }}
+      {{ $terms = where (sort $terms "count" "desc") ".count" "gt" 0 }}
+
       <div class="categories-grid">
-        <a href="/categories/smart-plugs/" class="category-card">
-          <div class="category-icon">
-            <i class="fa fa-plug"></i>
+        {{ range first 6 $terms }}
+        <a href="{{ "/categories/" | relURL }}{{ .slug }}/" class="category-card">
+          <div class="category-icon" style="background-color: {{ partial "category-image.html" (dict "slug" .slug "type" "color") }}">
+            <i class="{{ partial "category-image.html" (dict "slug" .slug "type" "icon") }}"></i>
           </div>
-          <h3>Smart Plugs</h3>
-          <p>Control your devices remotely and save energy</p>
-          <span class="category-count">{{ len (where .Site.RegularPages "Params.categories" "intersect" (slice "smart-plugs")) }} reviews</span>
+
+          <h3>{{ .name | title }}</h3>
+
+          <p>{{ partial "category-image.html" (dict "slug" .slug "name" .name "type" "description") }}</p>
+
+          <span class="category-count">{{ .count }} {{ if eq .count 1 }}article{{ else }}articles{{ end }}</span>
+
+          {{/* 热门指示器 */}}
+          {{ if ge .count 10 }}
+          <div class="category-badge category-badge--hot">🔥 Popular</div>
+          {{ else if ge .count 5 }}
+          <div class="category-badge category-badge--active">✨ Active</div>
+          {{ end }}
         </a>
-        
-        <a href="/categories/smart-speakers/" class="category-card">
-          <div class="category-icon">
-            <i class="fa fa-volume-up"></i>
-          </div>
-          <h3>Smart Speakers</h3>
-          <p>Voice assistants for your connected home</p>
-          <span class="category-count">{{ len (where .Site.RegularPages "Params.categories" "intersect" (slice "smart-speakers")) }} reviews</span>
-        </a>
-        
-        <a href="/categories/security-cameras/" class="category-card">
-          <div class="category-icon">
-            <i class="fa fa-video"></i>
-          </div>
-          <h3>Security Cameras</h3>
-          <p>Keep your home safe with smart monitoring</p>
-          <span class="category-count">{{ len (where .Site.RegularPages "Params.categories" "intersect" (slice "security-cameras")) }} reviews</span>
-        </a>
-        
-        <a href="/categories/robot-vacuums/" class="category-card">
-          <div class="category-icon">
-            <i class="fa fa-robot"></i>
-          </div>
-          <h3>Robot Vacuums</h3>
-          <p>Automated cleaning for modern homes</p>
-          <span class="category-count">{{ len (where .Site.RegularPages "Params.categories" "intersect" (slice "robot-vacuums")) }} reviews</span>
-        </a>
-        
-        <a href="/categories/smart-thermostats/" class="category-card">
-          <div class="category-icon">
-            <i class="fa fa-thermometer-half"></i>
-          </div>
-          <h3>Smart Thermostats</h3>
-          <p>Intelligent climate control systems</p>
-          <span class="category-count">{{ len (where .Site.RegularPages "Params.categories" "intersect" (slice "smart-thermostats")) }} reviews</span>
-        </a>
-        
-        <a href="/categories/smart-lighting/" class="category-card">
-          <div class="category-icon">
-            <i class="fa fa-lightbulb"></i>
-          </div>
-          <h3>Smart Lighting</h3>
-          <p>Customizable lighting solutions</p>
-          <span class="category-count">{{ len (where .Site.RegularPages "Params.categories" "intersect" (slice "smart-lighting")) }} reviews</span>
+        {{ end }}
+      </div>
+
+      {{/* 查看更多分类 */}}
+      {{ if gt (len $terms) 6 }}
+      <div class="categories-footer">
+        <a href="/categories/" class="view-all-categories">
+          <i class="fa fa-th-large"></i>
+          View All {{ len $terms }} Categories
+          <i class="fa fa-arrow-right"></i>
         </a>
       </div>
+      {{ end }}
     </div>
   </section>
 
@@ -111,11 +100,18 @@
       </div>
       
       <div class="reviews-grid">
-        {{ range first 6 .Site.RegularPages }}
+        {{ $pool := where .Site.RegularPages "Draft" false }}
+        {{ $pool = where $pool "Type" "in" (slice "articles" "reviews" "guides") }}
+        {{ range $index, $page := first 6 (sort $pool "Date" "desc") }}
         <article class="review-card">
           {{ if .Params.featured_image }}
           <div class="review-image">
-            <img src="{{ .Params.featured_image | relURL }}" alt="{{ .Title }}" loading="lazy">
+            <img src="{{ .Params.featured_image | relURL }}"
+                 alt="{{ .Title }}"
+                 width="350"
+                 height="200"
+                 {{ if lt $index 2 }}fetchpriority="high"{{ else }}loading="lazy"{{ end }}
+                 decoding="async">
             {{ if .Params.badge }}
             <div class="review-badge {{ .Params.badge | lower }}">{{ .Params.badge }}</div>
             {{ end }}
@@ -171,7 +167,12 @@
         <div class="deal-card">
           <div class="deal-header">
             {{ if .Params.featured_image }}
-            <img src="{{ .Params.featured_image | relURL }}" alt="{{ .Title }}" loading="lazy">
+            <img src="{{ .Params.featured_image | relURL }}"
+                 alt="{{ .Title }}"
+                 width="250"
+                 height="150"
+                 loading="lazy"
+                 decoding="async">
             {{ end }}
             {{ if .Params.discount }}
             <div class="discount-badge">-{{ .Params.discount }}%</div>
@@ -210,37 +211,7 @@
   </section>
 
   <!-- Newsletter Signup -->
-  <section class="newsletter-signup">
-    <div class="container">
-      <div class="newsletter-content">
-        <div class="newsletter-text">
-          <h3><i class="fa fa-envelope"></i> Stay Updated</h3>
-          <p>Get the latest smart home reviews, deals, and tech news delivered weekly to your inbox.</p>
-          <div class="newsletter-benefits">
-            <span><i class="fa fa-check"></i> Weekly product roundups</span>
-            <span><i class="fa fa-check"></i> Exclusive deals</span>
-            <span><i class="fa fa-check"></i> Expert buying guides</span>
-          </div>
-        </div>
-        
-        <form class="newsletter-form" action="#" method="post">
-          <div class="form-group">
-            <input type="email" 
-                   name="email" 
-                   placeholder="Enter your email address..." 
-                   required 
-                   aria-label="Email address">
-            <button type="submit" class="newsletter-btn">
-              <i class="fa fa-paper-plane"></i> Subscribe
-            </button>
-          </div>
-          <small class="newsletter-disclaimer">
-            No spam, unsubscribe at any time. Read our <a href="/privacy-policy/">privacy policy</a>.
-          </small>
-        </form>
-      </div>
-    </div>
-  </section>
+  {{ partial "newsletter.html" . }}
 </div>
 
 <style>
@@ -330,10 +301,21 @@
   background: #f8f9fa;
 }
 
-.featured-categories h2 {
+.featured-categories .section-header {
   text-align: center;
   margin-bottom: 3rem;
+}
+
+.featured-categories h2 {
+  margin-bottom: 1rem;
   font-size: 2.5rem;
+}
+
+.section-subtitle {
+  color: #6c757d;
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: normal;
 }
 
 .categories-grid {
@@ -387,6 +369,68 @@
   color: #007bff;
   font-weight: 600;
   font-size: 0.9rem;
+}
+
+/* Category Badges */
+.category-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
+}
+
+.category-badge--hot {
+  background: rgba(255, 107, 53, 0.9);
+  color: white;
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+}
+
+.category-badge--active {
+  background: rgba(40, 167, 69, 0.9);
+  color: white;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+/* Categories Footer */
+.categories-footer {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.view-all-categories {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: white;
+  color: #007bff;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 600;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  border: 2px solid #007bff;
+}
+
+.view-all-categories:hover {
+  background: #007bff;
+  color: white;
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0,123,255,0.25);
+}
+
+.view-all-categories .fa-arrow-right {
+  transition: transform 0.3s ease;
+}
+
+.view-all-categories:hover .fa-arrow-right {
+  transform: translateX(4px);
 }
 
 /* Latest Reviews */
@@ -665,107 +709,6 @@
   color: white;
 }
 
-/* Newsletter Signup */
-.newsletter-signup {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 4rem 0;
-}
-
-.newsletter-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: center;
-}
-
-.newsletter-text h3 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: white;
-}
-
-.newsletter-text p {
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
-  opacity: 0.9;
-}
-
-.newsletter-benefits {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.newsletter-benefits span {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  opacity: 0.9;
-}
-
-.newsletter-form .form-group {
-  display: flex;
-  background: #ffffff;
-  border-radius: 50px;
-  padding: 0.5rem;
-  margin-bottom: 0.75rem;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.newsletter-form input[type="email"] {
-  flex: 1;
-  padding: 1rem 1.5rem;
-  border: 2px solid #e9ecef;
-  border-radius: 25px;
-  outline: none;
-  font-size: 1rem;
-  background: #ffffff; /* solid white for consistent look */
-  color: #2c3e50;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  transition: all 0.2s ease;
-}
-
-.newsletter-form input[type="email"]::placeholder {
-  color: #6c757d;
-  opacity: 1;
-}
-
-.newsletter-form input[type="email"]:focus {
-  background: #ffffff;
-  border-color: #80bdff;
-  box-shadow: 0 0 0 3px rgba(0,123,255,0.15);
-  transform: translateY(-1px);
-}
-
-.newsletter-btn {
-  background: #28a745;
-  color: white;
-  border: none;
-  padding: 1rem 2rem;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: transform 0.2s ease, background 0.2s ease;
-  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
-}
-
-.newsletter-btn:hover {
-  background: #218838;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
-}
-
-.newsletter-disclaimer {
-  font-size: 0.85rem;
-  opacity: 0.8;
-  text-align: center;
-}
-
-.newsletter-disclaimer a {
-  color: white;
-  text-decoration: underline;
-}
 
 /* Responsive Design */
 @media (max-width: 992px) {
@@ -777,10 +720,6 @@
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
   
-  .newsletter-content {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
 }
 
 @media (max-width: 768px) {

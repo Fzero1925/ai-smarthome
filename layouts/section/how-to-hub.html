@@ -1,0 +1,739 @@
+{{ define "main" }}
+<div class="how-to-hub">
+  <!-- Hero Section -->
+  <section class="how-to-hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1>{{ .Title }}</h1>
+          <p class="hero-subtitle">{{ .Description }}</p>
+
+          <!-- Quick Search -->
+          <div class="quick-search">
+            <form class="search-form" role="search" action="/search/" method="GET">
+              <input type="search"
+                     name="q"
+                     class="search-input"
+                     placeholder="Describe your problem (e.g., 'Alexa won't control lights')"
+                     aria-label="Search for solutions">
+              <button type="submit" class="search-button">
+                <i class="fa fa-search"></i> Find Solution
+              </button>
+            </form>
+          </div>
+
+          <div class="quick-stats">
+            <div class="stat">
+              <span class="stat-number">{{ len (where .Site.RegularPages "Type" "how-to") }}+</span>
+              <span class="stat-label">Solutions</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">95%</span>
+              <span class="stat-label">Success Rate</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">&lt;15min</span>
+              <span class="stat-label">Avg Fix Time</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="troubleshoot-diagram">
+            <div class="problem-node">
+              <i class="fa fa-exclamation-triangle"></i>
+              <span>Problem</span>
+            </div>
+            <div class="arrow-down">
+              <i class="fa fa-arrow-down"></i>
+            </div>
+            <div class="solution-steps">
+              <div class="step">1. Diagnose</div>
+              <div class="step">2. Fix</div>
+              <div class="step">3. Test</div>
+            </div>
+            <div class="arrow-down">
+              <i class="fa fa-arrow-down"></i>
+            </div>
+            <div class="success-node">
+              <i class="fa fa-check-circle"></i>
+              <span>Working!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Problem Categories -->
+  <section class="quick-problems">
+    <div class="container">
+      <h2><i class="fa fa-bolt"></i> Quick Fixes for Common Problems</h2>
+
+      <div class="problems-grid">
+        <div class="problem-category">
+          <div class="category-icon">
+            <i class="fa fa-wifi"></i>
+          </div>
+          <h3>Connection Issues</h3>
+          <p>Device offline, unresponsive, or won't connect to app</p>
+          <ul class="quick-links">
+            <li><a href="/how-to/device-unresponsive/">→ "Device Unresponsive" fixes</a></li>
+            <li><a href="/how-to/wifi-connectivity/">→ Wi-Fi connection problems</a></li>
+            <li><a href="/how-to/app-connection/">→ App won't find device</a></li>
+          </ul>
+        </div>
+
+        <div class="problem-category">
+          <div class="category-icon">
+            <i class="fa fa-cog"></i>
+          </div>
+          <h3>Setup & Installation</h3>
+          <p>Getting new devices working for the first time</p>
+          <ul class="quick-links">
+            <li><a href="/how-to/first-setup/">→ First-time device setup</a></li>
+            <li><a href="/how-to/network-prep/">→ Network preparation</a></li>
+            <li><a href="/how-to/hub-setup/">→ Hub installation guide</a></li>
+          </ul>
+        </div>
+
+        <div class="problem-category">
+          <div class="category-icon">
+            <i class="fa fa-volume-up"></i>
+          </div>
+          <h3>Voice Control</h3>
+          <p>Alexa, Google, or Siri not controlling devices</p>
+          <ul class="quick-links">
+            <li><a href="/how-to/alexa-unresponsive/">→ Alexa "device unresponsive"</a></li>
+            <li><a href="/how-to/google-home-fixes/">→ Google Home connection</a></li>
+            <li><a href="/how-to/apple-home-issues/">→ Apple Home "no response"</a></li>
+          </ul>
+        </div>
+
+        <div class="problem-category">
+          <div class="category-icon">
+            <i class="fa fa-robot"></i>
+          </div>
+          <h3>Automation Issues</h3>
+          <p>Schedules, scenes, and automations not working</p>
+          <ul class="quick-links">
+            <li><a href="/how-to/automation-troubleshoot/">→ Automation debugging</a></li>
+            <li><a href="/how-to/schedule-fixes/">→ Schedule not running</a></li>
+            <li><a href="/how-to/scene-problems/">→ Scene activation issues</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="how-to-content">
+    <div class="container">
+      <article class="content-article">
+        {{ .Content }}
+      </article>
+
+      <!-- Popular Solutions -->
+      <section class="popular-solutions">
+        <h2><i class="fa fa-fire"></i> Most Used Solutions</h2>
+        <p>These guides solve the majority of smart home problems:</p>
+
+        <div class="solutions-grid">
+          {{/* 获取How-To类型的热门文章 */}}
+          {{ $howToPages := where .Site.RegularPages "Type" "how-to" }}
+          {{ $popularPages := first 6 (sort $howToPages "Date" "desc") }}
+
+          {{ range $popularPages }}
+          <article class="solution-card">
+            <div class="solution-header">
+              <div class="solution-icon">
+                {{/* 根据标题或分类决定图标 */}}
+                {{ if in .Title "Alexa" }}
+                  <i class="fab fa-amazon"></i>
+                {{ else if in .Title "Google" }}
+                  <i class="fab fa-google"></i>
+                {{ else if in .Title "Apple" }}
+                  <i class="fab fa-apple"></i>
+                {{ else if in .Title "Wi-Fi" }}
+                  <i class="fa fa-wifi"></i>
+                {{ else if in .Title "unresponsive" }}
+                  <i class="fa fa-exclamation-triangle"></i>
+                {{ else if in .Title "setup" }}
+                  <i class="fa fa-cog"></i>
+                {{ else }}
+                  <i class="fa fa-wrench"></i>
+                {{ end }}
+              </div>
+              <div class="solution-meta">
+                <time class="solution-date">{{ .Date.Format "Jan 2" }}</time>
+                {{ if .Params.difficulty }}
+                <span class="difficulty difficulty-{{ .Params.difficulty }}">{{ .Params.difficulty | title }}</span>
+                {{ end }}
+              </div>
+            </div>
+
+            <h3 class="solution-title">
+              <a href="{{ .Permalink }}">{{ .Title }}</a>
+            </h3>
+
+            <p class="solution-summary">{{ .Summary | truncate 120 }}</p>
+
+            <div class="solution-footer">
+              {{ if .Params.time_to_fix }}
+              <span class="fix-time">
+                <i class="fa fa-clock"></i> ~{{ .Params.time_to_fix }}
+              </span>
+              {{ end }}
+              {{ if .Params.success_rate }}
+              <span class="success-rate">
+                <i class="fa fa-check"></i> {{ .Params.success_rate }} success
+              </span>
+              {{ end }}
+            </div>
+          </article>
+          {{ end }}
+        </div>
+      </section>
+
+      <!-- Browse by Device Type -->
+      <section class="device-types">
+        <h2><i class="fa fa-th-large"></i> Browse by Device Type</h2>
+
+        <div class="device-grid">
+          {{/* 动态生成设备类型 - 直接从分类统计获取 */}}
+          {{ $terms := slice }}
+          {{ range $name, $tax := .Site.Taxonomies.categories }}
+            {{ $howToCount := len (where $tax.Pages "Type" "how-to") }}
+            {{ if gt $howToCount 0 }}
+              {{ $terms = $terms | append (dict "name" $name "slug" ($name | urlize) "count" $howToCount) }}
+            {{ end }}
+          {{ end }}
+          {{ $terms = sort $terms "count" "desc" }}
+
+          {{ range first 8 $terms }}
+          <a href="/categories/{{ .slug }}/" class="device-card">
+            <div class="device-icon">
+              <i class="{{ partial "category-image.html" (dict "slug" .slug "type" "icon") }}"></i>
+            </div>
+            <h4>{{ .name | title }}</h4>
+            <span class="guide-count">{{ .count }} guides</span>
+          </a>
+          {{ end }}
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<style>
+/* How-To Hub Styles */
+.how-to-hub {
+  min-height: 100vh;
+}
+
+/* Hero Section */
+.how-to-hero {
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  color: white;
+  padding: 3rem 0;
+  position: relative;
+}
+
+.hero-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.hero-text h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: white;
+  font-weight: bold;
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+/* Quick Search */
+.quick-search {
+  margin-bottom: 2rem;
+}
+
+.quick-search .search-form {
+  display: flex;
+  background: white;
+  border-radius: 50px;
+  padding: 0.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.quick-search .search-input {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 25px;
+  outline: none;
+  font-size: 1rem;
+  color: #2c3e50;
+}
+
+.quick-search .search-button {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.quick-search .search-button:hover {
+  background: #218838;
+  transform: translateY(-1px);
+}
+
+.quick-stats {
+  display: flex;
+  gap: 2rem;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+/* Troubleshoot Diagram */
+.hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.troubleshoot-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.problem-node,
+.success-node {
+  width: 120px;
+  height: 80px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255,255,255,0.3);
+}
+
+.problem-node i {
+  font-size: 1.5rem;
+  color: #ffc107;
+  margin-bottom: 0.5rem;
+}
+
+.success-node i {
+  font-size: 1.5rem;
+  color: #28a745;
+  margin-bottom: 0.5rem;
+}
+
+.solution-steps {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.step {
+  padding: 0.5rem 1rem;
+  background: rgba(255,255,255,0.15);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.arrow-down {
+  font-size: 1.2rem;
+  opacity: 0.7;
+}
+
+/* Quick Problems Section */
+.quick-problems {
+  padding: 3rem 0;
+  background: #f8f9fa;
+}
+
+.quick-problems h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.quick-problems .fa-bolt {
+  color: #ffc107;
+}
+
+.problems-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.problem-category {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+.problem-category:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+}
+
+.category-icon {
+  width: 48px;
+  height: 48px;
+  background: #fff3cd;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: #ffc107;
+  margin-bottom: 1rem;
+}
+
+.problem-category h3 {
+  margin-bottom: 0.75rem;
+  color: #2c3e50;
+}
+
+.problem-category p {
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.quick-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.quick-links li {
+  margin-bottom: 0.5rem;
+}
+
+.quick-links a {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: block;
+  padding: 0.25rem 0;
+  transition: color 0.3s ease;
+}
+
+.quick-links a:hover {
+  color: #0056b3;
+  text-decoration: none;
+  padding-left: 0.5rem;
+}
+
+/* Main Content */
+.how-to-content {
+  padding: 3rem 0;
+}
+
+.content-article {
+  max-width: 800px;
+  margin: 0 auto 3rem auto;
+}
+
+/* Popular Solutions */
+.popular-solutions {
+  margin: 3rem 0;
+}
+
+.popular-solutions h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.popular-solutions .fa-fire {
+  color: #ff6b35;
+}
+
+.popular-solutions p {
+  text-align: center;
+  color: #6c757d;
+  margin-bottom: 2rem;
+}
+
+.solutions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.solution-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+.solution-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+}
+
+.solution-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.solution-icon {
+  width: 40px;
+  height: 40px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: #6c757d;
+}
+
+.solution-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+.solution-date {
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+.difficulty {
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.difficulty-easy {
+  background: #d4edda;
+  color: #28a745;
+}
+
+.difficulty-medium {
+  background: #fff3cd;
+  color: #ffc107;
+}
+
+.difficulty-hard {
+  background: #f8d7da;
+  color: #dc3545;
+}
+
+.solution-title {
+  margin-bottom: 0.75rem;
+}
+
+.solution-title a {
+  color: #2c3e50;
+  text-decoration: none;
+  font-size: 1.1rem;
+}
+
+.solution-title a:hover {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.solution-summary {
+  color: #6c757d;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.solution-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.fix-time,
+.success-rate {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #6c757d;
+}
+
+.success-rate {
+  color: #28a745;
+}
+
+/* Device Types */
+.device-types {
+  margin: 3rem 0;
+  padding-top: 3rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.device-types h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.device-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.device-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem 1rem;
+  text-decoration: none;
+  color: inherit;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+.device-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  text-decoration: none;
+  color: inherit;
+}
+
+.device-icon {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 0.75rem auto;
+  background: #f8f9fa;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: #6c757d;
+  transition: all 0.3s ease;
+}
+
+.device-card:hover .device-icon {
+  background: #007bff;
+  color: white;
+}
+
+.device-card h4 {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #2c3e50;
+}
+
+.guide-count {
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .hero-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .quick-stats {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-text h1 {
+    font-size: 2rem;
+  }
+
+  .quick-stats {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .quick-search .search-form {
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 15px;
+  }
+
+  .quick-search .search-input {
+    margin-bottom: 0.75rem;
+    border-radius: 10px;
+  }
+
+  .quick-search .search-button {
+    border-radius: 10px;
+    justify-content: center;
+  }
+
+  .problems-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .solutions-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+{{ end }}

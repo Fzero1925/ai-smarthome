@@ -1,0 +1,179 @@
+# Category Images Mapping
+# 分类图片映射配置 - 基于new-website.md的三级兜底机制
+
+# 第二级：data映射（当没有术语页资源时使用）
+categories:
+  # 核心智能家居设备
+  smart-plugs:
+    icon: "fa-plug"
+    image: "/images/categories/smart-plugs.webp"
+    color: "#28a745"
+    description: "Smart plugs and outlets for remote control"
+
+  smart-lighting:
+    icon: "fa-lightbulb"
+    image: "/images/categories/smart-lighting.webp"
+    color: "#ffc107"
+    description: "Smart bulbs, switches, and lighting systems"
+
+  smart-speakers:
+    icon: "fa-volume-up"
+    image: "/images/categories/smart-speakers.webp"
+    color: "#007bff"
+    description: "Voice assistants and smart speakers"
+
+  smart-thermostats:
+    icon: "fa-thermometer-half"
+    image: "/images/categories/smart-thermostats.webp"
+    color: "#dc3545"
+    description: "Climate control and heating systems"
+
+  security-cameras:
+    icon: "fa-video"
+    image: "/images/categories/security-cameras.webp"
+    color: "#6f42c1"
+    description: "Security cameras and monitoring systems"
+
+  smart-locks:
+    icon: "fa-lock"
+    image: "/images/categories/smart-locks.webp"
+    color: "#fd7e14"
+    description: "Smart locks and access control"
+
+  robot-vacuums:
+    icon: "fa-robot"
+    image: "/images/categories/robot-vacuums.webp"
+    color: "#e83e8c"
+    description: "Automated cleaning and robot vacuums"
+
+  # 系统和基础设施
+  home-automation:
+    icon: "fa-home"
+    image: "/images/categories/home-automation.webp"
+    color: "#20c997"
+    description: "Complete home automation systems"
+
+  networking:
+    icon: "fa-network-wired"
+    image: "/images/categories/networking.webp"
+    color: "#6c757d"
+    description: "Wi-Fi, routers, and network equipment"
+
+  smart-hubs:
+    icon: "fa-satellite-dish"
+    image: "/images/categories/smart-hubs.webp"
+    color: "#17a2b8"
+    description: "Central hubs and control systems"
+
+  # 高级设备
+  smart-displays:
+    icon: "fa-desktop"
+    image: "/images/categories/smart-displays.webp"
+    color: "#343a40"
+    description: "Smart displays and touch panels"
+
+  smart-switches:
+    icon: "fa-toggle-on"
+    image: "/images/categories/smart-switches.webp"
+    color: "#495057"
+    description: "Smart switches and dimmers"
+
+  smart-sensors:
+    icon: "fa-bullseye"
+    image: "/images/categories/smart-sensors.webp"
+    color: "#6f42c1"
+    description: "Motion, temperature, and environmental sensors"
+
+  voice-assistants:
+    icon: "fa-microphone"
+    image: "/images/categories/voice-assistants.webp"
+    color: "#007bff"
+    description: "AI assistants and voice control"
+
+  # 内容类型
+  troubleshooting:
+    icon: "fa-wrench"
+    image: "/images/categories/troubleshooting.webp"
+    color: "#ffc107"
+    description: "Problem-solving and repair guides"
+
+  setup-guides:
+    icon: "fa-cog"
+    image: "/images/categories/setup-guides.webp"
+    color: "#28a745"
+    description: "Installation and setup instructions"
+
+  automation-recipes:
+    icon: "fa-magic"
+    image: "/images/categories/automation-recipes.webp"
+    color: "#e83e8c"
+    description: "Automation ideas and recipes"
+
+  buying-guides:
+    icon: "fa-shopping-cart"
+    image: "/images/categories/buying-guides.webp"
+    color: "#fd7e14"
+    description: "Product recommendations and comparisons"
+
+  reviews:
+    icon: "fa-star"
+    image: "/images/categories/reviews.webp"
+    color: "#ffc107"
+    description: "Detailed product reviews and testing"
+
+  # 生态系统
+  alexa-ecosystem:
+    icon: "fab fa-amazon"
+    image: "/images/categories/alexa.webp"
+    color: "#ff9900"
+    description: "Amazon Alexa compatible devices"
+
+  google-home:
+    icon: "fab fa-google"
+    image: "/images/categories/google-home.webp"
+    color: "#4285f4"
+    description: "Google Assistant and Home devices"
+
+  apple-homekit:
+    icon: "fab fa-apple"
+    image: "/images/categories/apple-homekit.webp"
+    color: "#000000"
+    description: "Apple HomeKit compatible devices"
+
+  samsung-smartthings:
+    icon: "fa-mobile-alt"
+    image: "/images/categories/smartthings.webp"
+    color: "#1428a0"
+    description: "Samsung SmartThings ecosystem"
+
+  # 特殊分类
+  energy-monitoring:
+    icon: "fa-chart-line"
+    image: "/images/categories/energy-monitoring.webp"
+    color: "#28a745"
+    description: "Energy usage tracking and optimization"
+
+  security-systems:
+    icon: "fa-shield-alt"
+    image: "/images/categories/security-systems.webp"
+    color: "#dc3545"
+    description: "Complete security and alarm systems"
+
+  entertainment:
+    icon: "fa-tv"
+    image: "/images/categories/entertainment.webp"
+    color: "#6f42c1"
+    description: "Smart TVs and entertainment systems"
+
+  outdoor-devices:
+    icon: "fa-tree"
+    image: "/images/categories/outdoor.webp"
+    color: "#28a745"
+    description: "Outdoor and garden smart devices"
+
+# 默认配置
+defaults:
+  icon: "fa-microchip"
+  color: "#6c757d"
+  image: "/images/categories/default.webp"
+  description: "Smart home technology and devices"

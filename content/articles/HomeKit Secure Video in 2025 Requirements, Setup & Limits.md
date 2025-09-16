@@ -5,7 +5,7 @@ date: 2025-09-17
 lastmod: 2025-09-17
 slug: "homekit-secure-video-requirements-2025"
 draft: false
-categories: ["Guides","Apple Home","Cameras"]
+categories: ["Guides","Apple Home","Cameras","Secuity"]
 tags: ["HomeKit Secure Video","Apple Home","iCloud+","Home Hub","Cameras"]
 author: "AI SmartHome Hub Editorial"
 ---

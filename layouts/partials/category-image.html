@@ -1,0 +1,214 @@
+{{/*
+Category Image Utility - 三级兜底机制
+基于new-website.md建议的分类图片获取系统
+
+参数:
+- .slug: 分类slug (必需)
+- .name: 分类名称 (可选)
+- .type: 返回类型 "icon"|"image"|"color"|"description" (默认: "icon")
+
+使用示例:
+{{ partial "category-image.html" (dict "slug" "smart-plugs" "type" "icon") }}
+{{ partial "category-image.html" (dict "slug" "smart-plugs" "type" "image") }}
+*/}}
+
+{{ $slug := .slug }}
+{{ $name := .name | default $slug }}
+{{ $type := .type | default "icon" }}
+
+{{ $result := "" }}
+{{ $found := false }}
+
+{{/* 第一级：术语页资源 - content/categories/<term>/_index.md */}}
+{{ if not $found }}
+  {{ $termPage := site.GetPage (printf "/categories/%s" $slug) }}
+  {{ if $termPage }}
+    {{ if eq $type "image" }}
+      {{ with $termPage.Resources.GetMatch "featured*" }}
+        {{ $result = .RelPermalink }}
+        {{ $found = true }}
+      {{ end }}
+      {{ if not $found }}
+        {{ with $termPage.Params.featured_image }}
+          {{ $result = . }}
+          {{ $found = true }}
+        {{ end }}
+      {{ end }}
+    {{ else if eq $type "icon" }}
+      {{ with $termPage.Params.icon }}
+        {{ $result = . }}
+        {{ $found = true }}
+      {{ end }}
+    {{ else if eq $type "color" }}
+      {{ with $termPage.Params.color }}
+        {{ $result = . }}
+        {{ $found = true }}
+      {{ end }}
+    {{ else if eq $type "description" }}
+      {{ with $termPage.Params.description }}
+        {{ $result = . }}
+        {{ $found = true }}
+      {{ end }}
+      {{ if not $found }}
+        {{ with $termPage.Summary }}
+          {{ $result = . }}
+          {{ $found = true }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{/* 第二级：data映射 - /data/category-images.yaml */}}
+{{ if not $found }}
+  {{ $categoryData := index site.Data.category_images.categories $slug }}
+  {{ if $categoryData }}
+    {{ if eq $type "icon" }}
+      {{ with $categoryData.icon }}
+        {{ $result = . }}
+        {{ $found = true }}
+      {{ end }}
+    {{ else if eq $type "image" }}
+      {{ with $categoryData.image }}
+        {{ $result = . }}
+        {{ $found = true }}
+      {{ end }}
+    {{ else if eq $type "color" }}
+      {{ with $categoryData.color }}
+        {{ $result = . }}
+        {{ $found = true }}
+      {{ end }}
+    {{ else if eq $type "description" }}
+      {{ with $categoryData.description }}
+        {{ $result = . }}
+        {{ $found = true }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{/* 第三级：命名约定 - /assets/cat-icons/<slug>.svg */}}
+{{ if not $found }}
+  {{ if eq $type "image" }}
+    {{ $assetPath := printf "cat-icons/%s.svg" $slug }}
+    {{ $asset := resources.Get $assetPath }}
+    {{ if $asset }}
+      {{ $result = $asset.RelPermalink }}
+      {{ $found = true }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{/* 第四级：智能默认值基于slug */}}
+{{ if not $found }}
+  {{ if eq $type "icon" }}
+    {{/* 基于分类名称的智能图标选择 */}}
+    {{ if in $slug "plug" }}
+      {{ $result = "fa-plug" }}
+    {{ else if in $slug "light" }}
+      {{ $result = "fa-lightbulb" }}
+    {{ else if in $slug "speaker" }}
+      {{ $result = "fa-volume-up" }}
+    {{ else if in $slug "thermostat" }}
+      {{ $result = "fa-thermometer-half" }}
+    {{ else if in $slug "camera" }}
+      {{ $result = "fa-video" }}
+    {{ else if in $slug "lock" }}
+      {{ $result = "fa-lock" }}
+    {{ else if in $slug "vacuum" }}
+      {{ $result = "fa-robot" }}
+    {{ else if in $slug "automation" }}
+      {{ $result = "fa-home" }}
+    {{ else if in $slug "network" }}
+      {{ $result = "fa-network-wired" }}
+    {{ else if in $slug "hub" }}
+      {{ $result = "fa-satellite-dish" }}
+    {{ else if in $slug "display" }}
+      {{ $result = "fa-desktop" }}
+    {{ else if in $slug "switch" }}
+      {{ $result = "fa-toggle-on" }}
+    {{ else if in $slug "sensor" }}
+      {{ $result = "fa-bullseye" }}
+    {{ else if in $slug "voice" }}
+      {{ $result = "fa-microphone" }}
+    {{ else if in $slug "troubleshoot" }}
+      {{ $result = "fa-wrench" }}
+    {{ else if in $slug "setup" }}
+      {{ $result = "fa-cog" }}
+    {{ else if in $slug "automation" }}
+      {{ $result = "fa-magic" }}
+    {{ else if in $slug "buy" }}
+      {{ $result = "fa-shopping-cart" }}
+    {{ else if in $slug "review" }}
+      {{ $result = "fa-star" }}
+    {{ else if in $slug "alexa" }}
+      {{ $result = "fab fa-amazon" }}
+    {{ else if in $slug "google" }}
+      {{ $result = "fab fa-google" }}
+    {{ else if in $slug "apple" }}
+      {{ $result = "fab fa-apple" }}
+    {{ else if in $slug "samsung" }}
+      {{ $result = "fa-mobile-alt" }}
+    {{ else if in $slug "energy" }}
+      {{ $result = "fa-chart-line" }}
+    {{ else if in $slug "security" }}
+      {{ $result = "fa-shield-alt" }}
+    {{ else if in $slug "entertainment" }}
+      {{ $result = "fa-tv" }}
+    {{ else if in $slug "outdoor" }}
+      {{ $result = "fa-tree" }}
+    {{ else }}
+      {{ $result = site.Data.category_images.defaults.icon }}
+    {{ end }}
+    {{ $found = true }}
+
+  {{ else if eq $type "color" }}
+    {{/* 基于分类类型的智能颜色选择 */}}
+    {{ if in $slug "plug" }}
+      {{ $result = "#28a745" }}
+    {{ else if in $slug "light" }}
+      {{ $result = "#ffc107" }}
+    {{ else if in $slug "speaker" }}
+      {{ $result = "#007bff" }}
+    {{ else if in $slug "thermostat" }}
+      {{ $result = "#dc3545" }}
+    {{ else if in $slug "camera" }}
+      {{ $result = "#6f42c1" }}
+    {{ else if in $slug "lock" }}
+      {{ $result = "#fd7e14" }}
+    {{ else if in $slug "vacuum" }}
+      {{ $result = "#e83e8c" }}
+    {{ else if in $slug "troubleshoot" }}
+      {{ $result = "#ffc107" }}
+    {{ else if in $slug "setup" }}
+      {{ $result = "#28a745" }}
+    {{ else }}
+      {{ $result = site.Data.category_images.defaults.color }}
+    {{ end }}
+    {{ $found = true }}
+
+  {{ else if eq $type "description" }}
+    {{/* 基于分类名称的智能描述生成 */}}
+    {{ $result = printf "Smart home %s technology and devices" $name }}
+    {{ $found = true }}
+
+  {{ else if eq $type "image" }}
+    {{ $result = site.Data.category_images.defaults.image }}
+    {{ $found = true }}
+  {{ end }}
+{{ end }}
+
+{{/* 最终兜底 */}}
+{{ if not $found }}
+  {{ if eq $type "icon" }}
+    {{ $result = "fa-microchip" }}
+  {{ else if eq $type "color" }}
+    {{ $result = "#6c757d" }}
+  {{ else if eq $type "description" }}
+    {{ $result = "Smart home technology and devices" }}
+  {{ else if eq $type "image" }}
+    {{ $result = "/images/categories/default.webp" }}
+  {{ end }}
+{{ end }}
+
+{{ return $result }}

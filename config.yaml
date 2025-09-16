@@ -95,6 +95,18 @@ params:
   affiliate:
     amazon:
       tracking_id: 'yourtag-20'
+
+  # Newsletter Configuration
+  newsletter:
+    provider: ''  # 'buttondown' or 'mailchimp' - leave empty to disable newsletter
+
+    # Buttondown Configuration
+    username: ''  # Your Buttondown username (e.g., 'ai-smarthome')
+
+    # Mailchimp Configuration (if using Mailchimp)
+    mailchimp_action_url: ''  # Full Mailchimp form action URL
+    mailchimp_user_id: ''     # Mailchimp User ID
+    mailchimp_list_id: ''     # Mailchimp List ID
       
   # RSS摘要配置
   rss:
@@ -126,24 +138,22 @@ params:
       price_tracking: true
       availability: true
 
-# Menu Configuration
+# Menu Configuration - 重构为任务导向的智能家居知识库
 menu:
   main:
-    - name: 'Reviews'
-      url: '/reviews/'
+    - name: 'Start'
+      url: '/start/'
       weight: 10
+      description: 'New to smart home? Start here'
     - name: 'Guides'
       url: '/guides/'
       weight: 20
-    - name: 'Smart Hub'
-      url: '/categories/smart-plugs/'
+      description: 'In-depth guides and comparisons'
+    - name: 'How-To'
+      url: '/how-to/'
       weight: 30
-    - name: 'Security'
-      url: '/categories/security-cameras/'
-      weight: 40
-    - name: 'Cleaning' 
-      url: '/categories/robot-vacuums/'
-      weight: 50
+      description: 'Setup, troubleshooting, and automation'
+    # Note: Explore is implemented as dynamic dropdown in nav-explore.html
 
 # Taxonomy Configuration
 taxonomies:

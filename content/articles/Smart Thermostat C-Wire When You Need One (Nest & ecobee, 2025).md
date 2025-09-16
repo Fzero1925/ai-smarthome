@@ -1,8 +1,8 @@
 ---
 title: "Smart Thermostat C-Wire: When You Need One (Nest & ecobee, 2025)"
 description: "A practical decision tree for C-wire vs. adapters: Nest Power Connector, ecobee PEK, what systems work, and safe installation tips."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-06-19
+lastmod: 2025-06-19
 slug: "smart-thermostat-c-wire-nest-ecobee-2025"
 draft: false
 categories: ["Guides","HVAC"]

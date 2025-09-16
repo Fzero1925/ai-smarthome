@@ -1,0 +1,361 @@
+{{/* Newsletter Component - 基于Subscribe-new.md建议的完整实现 */}}
+{{/* 仅在配置了 provider 时渲染，避免"空订阅块" */}}
+{{ with .Site.Params.newsletter }}
+<section class="newsletter-section" aria-labelledby="newsletter-title">
+  <div class="container">
+    <div class="newsletter-content">
+      <div class="newsletter-text">
+        <h3 id="newsletter-title"><i class="fa fa-envelope"></i> Stay Updated</h3>
+        <p>Get weekly smart home guides & exclusive deals. No spam. Unsubscribe anytime.</p>
+        <div class="newsletter-benefits">
+          <span><i class="fa fa-check"></i> Weekly product roundups</span>
+          <span><i class="fa fa-check"></i> Exclusive early-bird deals</span>
+          <span><i class="fa fa-check"></i> Expert buying guides</span>
+        </div>
+      </div>
+
+      <div class="newsletter-form-container">
+        {{ if eq .provider "buttondown" }}
+        <form class="newsletter-form"
+              action="https://buttondown.email/{{ .username }}"
+              method="post"
+              target="_blank"
+              novalidate
+              aria-labelledby="newsletter-title">
+
+          <label for="newsletter-email" class="sr-only">Email address</label>
+          <input id="newsletter-email"
+                 name="email"
+                 type="email"
+                 inputmode="email"
+                 autocomplete="email"
+                 placeholder="Enter your email address..."
+                 required
+                 aria-describedby="newsletter-disclaimer">
+
+          <!-- Hidden fields for tracking and tagging -->
+          <input type="hidden" name="tag" value="website-signup">
+          <input type="hidden" name="metadata" value='{"source": "homepage", "timestamp": "{{ now.Unix }}"}'>
+
+          <!-- Honeypot field for spam prevention - hidden from users -->
+          <div class="honeypot" aria-hidden="true">
+            <input type="text"
+                   name="website"
+                   tabindex="-1"
+                   autocomplete="off"
+                   aria-label="Leave this field empty">
+          </div>
+
+          <button type="submit" class="newsletter-btn">
+            <i class="fa fa-paper-plane"></i> Subscribe
+          </button>
+        </form>
+        {{ end }}
+
+        {{ if eq .provider "mailchimp" }}
+        {{/* Mailchimp 集成 - 将来可以添加 */}}
+        <form class="newsletter-form"
+              action="{{ .mailchimp_action_url }}"
+              method="post"
+              target="_blank"
+              novalidate>
+          <label for="newsletter-email-mc" class="sr-only">Email address</label>
+          <input id="newsletter-email-mc"
+                 name="EMAIL"
+                 type="email"
+                 inputmode="email"
+                 autocomplete="email"
+                 placeholder="Enter your email address..."
+                 required>
+
+          <!-- Honeypot -->
+          <div class="honeypot" aria-hidden="true">
+            <input type="text" name="b_{{ .mailchimp_user_id }}_{{ .mailchimp_list_id }}" tabindex="-1" autocomplete="off">
+          </div>
+
+          <button type="submit" class="newsletter-btn">
+            <i class="fa fa-paper-plane"></i> Subscribe
+          </button>
+        </form>
+        {{ end }}
+
+        <small class="newsletter-disclaimer" id="newsletter-disclaimer">
+          We respect your privacy. Read our <a href="/privacy-policy/">privacy policy</a>.
+          Unsubscribe at any time.
+        </small>
+      </div>
+    </div>
+  </div>
+</section>
+{{ end }}
+
+<style>
+/* Newsletter Section Styles */
+.newsletter-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 3rem 0;
+  margin: 2rem 0;
+}
+
+.newsletter-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.newsletter-text h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.newsletter-text p {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.newsletter-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.newsletter-benefits span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.9;
+  font-size: 0.95rem;
+}
+
+.newsletter-benefits .fa-check {
+  color: #28a745;
+  font-weight: bold;
+}
+
+/* Form Styles */
+.newsletter-form {
+  display: flex;
+  background: #ffffff;
+  border-radius: 50px;
+  padding: 0.5rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.newsletter-form:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.2);
+}
+
+.newsletter-form input[type="email"] {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 25px;
+  outline: none;
+  font-size: 1rem;
+  background: #ffffff;
+  color: #2c3e50;
+  transition: all 0.2s ease;
+}
+
+.newsletter-form input[type="email"]::placeholder {
+  color: #6c757d;
+  opacity: 1;
+}
+
+.newsletter-form input[type="email"]:focus {
+  background: #f8f9fa;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
+}
+
+.newsletter-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.newsletter-btn:hover {
+  background: #218838;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+}
+
+.newsletter-btn:active {
+  transform: translateY(0);
+}
+
+/* Accessibility and Utility Styles */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.newsletter-disclaimer {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.newsletter-disclaimer a {
+  color: white;
+  text-decoration: underline;
+  transition: opacity 0.2s ease;
+}
+
+.newsletter-disclaimer a:hover {
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .newsletter-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .newsletter-section {
+    padding: 2.5rem 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .newsletter-text h3 {
+    font-size: 1.75rem;
+  }
+
+  .newsletter-text p {
+    font-size: 1rem;
+  }
+
+  .newsletter-form {
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 15px;
+  }
+
+  .newsletter-form input[type="email"] {
+    border-radius: 10px;
+    margin-bottom: 0.75rem;
+  }
+
+  .newsletter-btn {
+    border-radius: 10px;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .newsletter-section {
+    padding: 2rem 0;
+    margin: 1rem 0;
+  }
+
+  .newsletter-benefits {
+    gap: 0.5rem;
+  }
+
+  .newsletter-benefits span {
+    font-size: 0.9rem;
+  }
+}
+
+/* Enhanced focus states for accessibility */
+.newsletter-form input[type="email"]:focus,
+.newsletter-btn:focus {
+  outline: 3px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+/* Animation for form submission feedback */
+.newsletter-form.submitting .newsletter-btn {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.newsletter-form.submitting .newsletter-btn i {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Enhanced form handling with proper feedback
+  const newsletterForm = document.querySelector('.newsletter-form');
+
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', function(e) {
+      const submitBtn = this.querySelector('.newsletter-btn');
+      const emailInput = this.querySelector('input[type="email"]');
+
+      // Add submitting state
+      this.classList.add('submitting');
+      submitBtn.disabled = true;
+
+      // Validate email format
+      if (!emailInput.validity.valid) {
+        e.preventDefault();
+        this.classList.remove('submitting');
+        submitBtn.disabled = false;
+        emailInput.focus();
+        return;
+      }
+
+      // Check honeypot
+      const honeypot = this.querySelector('input[name="website"]');
+      if (honeypot && honeypot.value !== '') {
+        e.preventDefault();
+        console.log('Spam detected');
+        return;
+      }
+
+      // Form will submit naturally to Buttondown
+      // Reset after a delay for UX
+      setTimeout(() => {
+        this.classList.remove('submitting');
+        submitBtn.disabled = false;
+      }, 2000);
+    });
+  }
+});
+</script>

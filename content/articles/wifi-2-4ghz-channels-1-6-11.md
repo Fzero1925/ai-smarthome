@@ -1,8 +1,8 @@
 ---
 title: "Best 2.4 GHz Wi‑Fi Settings for Smart Homes: Use Channels 1/6/11 and 20 MHz (2025)"
 description: "Practical, research-backed defaults for onboarding and stabilizing Io‑T devices: stick to channels 1/6/11 and lock 20 MHz width on 2.4 GHz."
-date: 2025-09-16
-lastmod: 2025-09-16
+date: 2025-06-16
+lastmod: 2025-06-16
 slug: "wifi-2-4ghz-channels-1-6-11"
 draft: false
 categories: ["Guides","Smart Hub"]
