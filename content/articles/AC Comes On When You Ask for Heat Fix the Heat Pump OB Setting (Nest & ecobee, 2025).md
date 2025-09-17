@@ -1,8 +1,8 @@
 ---
 title: "AC Comes On When You Ask for Heat? Fix the Heat Pump O/B Setting (Nest & ecobee, 2025)"
 description: "A vendor-approved playbook to correct reversed heating/cooling on heat pumps by setting the reversing valve (O vs. B) and verifying the fix safely."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-09-07
+lastmod: 2025-09-07
 slug: "heat-pump-reversed-ob-setting-nest-ecobee-2025"
 draft: false
 categories: ["Guides","HVAC"]

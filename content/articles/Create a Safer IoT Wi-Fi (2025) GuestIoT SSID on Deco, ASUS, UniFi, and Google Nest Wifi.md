@@ -1,8 +1,8 @@
 ---
 title: "Create a Safer IoT Wi-Fi (2025): Guest/IoT SSID on Deco, ASUS, UniFi, and Google Nest Wifi"
 description: "Step-by-step segmentation for popular routers: TP-Link Deco ‘IoT Network’, ASUS Guest with Intranet off, UniFi Network Isolation, and Google Nest Wifi Guest—plus when devices need limited access to the main LAN."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-08-19
+lastmod: 2025-08-19
 slug: "iot-ssid-guest-network-setup-2025"
 draft: false
 categories: ["Guides","Wi-Fi","Security","IoT"]

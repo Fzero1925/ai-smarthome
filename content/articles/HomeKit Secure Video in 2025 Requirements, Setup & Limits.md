@@ -1,8 +1,8 @@
 ---
 title: "HomeKit Secure Video in 2025: Requirements, Setup & Limits"
 description: "iCloud+ plan tiers, required home hub, which devices work, and how storage, encryption, and notifications actually behave."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-08-06
+lastmod: 2025-08-06
 slug: "homekit-secure-video-requirements-2025"
 draft: false
 categories: ["Guides","Apple Home","Cameras","Secuity"]

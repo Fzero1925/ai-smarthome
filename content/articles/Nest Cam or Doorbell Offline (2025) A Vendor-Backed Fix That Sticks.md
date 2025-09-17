@@ -1,8 +1,8 @@
 ---
 title: "Nest Cam or Doorbell Offline (2025): A Vendor-Backed Fix That Sticks"
 description: "Official Google steps: verify bandwidth, reduce interference, restart in the right order, and when to factory reset—without wasting time."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-08-23
+lastmod: 2025-08-23
 slug: "nest-camera-doorbell-offline-fix-2025"
 draft: false
 categories: ["Guides","Cameras","Google Home","Fix"]

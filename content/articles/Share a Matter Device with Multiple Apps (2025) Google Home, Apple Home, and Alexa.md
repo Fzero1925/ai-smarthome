@@ -1,8 +1,8 @@
 ---
 title: "Share a Matter Device with Multiple Apps (2025): Google Home, Apple Home, and Alexa"
 description: "The correct multi-admin flow to add one Matter device to several ecosystems—what a Matter hub is, where to find the 11-digit pairing code, and how to fix common errors."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-08-30
+lastmod: 2025-08-30
 slug: "matter-multi-admin-share-device-2025"
 draft: false
 categories: ["Guides","Matter","Interoperability","Smart Hub"]

@@ -1,8 +1,8 @@
 ---
 title: "Philips Hue Zigbee Channel: Pick the Right One and Avoid Wi-Fi Clash (2025)"
 description: "How to choose a Hue Zigbee channel that plays nicely with 2.4 GHz Wi-Fi, and the exact steps to change it in the Hue app without breaking your mesh."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-08-10
+lastmod: 2025-08-10
 slug: "philips-hue-zigbee-channel-planning-2025"
 draft: false
 categories: ["Guides","Lighting","Zigbee","Wi-Fi"]

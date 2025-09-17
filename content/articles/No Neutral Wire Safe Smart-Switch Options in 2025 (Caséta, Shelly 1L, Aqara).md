@@ -1,8 +1,8 @@
 ---
 title: "No Neutral Wire? Safe Smart-Switch Options in 2025 (Caséta, Shelly 1L, Aqara)"
 description: "What to do when your switch box has no neutral: when Lutron Caséta works, when Shelly 1L needs a bypass, and when an Aqara ‘no-neutral’ model is appropriate—plus safe fallbacks."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-09-03
+lastmod: 2025-09-03
 slug: "no-neutral-smart-switch-options-2025"
 draft: false
 categories: ["Guides","Lighting","Electrical","IoT"]

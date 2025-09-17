@@ -1,8 +1,8 @@
 ---
 title: "Alexa Says “Device Is Unresponsive”? 12 Fixes That Work (2025)"
 description: "A vendor-neutral playbook for Alexa’s ‘Device is unresponsive’ error: reboot order, Wi-Fi checks, Skill re-linking, naming conflicts, and when to factory reset."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-07-17
+lastmod: 2025-07-17
 slug: "alexa-device-unresponsive-fixes-2025"
 draft: false
 categories: ["Guides","Amazon Alexa"]

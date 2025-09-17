@@ -1,8 +1,8 @@
 ---
 title: "Sunrise/Sunset Automations Not Running (2025): Apple Home & Google Home"
 description: "Fix time-of-day and presence automations: Location Services, home hub status, app cache, and known vendor steps to restore reliable triggers."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-09-03
+lastmod: 2025-09-03
 slug: "sunrise-sunset-automations-not-working-2025"
 draft: false
 categories: ["Guides","Automations"]

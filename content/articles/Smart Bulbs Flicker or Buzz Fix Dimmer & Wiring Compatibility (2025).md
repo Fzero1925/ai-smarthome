@@ -1,8 +1,8 @@
 ---
 title: "Smart Bulbs Flicker or Buzz? Fix Dimmer & Wiring Compatibility (2025)"
 description: "Why hardware dimmers cause problems for smart bulbs, how to wire for constant power, and safe alternatives (Hue, LIFX, Lutron)."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-07-17
+lastmod: 2025-07-17
 slug: "smart-bulb-flicker-dimmer-compatibility-2025"
 draft: false
 categories: ["Guides","Lighting"]

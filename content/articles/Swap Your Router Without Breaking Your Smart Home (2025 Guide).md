@@ -1,8 +1,8 @@
 ---
 title: "Swap Your Router Without Breaking Your Smart Home (2025 Guide)"
 description: "Preserve device connections by reusing SSID/password, when that fails, and how to plan for WPA3, BSSID changes, and mesh migrations."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-08-03
+lastmod: 2025-08-03
 slug: "router-upgrade-ssid-migration-smart-home-2025"
 draft: false
 categories: ["Guides","Wi-Fi","IoT","Smart Hub"]

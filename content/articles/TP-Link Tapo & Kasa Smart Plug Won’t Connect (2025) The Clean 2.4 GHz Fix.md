@@ -1,8 +1,8 @@
 ---
 title: "TP-Link Tapo & Kasa Smart Plug Won’t Connect (2025): The Clean 2.4 GHz Fix"
 description: "Vendor-backed steps to onboard Tapo/Kasa smart plugs: 2.4 GHz only, avoid WPA3-only, force your phone onto 2.4 GHz, and when to reset or create a temporary IoT SSID."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-08-19
+lastmod: 2025-08-19
 slug: "tapo-kasa-smart-plug-wont-connect-2025"
 draft: false
 categories: ["Guides","Wi-Fi","Plugs","Security"]

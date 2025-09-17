@@ -1,8 +1,8 @@
 ---
 title: "Smart-Home Security Baseline (2025): A No-Nonsense Checklist"
 description: "Passwords, MFA, firmware, guest/IoT networks, and privacy-minded defaults—distilled from CISA, NCSC, and FTC guidance so you can lock down your home fast."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-08-03
+lastmod: 2025-08-03
 slug: "smart-home-security-baseline-2025"
 draft: false
 categories: ["Guides","Security","IoT","Smart Hub"]

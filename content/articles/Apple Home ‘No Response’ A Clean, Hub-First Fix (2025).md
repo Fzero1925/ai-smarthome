@@ -1,8 +1,8 @@
 ---
 title: "Apple Home ‘No Response’? A Clean, Hub-First Fix (2025)"
 description: "A reliable order of operations for Apple Home accessories that stop responding: home hub status, reboots, firmware, and when to reset."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-07-25
+lastmod: 2025-07-25
 slug: "apple-home-no-response-fix-2025"
 draft: false
 categories: ["Guides","Apple Home"]

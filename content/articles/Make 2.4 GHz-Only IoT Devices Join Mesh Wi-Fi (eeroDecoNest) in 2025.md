@@ -1,8 +1,8 @@
 ---
 title: "Make 2.4 GHz-Only IoT Devices Join Mesh Wi-Fi (eero/Deco/Nest) in 2025"
 description: "Practical, vendor-backed methods to onboard 2.4 GHz-only smart plugs, bulbs, and sensors on mesh systems like eero, TP-Link Deco, and Nest Wifi—without breaking the rest of your network."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-08-06
+lastmod: 2025-08-06
 slug: "mesh-routers-24ghz-iot-onboarding-2025"
 draft: false
 categories: ["Guides","Wi-Fi","IoT","Smart Hub"]

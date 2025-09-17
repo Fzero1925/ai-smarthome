@@ -1,8 +1,8 @@
 ---
 title: "Fix “Accessory Already Added” and Lost Codes in Apple Home (2025)"
 description: "A practical, Apple-aligned playbook for ‘Already added / Can’t add accessory’ and missing HomeKit/Matter codes—where to find codes, how to add previously paired Matter devices, and when to reset."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-09-07
+lastmod: 2025-09-07
 slug: "apple-home-accessory-already-added-lost-code-2025"
 draft: false
 categories: ["Guides","Apple Home","Matter","Fix"]

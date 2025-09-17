@@ -1,8 +1,8 @@
 ---
 title: "Fix Nest Thermostat E73/E74: 'No power to Rc/Rh' (2025)"
 description: "A safe, step-by-step playbook to recover from Nest power errors: breakers, drip-pan float switch, wiring inspection, fuse/transformer checks, and when to add a C-wire or the Nest Power Connector."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-08-10
+lastmod: 2025-08-10
 slug: "nest-thermostat-e73-e74-power-fix-2025"
 draft: false
 categories: ["Guides","HVAC"]

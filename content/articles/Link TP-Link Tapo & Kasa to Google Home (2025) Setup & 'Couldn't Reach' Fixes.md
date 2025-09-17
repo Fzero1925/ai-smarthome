@@ -1,8 +1,8 @@
 ---
 title: "Link TP-Link Tapo & Kasa to Google Home (2025): Setup & 'Couldn't Reach' Fixes"
 description: "Clean account-linking steps for Tapo/Kasa with Google Home, plus reliable ways to re-link, remove, and resync when devices show offline or fail to appear."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-08-15
+lastmod: 2025-08-15
 slug: "tapo-kasa-google-home-linking-2025"
 draft: false
 categories: ["Guides","Google Home","Integrations"]

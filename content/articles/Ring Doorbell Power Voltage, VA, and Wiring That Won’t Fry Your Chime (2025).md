@@ -1,8 +1,8 @@
 ---
 title: "Ring Doorbell Power: Voltage, VA, and Wiring That Won’t Fry Your Chime (2025)"
 description: "Exact transformer specs for each Ring doorbell, safe hardwiring practices, when to use Plug-In Adapter/DIN Rail transformer, and how low voltage causes odd behavior."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-07-25
+lastmod: 2025-07-25
 slug: "ring-doorbell-power-transformer-requirements-2025"
 draft: false
 categories: ["Guides","Cameras & Doorbells"]

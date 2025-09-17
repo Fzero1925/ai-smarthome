@@ -1,8 +1,8 @@
 ---
 title: "Smart Lock Battery Life (2025): 12 Fixes That Actually Work"
 description: "Vendor-backed ways to extend battery life on August, Yale, Schlage, Kwikset, and other smart locks—batteries, door alignment, firmware, auto-lock, and radios."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-08-15
+lastmod: 2025-08-15
 slug: "smart-lock-battery-life-fixes-2025"
 draft: false
 categories: ["Guides","Security","Doors","Smart Hub"]

@@ -1,8 +1,8 @@
 ---
 title: "Roomba & Roborock Mapping Fails (2025): Save, Reset, and Rebuild the Map the Right Way"
 description: "Official, model-aware steps to fix maps that won’t save or go missing—iRobot Imprint Smart Maps (i3/i4/i5/j7/s9) and Roborock S-series map-saving, reset, and re-mapping."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-08-19
+lastmod: 2025-08-19
 slug: "robot-vacuum-mapping-fails-fix-2025"
 draft: false
 categories: ["Guides","Robot Vacuums","Mapping","Smart Hub"]

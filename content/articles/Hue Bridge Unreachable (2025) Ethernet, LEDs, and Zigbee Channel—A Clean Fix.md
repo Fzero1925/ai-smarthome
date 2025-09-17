@@ -1,8 +1,8 @@
 ---
 title: "Hue Bridge Unreachable (2025): Ethernet, LEDs, and Zigbee Channel—A Clean Fix"
 description: "Step-by-step recovery when the Hue Bridge or lights go ‘Unreachable’: check Ethernet & LEDs, reserve DHCP, and switch Zigbee channel to reduce 2.4 GHz Wi-Fi interference."
-date: 2025-09-17
-lastmod: 2025-09-17
+date: 2025-08-30
+lastmod: 2025-08-30
 slug: "philips-hue-bridge-unreachable-fix-2025"
 draft: false
 categories: ["Guides","Lighting","Zigbee","Fix"]
