@@ -44,4 +44,4 @@ Feedback
 Spotted an error, or want a guide we haven’t covered? Send us your request via the site’s contact page. We correct mistakes promptly and credit meaningful fixes.
 
 —
-AI Smart Home Hub — practical, testable smart-home guidance.
+AI Smart Home Hub — practical, testable smart-home guidance.# Force deployment Sat, Sep 20, 2025  2:27:09 PM
