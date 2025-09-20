@@ -1,0 +1,127 @@
+/* 面包屑导航组件样式 - 模块化CSS */
+
+/* 面包屑容器 */
+.breadcrumb {
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e5e7eb;
+  margin-top: 1rem;
+}
+
+/* 面包屑列表 */
+.breadcrumb-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+/* 面包屑项目 */
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+}
+
+/* 分隔符 */
+.breadcrumb-item + .breadcrumb-item::before {
+  content: "›";
+  color: #6b7280;
+  font-weight: bold;
+  margin: 0 0.5rem;
+}
+
+/* 面包屑链接 */
+.breadcrumb-item a {
+  color: #3b82f6;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.breadcrumb-item a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.breadcrumb-item a:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* 当前页面（激活状态） */
+.breadcrumb-item.active {
+  color: #4b5563;
+  font-weight: 500;
+}
+
+/* 图标样式 */
+.breadcrumb-item i {
+  font-size: 0.8rem;
+  margin-right: 0.25rem;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .breadcrumb {
+    padding: 0.5rem 0;
+  }
+
+  .breadcrumb-list {
+    font-size: 0.8rem;
+  }
+
+  .breadcrumb-item + .breadcrumb-item::before {
+    margin: 0 0.3rem;
+  }
+
+  /* 移动端长文本截断 */
+  .breadcrumb-item.active {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .breadcrumb-list {
+    font-size: 0.75rem;
+  }
+
+  .breadcrumb-item.active {
+    max-width: 150px;
+  }
+}
+
+/* 辅助功能增强 */
+@media (prefers-contrast: high) {
+  .breadcrumb-item a {
+    color: #0000EE;
+  }
+
+  .breadcrumb-item a:hover {
+    color: #0000AA;
+  }
+
+  .breadcrumb-item + .breadcrumb-item::before {
+    color: #000;
+  }
+}
+
+/* 打印样式 */
+@media print {
+  .breadcrumb {
+    border-bottom: 1px solid #000;
+    color: #000;
+  }
+
+  .breadcrumb-item a {
+    color: #000;
+    text-decoration: underline;
+  }
+}

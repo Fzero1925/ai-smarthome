@@ -1,0 +1,162 @@
+/* 导航栏组件样式 - 模块化CSS */
+:root {
+  --header-height: 64px;
+  --header-bg: rgba(255, 255, 255, 0.95);
+  --primary-color: #007bff;
+  --text-color: #2c3e50;
+  --text-muted: #6c757d;
+  --border-color: #e9ecef;
+  --hover-bg: #f8f9fa;
+}
+
+/* 主导航容器 */
+.site-header {
+  background: var(--header-bg);
+  backdrop-filter: saturate(180%) blur(20px);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 10000;
+  width: 100%;
+  min-height: var(--header-height);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.site-header .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* 主导航布局 */
+.main-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  gap: 1rem;
+}
+
+/* 品牌区域样式 */
+.nav-brand .brand-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.nav-brand .brand-link:hover {
+  text-decoration: none;
+  color: #0056b3;
+}
+
+.brand-short {
+  display: none;
+}
+
+.brand-full {
+  display: inline;
+}
+
+/* 主导航菜单样式 */
+.nav-main {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-link {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: var(--primary-color);
+  background-color: var(--hover-bg);
+  text-decoration: none;
+}
+
+.nav-link:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* 响应式设计 */
+@media (max-width: 992px) {
+  .nav-main,
+  .nav-search {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-header .container {
+    padding: 0 0.75rem;
+  }
+
+  .main-nav {
+    padding: 0.75rem 0;
+  }
+
+  .brand-full {
+    display: none;
+  }
+
+  .brand-short {
+    display: inline;
+  }
+
+  .nav-brand .brand-link {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header .container {
+    padding: 0 0.5rem;
+  }
+
+  .main-nav {
+    padding: 0.5rem 0;
+  }
+
+  .nav-brand .brand-link {
+    gap: 0.5rem;
+    font-size: 1.1rem;
+  }
+}
+
+@media (min-width: 993px) {
+  .nav-list {
+    gap: 1rem;
+  }
+
+  .nav-link {
+    padding: 0.75rem 1.25rem;
+  }
+}

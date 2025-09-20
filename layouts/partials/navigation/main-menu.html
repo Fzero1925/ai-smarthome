@@ -1,0 +1,19 @@
+{{/* 主导航菜单组件 - 桌面端导航链接 */}}
+<div class="nav-main">
+  <ul class="nav-list" role="menubar">
+    {{ range .Site.Menus.main }}
+    <li class="nav-item" role="none">
+      <a href="{{ .URL | relURL }}"
+         class="nav-link"
+         role="menuitem"
+         {{ if .Params.description }}title="{{ .Params.description }}"{{ end }}>
+        {{ .Name }}
+      </a>
+    </li>
+    {{ end }}
+    {{/* 动态Explore下拉菜单 */}}
+    <li class="nav-item nav-item--explore" role="none">
+      {{ partial "nav-explore.html" . }}
+    </li>
+  </ul>
+</div>

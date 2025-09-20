@@ -1,0 +1,19 @@
+{{/* 主导航栏组件 - 整合所有导航子组件 */}}
+<header class="site-header" role="banner">
+  <div class="container">
+    {{/* 主导航布局 */}}
+    <nav class="main-nav" role="navigation" aria-label="Primary navigation">
+      {{/* 品牌标识 */}}
+      {{ partial "navigation/brand-logo.html" . }}
+
+      {{/* 主导航菜单 */}}
+      {{ partial "navigation/main-menu.html" . }}
+
+      {{/* 搜索框 */}}
+      {{ partial "navigation/search-form.html" . }}
+
+      {{/* 移动端菜单 */}}
+      {{ partial "navigation/mobile-menu.html" . }}
+    </nav>
+  </div>
+</header>

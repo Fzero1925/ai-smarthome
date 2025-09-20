@@ -1,0 +1,90 @@
+/* 搜索组件样式 - 模块化CSS */
+
+/* 搜索容器 */
+.nav-search {
+  display: flex;
+  align-items: center;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 2px solid var(--border-color);
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+
+.search-form:focus-within {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+}
+
+.search-input {
+  width: 200px;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-button {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0 23px 23px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-button:hover {
+  background: #0056b3;
+}
+
+.search-button:focus {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+/* 移动端搜索样式 */
+.mobile-search {
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.mobile-search .search-form {
+  width: 100%;
+}
+
+.mobile-search .search-input {
+  width: 100%;
+  flex: 1;
+}
+
+/* 响应式搜索 */
+@media (min-width: 993px) {
+  .nav-search .search-input {
+    width: 250px;
+  }
+}
+
+/* 辅助功能支持 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

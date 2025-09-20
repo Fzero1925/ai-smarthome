@@ -1,0 +1,77 @@
+/* 组件模块化CSS入口文件 */
+/* 按需导入各个组件的CSS模块 */
+
+/* 导航相关组件 */
+@import url('components/navbar.css');
+@import url('components/search.css');
+@import url('components/mobile-menu.css');
+
+/* 内容相关组件 */
+@import url('components/article-header.css');
+@import url('components/breadcrumb.css');
+
+/*
+ * 模块化CSS架构说明：
+ *
+ * 1. 每个组件都有独立的CSS文件，便于维护
+ * 2. 使用CSS自定义属性（变量）统一主题色彩
+ * 3. 响应式设计集成到各个组件中
+ * 4. 支持辅助功能和无障碍访问
+ * 5. 优化打印和高对比度模式
+ *
+ * 使用方式：
+ * - 在HTML中引入此文件即可获得所有组件样式
+ * - 也可以选择性引入单个组件CSS文件
+ * - 支持按需加载和代码分割
+ */
+
+/* 全局CSS变量定义 */
+:root {
+  /* 主题色彩 */
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
+
+  /* 文本色彩 */
+  --text-color: #2c3e50;
+  --text-muted: #6c757d;
+  --text-light: #ffffff;
+
+  /* 背景色彩 */
+  --bg-color: #ffffff;
+  --bg-light: #f8f9fa;
+  --bg-dark: #343a40;
+
+  /* 边框和阴影 */
+  --border-color: #e9ecef;
+  --border-radius: 8px;
+  --box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+
+  /* 布局尺寸 */
+  --header-height: 64px;
+  --container-max-width: 1200px;
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+
+  /* 过渡动画 */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-color: #ffffff;
+    --text-muted: #adb5bd;
+    --bg-color: #212529;
+    --bg-light: #343a40;
+    --border-color: #495057;
+    --box-shadow: 0 2px 10px rgba(255,255,255,0.08);
+  }
+}
