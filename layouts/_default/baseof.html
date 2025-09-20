@@ -144,6 +144,10 @@
   <!-- Non-critical CSS with media attribute for faster loading -->
   <link rel="preload" href="{{ "css/main.css" | relURL }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="{{ "css/main.css" | relURL }}"></noscript>
+
+  <!-- Component CSS for modular navigation and components -->
+  <link rel="preload" href="{{ "css/components.css" | relURL }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="{{ "css/components.css" | relURL }}"></noscript>
   
   <!-- Font Awesome with performance optimization -->
   <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">

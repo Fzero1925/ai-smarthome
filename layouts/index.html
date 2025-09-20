@@ -68,12 +68,6 @@
 
           <span class="category-count">{{ .count }} {{ if eq .count 1 }}article{{ else }}articles{{ end }}</span>
 
-          {{/* 热门指示器 */}}
-          {{ if ge .count 10 }}
-          <div class="category-badge category-badge--hot">🔥 Popular</div>
-          {{ else if ge .count 5 }}
-          <div class="category-badge category-badge--active">✨ Active</div>
-          {{ end }}
         </a>
         {{ end }}
       </div>
@@ -371,30 +365,6 @@
   font-size: 0.9rem;
 }
 
-/* Category Badges */
-.category-badge {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  backdrop-filter: blur(10px);
-}
-
-.category-badge--hot {
-  background: rgba(255, 107, 53, 0.9);
-  color: white;
-  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
-}
-
-.category-badge--active {
-  background: rgba(40, 167, 69, 0.9);
-  color: white;
-  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
-}
 
 /* Categories Footer */
 .categories-footer {
