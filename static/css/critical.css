@@ -51,35 +51,13 @@ h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
     padding-right: 1rem;
 }
 
-/* CRITICAL: Force article-header to never stick or overlay navbar - MAXIMUM ENFORCEMENT */
-article header.article-header[style],
-header.article-header[style], 
-.article-header[style],
-article .article-header[style],
-article header.article-header,
-header.article-header,
-.article-header,
-article .article-header {
-    position: static !important;
-    z-index: 1 !important;
-    max-width: 100% !important;
-    transform: none !important;
-    top: auto !important;
-    left: auto !important;
-    right: auto !important;
-    bottom: auto !important;
-    /* Ensure it behaves as normal document flow */
-    display: block !important;
-    float: none !important;
-    margin-top: 2rem !important; /* Force normal margin, override any other margin */
-    /* Override any possible sticky/fixed positioning */
-    -webkit-position: static !important;
-    -moz-position: static !important;
-    -ms-position: static !important;
-    /* Additional safety overrides */
-    clip: auto !important;
-    overflow: visible !important;
-    white-space: normal !important;
+/* Article header - Clean and simple styling */
+.article-header {
+    position: static;
+    display: block;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
 }
 
 .container {
