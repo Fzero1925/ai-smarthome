@@ -1,0 +1,536 @@
+{{ define "main" }}
+<div class="guides-page">
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="container">
+      <h1>{{ .Title }}</h1>
+      <p class="page-description">{{ .Description }}</p>
+    </div>
+  </section>
+
+  <!-- Top AdSense Slot -->
+  {{ partial "adsense.html" . }}
+
+  <div class="container">
+    <div class="guides-content">
+
+      <!-- Filter Controls -->
+      <div class="filter-controls">
+        <div class="filter-section">
+          <h3>Filter by Topic</h3>
+          <div class="filter-buttons" id="topic-filters">
+            <button class="filter-btn active" data-filter="all">All Guides</button>
+            <button class="filter-btn" data-filter="setup">Setup & Installation</button>
+            <button class="filter-btn" data-filter="troubleshooting">Troubleshooting</button>
+            <button class="filter-btn" data-filter="configuration">Configuration</button>
+            <button class="filter-btn" data-filter="tips">Tips & Optimization</button>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h3>Filter by Brand</h3>
+          <div class="filter-buttons" id="brand-filters">
+            <button class="filter-btn active" data-filter="all">All Brands</button>
+            {{ $brands := slice }}
+            {{ range .Site.RegularPages }}
+              {{ if in .Params.categories "Guides" }}
+                {{ range .Params.tags }}
+                  {{ if or (eq . "Alexa") (eq . "Google") (eq . "Apple") (eq . "Samsung") (eq . "Nest") (eq . "Ring") (eq . "Philips") }}
+                    {{ $brands = $brands | append . }}
+                  {{ end }}
+                {{ end }}
+              {{ end }}
+            {{ end }}
+            {{ range $brands | uniq | sort }}
+              <button class="filter-btn" data-filter="{{ . | lower }}">{{ . }}</button>
+            {{ end }}
+          </div>
+        </div>
+
+        <div class="search-section">
+          <h3>Search Guides</h3>
+          <input type="text" id="guide-search" placeholder="Search for solutions..." class="search-input">
+        </div>
+      </div>
+
+      <!-- Middle AdSense Slot -->
+      {{ partial "adsense.html" . }}
+
+      <!-- Articles Grid -->
+      <div class="articles-grid" id="articles-grid">
+        {{ $guidesPages := where .Site.RegularPages "Params.categories" "intersect" (slice "Guides") }}
+        {{ range $guidesPages }}
+        <article class="guide-card"
+                 data-topics="{{ delimit .Params.tags "," | lower }}"
+                 data-brands="{{ delimit .Params.tags "," | lower }}"
+                 data-title="{{ .Title | lower }}"
+                 data-content="{{ .Summary | lower }}">
+
+          {{ if .Params.featured_image }}
+          <div class="guide-image">
+            <img src="{{ .Params.featured_image | relURL }}"
+                 alt="{{ .Title }}"
+                 loading="lazy"
+                 decoding="async">
+            {{ if .Params.badge }}
+            <div class="guide-badge {{ .Params.badge | lower }}">{{ .Params.badge }}</div>
+            {{ end }}
+          </div>
+          {{ end }}
+
+          <div class="guide-content">
+            <div class="guide-meta">
+              <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+                {{ .Date.Format "Jan 2, 2006" }}
+              </time>
+              {{ if .Params.difficulty }}
+              <span class="difficulty difficulty-{{ .Params.difficulty }}">{{ .Params.difficulty | title }}</span>
+              {{ end }}
+            </div>
+
+            <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+            <p>{{ .Summary | truncate 120 }}</p>
+
+            <div class="guide-tags">
+              {{ range first 3 .Params.tags }}
+              <span class="tag">{{ . }}</span>
+              {{ end }}
+            </div>
+
+            <div class="guide-footer">
+              {{ if .Params.reading_time }}
+              <span class="reading-time">{{ .ReadingTime }} min read</span>
+              {{ end }}
+              <a href="{{ .Permalink }}" class="read-more">Read Guide →</a>
+            </div>
+          </div>
+        </article>
+        {{ end }}
+      </div>
+
+      <!-- Load More Button -->
+      <div class="load-more-section">
+        <button id="load-more-btn" class="load-more-btn">Load More Guides</button>
+      </div>
+
+      <!-- Bottom AdSense Slot -->
+      {{ partial "adsense.html" . }}
+
+    </div>
+  </div>
+</div>
+
+<style>
+/* Guides Page Styles */
+.guides-page {
+  min-height: 100vh;
+}
+
+.page-header {
+  background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+  color: white;
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.page-description {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.guides-content {
+  padding: 2rem 0;
+}
+
+/* Filter Controls */
+.filter-controls {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.filter-section {
+  margin-bottom: 1.5rem;
+}
+
+.filter-section:last-child {
+  margin-bottom: 0;
+}
+
+.filter-section h3 {
+  margin-bottom: 0.75rem;
+  color: #2c3e50;
+  font-size: 1.1rem;
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.filter-btn {
+  background: white;
+  border: 2px solid #e9ecef;
+  color: #495057;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.filter-btn:hover {
+  border-color: #4fc3f7;
+  color: #4fc3f7;
+}
+
+.filter-btn.active {
+  background: #4fc3f7;
+  border-color: #4fc3f7;
+  color: white;
+}
+
+.search-section .search-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e9ecef;
+  border-radius: 25px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #4fc3f7;
+}
+
+/* Articles Grid */
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.guide-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
+}
+
+.guide-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.guide-card.hidden {
+  display: none;
+}
+
+.guide-image {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.guide-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.guide-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.guide-badge.featured {
+  background: #28a745;
+  color: white;
+}
+
+.guide-badge.updated {
+  background: #ffc107;
+  color: #000;
+}
+
+.guide-content {
+  padding: 1.5rem;
+}
+
+.guide-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.difficulty {
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.difficulty-beginner {
+  background: #d4edda;
+  color: #155724;
+}
+
+.difficulty-intermediate {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.difficulty-advanced {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.guide-content h3 {
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.guide-content h3 a {
+  color: #2c3e50;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.guide-content h3 a:hover {
+  color: #4fc3f7;
+}
+
+.guide-content p {
+  color: #6c757d;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.guide-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tag {
+  background: #e9ecef;
+  color: #495057;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+.guide-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 1rem;
+}
+
+.reading-time {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.read-more {
+  color: #4fc3f7;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.read-more:hover {
+  color: #29b6f6;
+}
+
+/* Load More */
+.load-more-section {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.load-more-btn {
+  background: #4fc3f7;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.load-more-btn:hover {
+  background: #29b6f6;
+  transform: translateY(-2px);
+}
+
+.load-more-btn:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .filter-controls {
+    padding: 1.5rem;
+  }
+
+  .filter-buttons {
+    justify-content: center;
+  }
+
+  .articles-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .guide-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-btn {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .guide-content {
+    padding: 1rem;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const topicFilters = document.querySelectorAll('#topic-filters .filter-btn');
+  const brandFilters = document.querySelectorAll('#brand-filters .filter-btn');
+  const searchInput = document.getElementById('guide-search');
+  const articlesGrid = document.getElementById('articles-grid');
+  const articles = document.querySelectorAll('.guide-card');
+  const loadMoreBtn = document.getElementById('load-more-btn');
+
+  let currentTopicFilter = 'all';
+  let currentBrandFilter = 'all';
+  let currentSearchTerm = '';
+  let visibleCount = 12;
+
+  // Topic Filter
+  topicFilters.forEach(btn => {
+    btn.addEventListener('click', function() {
+      topicFilters.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      currentTopicFilter = this.dataset.filter;
+      filterArticles();
+    });
+  });
+
+  // Brand Filter
+  brandFilters.forEach(btn => {
+    btn.addEventListener('click', function() {
+      brandFilters.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      currentBrandFilter = this.dataset.filter;
+      filterArticles();
+    });
+  });
+
+  // Search
+  searchInput.addEventListener('input', function() {
+    currentSearchTerm = this.value.toLowerCase();
+    filterArticles();
+  });
+
+  // Load More
+  loadMoreBtn.addEventListener('click', function() {
+    visibleCount += 12;
+    filterArticles();
+  });
+
+  function filterArticles() {
+    let visibleArticles = [];
+
+    articles.forEach(article => {
+      const topics = article.dataset.topics;
+      const brands = article.dataset.brands;
+      const title = article.dataset.title;
+      const content = article.dataset.content;
+
+      let showTopic = currentTopicFilter === 'all' || topics.includes(currentTopicFilter);
+      let showBrand = currentBrandFilter === 'all' || brands.includes(currentBrandFilter);
+      let showSearch = currentSearchTerm === '' ||
+                      title.includes(currentSearchTerm) ||
+                      content.includes(currentSearchTerm);
+
+      if (showTopic && showBrand && showSearch) {
+        visibleArticles.push(article);
+      }
+    });
+
+    // Hide all articles first
+    articles.forEach(article => {
+      article.classList.add('hidden');
+    });
+
+    // Show filtered articles up to visibleCount
+    visibleArticles.slice(0, visibleCount).forEach(article => {
+      article.classList.remove('hidden');
+    });
+
+    // Update load more button
+    if (visibleArticles.length > visibleCount) {
+      loadMoreBtn.style.display = 'block';
+      loadMoreBtn.disabled = false;
+    } else {
+      loadMoreBtn.style.display = 'none';
+    }
+
+    // Reset visible count when filters change
+    if (visibleCount > 12) {
+      visibleCount = 12;
+    }
+  }
+
+  // Initial filter
+  filterArticles();
+});
+</script>
+{{ end }}

@@ -1,0 +1,986 @@
+{{ define "main" }}
+<div class="brands-page">
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="container">
+      <h1>{{ .Title }}</h1>
+      <p class="page-description">{{ .Description }}</p>
+    </div>
+  </section>
+
+  <!-- Top AdSense Slot -->
+  {{ partial "adsense.html" . }}
+
+  <div class="container">
+    <div class="brands-content">
+
+      <!-- Filter Controls -->
+      <div class="filter-controls">
+        <div class="filter-section">
+          <h3>Browse by Ecosystem</h3>
+          <div class="filter-buttons" id="ecosystem-filters">
+            <button class="filter-btn active" data-filter="all">All Ecosystems</button>
+            <button class="filter-btn" data-filter="apple">Apple HomeKit</button>
+            <button class="filter-btn" data-filter="google">Google Home</button>
+            <button class="filter-btn" data-filter="amazon">Amazon Alexa</button>
+            <button class="filter-btn" data-filter="samsung">Samsung SmartThings</button>
+            <button class="filter-btn" data-filter="open-source">Open Source</button>
+          </div>
+        </div>
+
+        <div class="search-section">
+          <h3>Search Brands</h3>
+          <input type="text" id="brand-search" placeholder="Search brands and ecosystems..." class="search-input">
+        </div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="brands-main-content">
+
+        <!-- Brand Articles Section -->
+        {{ $brandPages := where .Site.RegularPages "Params.categories" "intersect" (slice "Brands") }}
+        {{ if $brandPages }}
+        <section class="brand-articles">
+          <h2>Ecosystem Guides</h2>
+          <div class="articles-grid" id="brand-articles-grid">
+            {{ range $brandPages }}
+            <article class="brand-card"
+                     data-ecosystems="{{ delimit .Params.tags "," | lower }}"
+                     data-title="{{ .Title | lower }}"
+                     data-content="{{ .Summary | lower }}">
+
+              <div class="brand-content">
+                <div class="brand-meta">
+                  <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+                    {{ .Date.Format "Jan 2, 2006" }}
+                  </time>
+                  {{ if .Params.ecosystem }}
+                  <span class="ecosystem-badge ecosystem-{{ .Params.ecosystem | lower }}">{{ .Params.ecosystem }}</span>
+                  {{ end }}
+                </div>
+
+                <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+                <p>{{ .Summary | truncate 120 }}</p>
+
+                <div class="brand-tags">
+                  {{ range first 4 .Params.tags }}
+                  <span class="tag">{{ . }}</span>
+                  {{ end }}
+                </div>
+
+                <div class="brand-footer">
+                  <span class="reading-time">{{ .ReadingTime }} min read</span>
+                  <a href="{{ .Permalink }}" class="read-more">Learn More →</a>
+                </div>
+              </div>
+            </article>
+            {{ end }}
+          </div>
+        </section>
+
+        <!-- Middle AdSense Slot -->
+        {{ partial "adsense.html" . }}
+
+        {{ else }}
+
+        <!-- Ecosystem Overview when no brand articles exist -->
+        <section class="ecosystem-overview">
+          <h2>Smart Home Ecosystems</h2>
+
+          <div class="ecosystem-grid">
+
+            <div class="ecosystem-card apple">
+              <div class="ecosystem-header">
+                <div class="ecosystem-icon">
+                  <i class="fab fa-apple" style="color: #007aff;"></i>
+                </div>
+                <h3>Apple HomeKit</h3>
+                <p class="ecosystem-tagline">Privacy-focused smart home platform</p>
+              </div>
+
+              <div class="ecosystem-features">
+                <h4>Key Features</h4>
+                <ul>
+                  <li>End-to-end encryption</li>
+                  <li>Siri voice control</li>
+                  <li>Home app integration</li>
+                  <li>HomeKit Secure Video</li>
+                  <li>Thread and Matter support</li>
+                </ul>
+              </div>
+
+              <div class="ecosystem-compatibility">
+                <h4>Best For</h4>
+                <p>iPhone/iPad users prioritizing privacy and seamless Apple integration</p>
+              </div>
+
+              <div class="ecosystem-links">
+                <a href="https://www.apple.com/home-app/" target="_blank" rel="noopener noreferrer">
+                  Official Site →
+                </a>
+              </div>
+
+              <div class="coming-soon">
+                <span>📚 Detailed HomeKit guides coming soon</span>
+              </div>
+            </div>
+
+            <div class="ecosystem-card google">
+              <div class="ecosystem-header">
+                <div class="ecosystem-icon">
+                  <i class="fab fa-google" style="color: #4285f4;"></i>
+                </div>
+                <h3>Google Home</h3>
+                <p class="ecosystem-tagline">AI-driven automation and voice interaction</p>
+              </div>
+
+              <div class="ecosystem-features">
+                <h4>Key Features</h4>
+                <ul>
+                  <li>Google Assistant voice control</li>
+                  <li>AI-powered routines</li>
+                  <li>Nest device integration</li>
+                  <li>Google services integration</li>
+                  <li>Matter and Thread support</li>
+                </ul>
+              </div>
+
+              <div class="ecosystem-compatibility">
+                <h4>Best For</h4>
+                <p>Users wanting AI-powered automation and Google service integration</p>
+              </div>
+
+              <div class="ecosystem-links">
+                <a href="https://home.google.com/" target="_blank" rel="noopener noreferrer">
+                  Official Site →
+                </a>
+              </div>
+
+              <div class="coming-soon">
+                <span>🏠 Google Home guides in development</span>
+              </div>
+            </div>
+
+            <div class="ecosystem-card amazon">
+              <div class="ecosystem-header">
+                <div class="ecosystem-icon">
+                  <i class="fab fa-amazon" style="color: #ff9900;"></i>
+                </div>
+                <h3>Amazon Alexa</h3>
+                <p class="ecosystem-tagline">Extensive device ecosystem and voice-first interaction</p>
+              </div>
+
+              <div class="ecosystem-features">
+                <h4>Key Features</h4>
+                <ul>
+                  <li>Largest device ecosystem</li>
+                  <li>Alexa Skills platform</li>
+                  <li>Echo devices as hubs</li>
+                  <li>Zigbee support built-in</li>
+                  <li>Matter support</li>
+                </ul>
+              </div>
+
+              <div class="ecosystem-compatibility">
+                <h4>Best For</h4>
+                <p>Users wanting maximum device choice and voice control capabilities</p>
+              </div>
+
+              <div class="ecosystem-links">
+                <a href="https://alexa.amazon.com/" target="_blank" rel="noopener noreferrer">
+                  Official Site →
+                </a>
+              </div>
+
+              <div class="coming-soon">
+                <span>🛒 Alexa ecosystem guides planned</span>
+              </div>
+            </div>
+
+            <div class="ecosystem-card samsung">
+              <div class="ecosystem-header">
+                <div class="ecosystem-icon">
+                  <i class="fas fa-mobile-alt" style="color: #1428a0;"></i>
+                </div>
+                <h3>Samsung SmartThings</h3>
+                <p class="ecosystem-tagline">Open platform supporting multiple protocols</p>
+              </div>
+
+              <div class="ecosystem-features">
+                <h4>Key Features</h4>
+                <ul>
+                  <li>Multi-protocol support</li>
+                  <li>Zigbee and Z-Wave</li>
+                  <li>Advanced automation</li>
+                  <li>Samsung device integration</li>
+                  <li>Matter support</li>
+                </ul>
+              </div>
+
+              <div class="ecosystem-compatibility">
+                <h4>Best For</h4>
+                <p>Users wanting maximum protocol support and flexibility</p>
+              </div>
+
+              <div class="ecosystem-links">
+                <a href="https://www.smartthings.com/" target="_blank" rel="noopener noreferrer">
+                  Official Site →
+                </a>
+              </div>
+
+              <div class="coming-soon">
+                <span>📱 SmartThings tutorials coming</span>
+              </div>
+            </div>
+
+            <div class="ecosystem-card home-assistant">
+              <div class="ecosystem-header">
+                <div class="ecosystem-icon">
+                  <i class="fas fa-home" style="color: #03a9f4;"></i>
+                </div>
+                <h3>Home Assistant</h3>
+                <p class="ecosystem-tagline">Open-source, privacy-focused, local control</p>
+              </div>
+
+              <div class="ecosystem-features">
+                <h4>Key Features</h4>
+                <ul>
+                  <li>Complete local control</li>
+                  <li>Extensive device support</li>
+                  <li>Advanced automation</li>
+                  <li>Custom integrations</li>
+                  <li>Active community</li>
+                </ul>
+              </div>
+
+              <div class="ecosystem-compatibility">
+                <h4>Best For</h4>
+                <p>Technical users wanting complete control and privacy</p>
+              </div>
+
+              <div class="ecosystem-links">
+                <a href="https://www.home-assistant.io/" target="_blank" rel="noopener noreferrer">
+                  Official Site →
+                </a>
+              </div>
+
+              <div class="coming-soon">
+                <span>🏠 Home Assistant guides being prepared</span>
+              </div>
+            </div>
+
+            <div class="ecosystem-card matter">
+              <div class="ecosystem-header">
+                <div class="ecosystem-icon">
+                  <i class="fas fa-link" style="color: #9c27b0;"></i>
+                </div>
+                <h3>Matter Standard</h3>
+                <p class="ecosystem-tagline">Universal smart home interoperability</p>
+              </div>
+
+              <div class="ecosystem-features">
+                <h4>Key Benefits</h4>
+                <ul>
+                  <li>Cross-platform compatibility</li>
+                  <li>Simplified setup</li>
+                  <li>Enhanced security</li>
+                  <li>Future-proof devices</li>
+                  <li>Reduced fragmentation</li>
+                </ul>
+              </div>
+
+              <div class="ecosystem-compatibility">
+                <h4>Best For</h4>
+                <p>Users who want devices that work across all major ecosystems</p>
+              </div>
+
+              <div class="ecosystem-links">
+                <a href="https://csa-iot.org/all-solutions/matter/" target="_blank" rel="noopener noreferrer">
+                  Official Site →
+                </a>
+              </div>
+
+              <div class="coming-soon">
+                <span>🔗 Matter compatibility guides in progress</span>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Ecosystem Comparison Section -->
+        <section class="ecosystem-comparison">
+          <h2>Ecosystem Comparison</h2>
+
+          <div class="comparison-table">
+            <div class="comparison-header">
+              <div class="comparison-cell">Feature</div>
+              <div class="comparison-cell">Apple HomeKit</div>
+              <div class="comparison-cell">Google Home</div>
+              <div class="comparison-cell">Amazon Alexa</div>
+              <div class="comparison-cell">SmartThings</div>
+              <div class="comparison-cell">Home Assistant</div>
+            </div>
+
+            <div class="comparison-row">
+              <div class="comparison-cell feature">Privacy</div>
+              <div class="comparison-cell excellent">Excellent</div>
+              <div class="comparison-cell good">Good</div>
+              <div class="comparison-cell fair">Fair</div>
+              <div class="comparison-cell good">Good</div>
+              <div class="comparison-cell excellent">Excellent</div>
+            </div>
+
+            <div class="comparison-row">
+              <div class="comparison-cell feature">Device Support</div>
+              <div class="comparison-cell good">Good</div>
+              <div class="comparison-cell good">Good</div>
+              <div class="comparison-cell excellent">Excellent</div>
+              <div class="comparison-cell excellent">Excellent</div>
+              <div class="comparison-cell excellent">Excellent</div>
+            </div>
+
+            <div class="comparison-row">
+              <div class="comparison-cell feature">Ease of Setup</div>
+              <div class="comparison-cell good">Good</div>
+              <div class="comparison-cell excellent">Excellent</div>
+              <div class="comparison-cell excellent">Excellent</div>
+              <div class="comparison-cell good">Good</div>
+              <div class="comparison-cell fair">Fair</div>
+            </div>
+
+            <div class="comparison-row">
+              <div class="comparison-cell feature">Automation</div>
+              <div class="comparison-cell good">Good</div>
+              <div class="comparison-cell good">Good</div>
+              <div class="comparison-cell good">Good</div>
+              <div class="comparison-cell excellent">Excellent</div>
+              <div class="comparison-cell excellent">Excellent</div>
+            </div>
+
+            <div class="comparison-row">
+              <div class="comparison-cell feature">Local Control</div>
+              <div class="comparison-cell good">Good</div>
+              <div class="comparison-cell fair">Fair</div>
+              <div class="comparison-cell fair">Fair</div>
+              <div class="comparison-cell good">Good</div>
+              <div class="comparison-cell excellent">Excellent</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Middle AdSense Slot -->
+        {{ partial "adsense.html" . }}
+
+        {{ end }}
+
+        <!-- Related Guides Section -->
+        <section class="related-guides">
+          <h2>Related Setup Guides</h2>
+          <div class="related-grid">
+            {{ $relatedGuides := where .Site.RegularPages "Params.categories" "intersect" (slice "Guides") }}
+            {{ range first 6 (sort $relatedGuides "Date" "desc") }}
+            {{ if or (in .Params.tags "Apple") (in .Params.tags "Google") (in .Params.tags "Alexa") (in .Params.tags "Samsung") }}
+            <div class="related-card">
+              <h4><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
+              <p>{{ .Summary | truncate 80 }}</p>
+              <div class="related-tags">
+                {{ range first 2 .Params.tags }}
+                <span class="tag">{{ . }}</span>
+                {{ end }}
+              </div>
+            </div>
+            {{ end }}
+            {{ end }}
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Bottom AdSense Slot -->
+      {{ partial "adsense.html" . }}
+
+    </div>
+  </div>
+</div>
+
+<style>
+/* Brands Page Styles */
+.brands-page {
+  min-height: 100vh;
+}
+
+.page-header {
+  background: linear-gradient(135deg, #e91e63 0%, #f06292 100%);
+  color: white;
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.page-description {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.brands-content {
+  padding: 2rem 0;
+}
+
+/* Filter Controls */
+.filter-controls {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.filter-section {
+  margin-bottom: 1.5rem;
+}
+
+.filter-section:last-child {
+  margin-bottom: 0;
+}
+
+.filter-section h3 {
+  margin-bottom: 0.75rem;
+  color: #2c3e50;
+  font-size: 1.1rem;
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.filter-btn {
+  background: white;
+  border: 2px solid #e9ecef;
+  color: #495057;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.filter-btn:hover {
+  border-color: #e91e63;
+  color: #e91e63;
+}
+
+.filter-btn.active {
+  background: #e91e63;
+  border-color: #e91e63;
+  color: white;
+}
+
+.search-section .search-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e9ecef;
+  border-radius: 25px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #e91e63;
+}
+
+/* Ecosystem Grid */
+.ecosystem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.ecosystem-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.ecosystem-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+.ecosystem-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #007aff 0%, #4285f4 25%, #ff9900 50%, #1428a0 75%, #03a9f4 100%);
+}
+
+.ecosystem-card.apple::before {
+  background: #007aff;
+}
+
+.ecosystem-card.google::before {
+  background: #4285f4;
+}
+
+.ecosystem-card.amazon::before {
+  background: #ff9900;
+}
+
+.ecosystem-card.samsung::before {
+  background: #1428a0;
+}
+
+.ecosystem-card.home-assistant::before {
+  background: #03a9f4;
+}
+
+.ecosystem-card.matter::before {
+  background: #9c27b0;
+}
+
+.ecosystem-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.ecosystem-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.ecosystem-header h3 {
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.ecosystem-tagline {
+  color: #6c757d;
+  font-style: italic;
+  margin-bottom: 0;
+}
+
+.ecosystem-features {
+  margin-bottom: 1.5rem;
+}
+
+.ecosystem-features h4 {
+  margin-bottom: 0.75rem;
+  color: #2c3e50;
+  font-size: 1rem;
+}
+
+.ecosystem-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ecosystem-features li {
+  padding: 0.25rem 0;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.ecosystem-features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #28a745;
+  font-weight: bold;
+}
+
+.ecosystem-compatibility {
+  margin-bottom: 1.5rem;
+}
+
+.ecosystem-compatibility h4 {
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+  font-size: 1rem;
+}
+
+.ecosystem-compatibility p {
+  color: #6c757d;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.ecosystem-links {
+  margin-bottom: 1rem;
+}
+
+.ecosystem-links a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.ecosystem-links a:hover {
+  color: #0056b3;
+}
+
+.coming-soon {
+  text-align: center;
+  padding: 0.75rem;
+  background: #fff3cd;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.coming-soon span {
+  font-size: 0.9rem;
+  color: #856404;
+  font-weight: 500;
+}
+
+/* Comparison Table */
+.ecosystem-comparison {
+  margin: 3rem 0;
+}
+
+.ecosystem-comparison h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #2c3e50;
+}
+
+.comparison-table {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.comparison-header,
+.comparison-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.comparison-header {
+  background: #2c3e50;
+  color: white;
+  font-weight: 600;
+}
+
+.comparison-row:nth-child(even) {
+  background: #f8f9fa;
+}
+
+.comparison-cell {
+  padding: 1rem;
+  text-align: center;
+  border-right: 1px solid #e9ecef;
+}
+
+.comparison-cell:last-child {
+  border-right: none;
+}
+
+.comparison-cell.feature {
+  font-weight: 600;
+  text-align: left;
+  background: #e9ecef;
+}
+
+.comparison-cell.excellent {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.comparison-cell.good {
+  color: #ffc107;
+  font-weight: 600;
+}
+
+.comparison-cell.fair {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+/* Brand Articles Grid */
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.brand-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+}
+
+.brand-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.brand-card.hidden {
+  display: none;
+}
+
+.brand-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.ecosystem-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.ecosystem-apple {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.ecosystem-google {
+  background: #e8f5e8;
+  color: #388e3c;
+}
+
+.ecosystem-amazon {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.ecosystem-samsung {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.brand-card h3 {
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.brand-card h3 a {
+  color: #2c3e50;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.brand-card h3 a:hover {
+  color: #e91e63;
+}
+
+.brand-card p {
+  color: #6c757d;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.brand-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tag {
+  background: #e9ecef;
+  color: #495057;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+.brand-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 1rem;
+}
+
+.reading-time {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.read-more {
+  color: #e91e63;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.read-more:hover {
+  color: #c2185b;
+}
+
+/* Related Guides */
+.related-guides {
+  margin-top: 3rem;
+}
+
+.related-guides h2 {
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.related-card {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.related-card h4 {
+  margin-bottom: 0.5rem;
+}
+
+.related-card h4 a {
+  color: #2c3e50;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.related-card h4 a:hover {
+  color: #e91e63;
+}
+
+.related-card p {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.related-tags {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.related-tags .tag {
+  font-size: 0.75rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .filter-controls {
+    padding: 1.5rem;
+  }
+
+  .ecosystem-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .comparison-header,
+  .comparison-row {
+    grid-template-columns: 1fr;
+  }
+
+  .comparison-cell {
+    border-right: none;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .articles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .related-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const ecosystemFilters = document.querySelectorAll('#ecosystem-filters .filter-btn');
+  const searchInput = document.getElementById('brand-search');
+  const articlesGrid = document.getElementById('brand-articles-grid');
+
+  if (articlesGrid) {
+    const articles = document.querySelectorAll('.brand-card');
+    let currentEcosystemFilter = 'all';
+    let currentSearchTerm = '';
+
+    // Ecosystem Filter
+    ecosystemFilters.forEach(btn => {
+      btn.addEventListener('click', function() {
+        ecosystemFilters.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentEcosystemFilter = this.dataset.filter;
+        filterArticles();
+      });
+    });
+
+    // Search
+    searchInput.addEventListener('input', function() {
+      currentSearchTerm = this.value.toLowerCase();
+      filterArticles();
+    });
+
+    function filterArticles() {
+      articles.forEach(article => {
+        const ecosystems = article.dataset.ecosystems;
+        const title = article.dataset.title;
+        const content = article.dataset.content;
+
+        let showEcosystem = currentEcosystemFilter === 'all' ||
+                           ecosystems.includes(currentEcosystemFilter);
+        let showSearch = currentSearchTerm === '' ||
+                        title.includes(currentSearchTerm) ||
+                        content.includes(currentSearchTerm) ||
+                        ecosystems.includes(currentSearchTerm);
+
+        if (showEcosystem && showSearch) {
+          article.classList.remove('hidden');
+        } else {
+          article.classList.add('hidden');
+        }
+      });
+    }
+
+    // Initial filter
+    filterArticles();
+  }
+});
+</script>
+{{ end }}

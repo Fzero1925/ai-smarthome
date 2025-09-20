@@ -138,22 +138,25 @@ params:
       price_tracking: true
       availability: true
 
-# Menu Configuration - 重构为任务导向的智能家居知识库
+# Menu Configuration - 智能家居知识库导航
 menu:
   main:
-    - name: 'Start'
-      url: '/start/'
-      weight: 10
-      description: 'New to smart home? Start here'
     - name: 'Guides'
       url: '/guides/'
+      weight: 10
+      description: 'Setup, troubleshooting, and solutions'
+    - name: 'Tech'
+      url: '/tech/'
       weight: 20
-      description: 'In-depth guides and comparisons'
-    - name: 'How-To'
-      url: '/how-to/'
+      description: 'Concepts, protocols, and fundamentals'
+    - name: 'Brands'
+      url: '/brands/'
       weight: 30
-      description: 'Setup, troubleshooting, and automation'
-    # Note: Explore is implemented as dynamic dropdown in nav-explore.html
+      description: 'Ecosystems, compatibility, and updates'
+    - name: 'About'
+      url: '/about/'
+      weight: 40
+      description: 'About our knowledge base'
 
 # Taxonomy Configuration
 taxonomies:

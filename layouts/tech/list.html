@@ -1,0 +1,613 @@
+{{ define "main" }}
+<div class="tech-page">
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="container">
+      <h1>{{ .Title }}</h1>
+      <p class="page-description">{{ .Description }}</p>
+    </div>
+  </section>
+
+  <!-- Top AdSense Slot -->
+  {{ partial "adsense.html" . }}
+
+  <div class="container">
+    <div class="tech-content">
+
+      <!-- Filter Controls -->
+      <div class="filter-controls">
+        <div class="filter-section">
+          <h3>Browse by Category</h3>
+          <div class="filter-buttons" id="category-filters">
+            <button class="filter-btn active" data-filter="all">All Topics</button>
+            <button class="filter-btn" data-filter="protocols">Communication Protocols</button>
+            <button class="filter-btn" data-filter="concepts">Basic Concepts</button>
+            <button class="filter-btn" data-filter="architecture">Network Architecture</button>
+            <button class="filter-btn" data-filter="security">Security & Privacy</button>
+          </div>
+        </div>
+
+        <div class="search-section">
+          <h3>Search Technical Topics</h3>
+          <input type="text" id="tech-search" placeholder="Search protocols, concepts..." class="search-input">
+        </div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="tech-main-content">
+
+        <!-- Tech Articles Section -->
+        {{ $techPages := where .Site.RegularPages "Params.categories" "intersect" (slice "Tech") }}
+        {{ if $techPages }}
+        <section class="tech-articles">
+          <h2>Technical Articles</h2>
+          <div class="articles-grid" id="tech-articles-grid">
+            {{ range $techPages }}
+            <article class="tech-card"
+                     data-categories="{{ delimit .Params.categories "," | lower }}"
+                     data-tags="{{ delimit .Params.tags "," | lower }}"
+                     data-title="{{ .Title | lower }}"
+                     data-content="{{ .Summary | lower }}">
+
+              <div class="tech-content">
+                <div class="tech-meta">
+                  <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+                    {{ .Date.Format "Jan 2, 2006" }}
+                  </time>
+                  {{ if .Params.difficulty }}
+                  <span class="difficulty difficulty-{{ .Params.difficulty }}">{{ .Params.difficulty | title }}</span>
+                  {{ end }}
+                </div>
+
+                <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+                <p>{{ .Summary | truncate 120 }}</p>
+
+                <div class="tech-tags">
+                  {{ range first 4 .Params.tags }}
+                  <span class="tag">{{ . }}</span>
+                  {{ end }}
+                </div>
+
+                <div class="tech-footer">
+                  <span class="reading-time">{{ .ReadingTime }} min read</span>
+                  <a href="{{ .Permalink }}" class="read-more">Learn More →</a>
+                </div>
+              </div>
+            </article>
+            {{ end }}
+          </div>
+        </section>
+
+        <!-- Middle AdSense Slot -->
+        {{ partial "adsense.html" . }}
+
+        {{ else }}
+
+        <!-- Content for when no Tech articles exist yet -->
+        <section class="tech-overview">
+          <h2>Technical Knowledge Base</h2>
+
+          <div class="tech-categories">
+
+            <div class="tech-category">
+              <div class="category-icon">
+                <i class="fas fa-wifi" style="color: #4fc3f7;"></i>
+              </div>
+              <h3>Communication Protocols</h3>
+              <p>Understanding the wireless and wired protocols that connect smart devices</p>
+              <ul>
+                <li><strong>WiFi (802.11)</strong> - Primary connectivity for most smart devices</li>
+                <li><strong>Zigbee</strong> - Low-power mesh networking for sensors and switches</li>
+                <li><strong>Z-Wave</strong> - Proprietary mesh protocol for home automation</li>
+                <li><strong>Matter</strong> - New universal standard for smart home interoperability</li>
+                <li><strong>Thread</strong> - IPv6-based mesh networking protocol</li>
+              </ul>
+              <div class="coming-soon">
+                <span>📚 Detailed protocol guides coming soon</span>
+              </div>
+            </div>
+
+            <div class="tech-category">
+              <div class="category-icon">
+                <i class="fas fa-network-wired" style="color: #28a745;"></i>
+              </div>
+              <h3>Network Architecture</h3>
+              <p>How smart home networks are structured and optimized for reliability</p>
+              <ul>
+                <li><strong>Hub-and-Spoke</strong> - Centralized control through smart hubs</li>
+                <li><strong>Mesh Networks</strong> - Distributed connectivity with self-healing</li>
+                <li><strong>Hybrid Architectures</strong> - Combining multiple protocols</li>
+                <li><strong>QoS Configuration</strong> - Prioritizing smart home traffic</li>
+              </ul>
+              <div class="coming-soon">
+                <span>🏗️ Architecture guides in development</span>
+              </div>
+            </div>
+
+            <div class="tech-category">
+              <div class="category-icon">
+                <i class="fas fa-shield-alt" style="color: #dc3545;"></i>
+              </div>
+              <h3>Security & Privacy</h3>
+              <p>Technical approaches to securing smart home networks and protecting privacy</p>
+              <ul>
+                <li><strong>Network Segmentation</strong> - Isolating IoT devices</li>
+                <li><strong>Encryption Standards</strong> - WPA3, TLS, and device security</li>
+                <li><strong>Firmware Security</strong> - Keeping devices updated</li>
+                <li><strong>Privacy Controls</strong> - Managing data collection and sharing</li>
+              </ul>
+              <div class="coming-soon">
+                <span>🔒 Security guides being prepared</span>
+              </div>
+            </div>
+
+            <div class="tech-category">
+              <div class="category-icon">
+                <i class="fas fa-cogs" style="color: #ffc107;"></i>
+              </div>
+              <h3>System Integration</h3>
+              <p>How different smart home components work together</p>
+              <ul>
+                <li><strong>Protocol Bridging</strong> - Connecting different smart home standards</li>
+                <li><strong>API Integration</strong> - Software-based device communication</li>
+                <li><strong>Automation Logic</strong> - How rules and scenes are processed</li>
+                <li><strong>Cloud vs Local</strong> - Processing and control architectures</li>
+              </ul>
+              <div class="coming-soon">
+                <span>⚙️ Integration tutorials planned</span>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Middle AdSense Slot -->
+        {{ partial "adsense.html" . }}
+
+        {{ end }}
+
+        <!-- Related Guides Section -->
+        <section class="related-guides">
+          <h2>Related Practical Guides</h2>
+          <div class="related-grid">
+            {{ $relatedGuides := where .Site.RegularPages "Params.categories" "intersect" (slice "Guides") }}
+            {{ range first 6 (sort $relatedGuides "Date" "desc") }}
+            <div class="related-card">
+              <h4><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
+              <p>{{ .Summary | truncate 80 }}</p>
+              <div class="related-tags">
+                {{ range first 2 .Params.tags }}
+                <span class="tag">{{ . }}</span>
+                {{ end }}
+              </div>
+            </div>
+            {{ end }}
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Bottom AdSense Slot -->
+      {{ partial "adsense.html" . }}
+
+    </div>
+  </div>
+</div>
+
+<style>
+/* Tech Page Styles */
+.tech-page {
+  min-height: 100vh;
+}
+
+.page-header {
+  background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+  color: white;
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.page-description {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.tech-content {
+  padding: 2rem 0;
+}
+
+/* Filter Controls - same as guides */
+.filter-controls {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.filter-section {
+  margin-bottom: 1.5rem;
+}
+
+.filter-section:last-child {
+  margin-bottom: 0;
+}
+
+.filter-section h3 {
+  margin-bottom: 0.75rem;
+  color: #2c3e50;
+  font-size: 1.1rem;
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.filter-btn {
+  background: white;
+  border: 2px solid #e9ecef;
+  color: #495057;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.filter-btn:hover {
+  border-color: #6c5ce7;
+  color: #6c5ce7;
+}
+
+.filter-btn.active {
+  background: #6c5ce7;
+  border-color: #6c5ce7;
+  color: white;
+}
+
+.search-section .search-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e9ecef;
+  border-radius: 25px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #6c5ce7;
+}
+
+/* Tech Categories */
+.tech-categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.tech-category {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+}
+
+.tech-category:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.category-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.tech-category h3 {
+  margin-bottom: 1rem;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.tech-category p {
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.tech-category ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.tech-category li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.tech-category li:last-child {
+  border-bottom: none;
+}
+
+.coming-soon {
+  text-align: center;
+  padding: 1rem;
+  background: #fff3cd;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.coming-soon span {
+  font-size: 0.9rem;
+  color: #856404;
+  font-weight: 500;
+}
+
+/* Tech Articles Grid */
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.tech-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+}
+
+.tech-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.tech-card.hidden {
+  display: none;
+}
+
+.tech-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.difficulty {
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.difficulty-beginner {
+  background: #d4edda;
+  color: #155724;
+}
+
+.difficulty-intermediate {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.difficulty-advanced {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.tech-card h3 {
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.tech-card h3 a {
+  color: #2c3e50;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.tech-card h3 a:hover {
+  color: #6c5ce7;
+}
+
+.tech-card p {
+  color: #6c757d;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tag {
+  background: #e9ecef;
+  color: #495057;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+.tech-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 1rem;
+}
+
+.reading-time {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.read-more {
+  color: #6c5ce7;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.read-more:hover {
+  color: #5a52d5;
+}
+
+/* Related Guides */
+.related-guides {
+  margin-top: 3rem;
+}
+
+.related-guides h2 {
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.related-card {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.related-card h4 {
+  margin-bottom: 0.5rem;
+}
+
+.related-card h4 a {
+  color: #2c3e50;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.related-card h4 a:hover {
+  color: #4fc3f7;
+}
+
+.related-card p {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.related-tags {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.related-tags .tag {
+  font-size: 0.75rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .filter-controls {
+    padding: 1.5rem;
+  }
+
+  .tech-categories {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .articles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .related-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const categoryFilters = document.querySelectorAll('#category-filters .filter-btn');
+  const searchInput = document.getElementById('tech-search');
+  const articlesGrid = document.getElementById('tech-articles-grid');
+
+  if (articlesGrid) {
+    const articles = document.querySelectorAll('.tech-card');
+    let currentCategoryFilter = 'all';
+    let currentSearchTerm = '';
+
+    // Category Filter
+    categoryFilters.forEach(btn => {
+      btn.addEventListener('click', function() {
+        categoryFilters.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        currentCategoryFilter = this.dataset.filter;
+        filterArticles();
+      });
+    });
+
+    // Search
+    searchInput.addEventListener('input', function() {
+      currentSearchTerm = this.value.toLowerCase();
+      filterArticles();
+    });
+
+    function filterArticles() {
+      articles.forEach(article => {
+        const categories = article.dataset.categories;
+        const tags = article.dataset.tags;
+        const title = article.dataset.title;
+        const content = article.dataset.content;
+
+        let showCategory = currentCategoryFilter === 'all' ||
+                          categories.includes(currentCategoryFilter) ||
+                          tags.includes(currentCategoryFilter);
+        let showSearch = currentSearchTerm === '' ||
+                        title.includes(currentSearchTerm) ||
+                        content.includes(currentSearchTerm) ||
+                        tags.includes(currentSearchTerm);
+
+        if (showCategory && showSearch) {
+          article.classList.remove('hidden');
+        } else {
+          article.classList.add('hidden');
+        }
+      });
+    }
+
+    // Initial filter
+    filterArticles();
+  }
+});
+</script>
+{{ end }}
