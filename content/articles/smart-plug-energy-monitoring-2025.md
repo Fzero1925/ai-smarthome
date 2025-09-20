@@ -7,7 +7,7 @@ categories: ["Guides","smart-plugs"]
 tags: ["smart plug energy monitoring", "smart home", "automation", "review", "2025"]
 keywords: ["smart plug energy monitoring", "smart home", "automation", "review"]
 featured: true
-featured_image: "static/images/smart-plugs/smart-plug-energy-monitoring/smart-plug-energy-monitoring.webp"
+featured_image: "images/smart-plugs/smart-plug-energy-monitoring/smart-plug-energy-monitoring.jpg"
 rating: 4.5
 author: "Smart Home Team"
 ---

@@ -714,41 +714,23 @@ h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
   100% { transform: rotate(360deg); }
 }
 
-/* Featured Image Styles - Fix for display issues and ensure centering */
-.featured-image-container {
-  max-width: 100% !important;
-  margin: 2rem auto !important;
-  text-align: center !important;
-  overflow: hidden;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  position: relative;
-  z-index: 0; /* keep below fixed navbar */
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  /* Force centering even with other styles */
-  width: 100% !important;
-  clear: both !important;
+/* Featured Image Styles */
+.featured-image img {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 100%;
+  height: auto;
+  margin-bottom: 2rem;
+  display: block;
 }
 
-.featured-image {
-  width: 100% !important;
-  max-width: 800px !important;
-  height: auto !important;
-  max-height: 240px !important;
-  aspect-ratio: 10/3; /* 3.33:1 ratio for consistent display */
-  object-fit: cover !important;
-  border-radius: 12px;
-  display: block !important;
-  margin: 0 auto !important;
-  position: relative;
-  z-index: 0;
-  flex-shrink: 0;
-  /* Prevent any left alignment */
-  text-align: center !important;
-  left: auto !important;
-  right: auto !important;
+.featured-image-fallback {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 100%;
+  height: auto;
+  margin-bottom: 2rem;
+  display: block;
 }
 
 /* ULTIMATE OVERRIDE: article header never sticks or overlays nav */
@@ -782,14 +764,14 @@ article .article-header {
 
 /* Responsive featured image */
 @media (max-width: 768px) {
-  .featured-image-container {
-    margin: 1rem auto;
-    border-radius: 8px;
+  .featured-image img {
+    margin-bottom: 1rem;
+    border-radius: 6px;
   }
-  
-  .featured-image {
-    max-height: 160px;
-    border-radius: 8px;
+
+  .featured-image-fallback {
+    margin-bottom: 1rem;
+    border-radius: 6px;
   }
 }
 

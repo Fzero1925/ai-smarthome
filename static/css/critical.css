@@ -110,36 +110,23 @@ img {
     loading: lazy;
 }
 
-/* Safe defaults for article featured image to avoid overlap/cover */
-.featured-image-container {
-    max-width: 100% !important;
-    margin: 1.5rem auto !important;
-    text-align: center !important;
-    overflow: hidden;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    width: 100% !important;
-    clear: both !important;
+/* Featured Image Styles for Critical CSS */
+.featured-image img {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 100%;
+    height: auto;
+    margin-bottom: 2rem;
+    display: block;
 }
 
-.featured-image {
-    display: block !important;
-    width: 100% !important;
-    max-width: 800px !important;
-    height: auto !important;
-    max-height: 240px !important;
-    object-fit: cover !important;
-    margin: 0 auto !important;
-    text-align: center !important;
-    left: auto !important;
-    right: auto !important;
-}
-
-@media (max-width: 768px) {
-  .featured-image {
-    max-height: 160px;
-  }
+.featured-image-fallback {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 100%;
+    height: auto;
+    margin-bottom: 2rem;
+    display: block;
 }
 
 /* Reserve space for ads to prevent CLS */
