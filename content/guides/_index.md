@@ -1,6 +1,6 @@
 ---
 title: "Smart Home Guides"
-description: "Comprehensive setup guides, troubleshooting solutions, and step-by-step tutorials for smart home devices and systems."
+description: "Comprehensive setup guides and troubleshooting solutions for smart home devices and systems."
 type: "guides"
 layout: "guides"
 date: 2025-09-20
