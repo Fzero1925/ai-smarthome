@@ -6,6 +6,8 @@ layout: "guides"
 date: 2025-09-20
 lastmod: 2025-09-20
 draft: false
+aliases:
+  - "/categories/guides/"
 
 # SEO Meta
 meta:

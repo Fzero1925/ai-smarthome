@@ -45,3 +45,4 @@ Spotted an error, or want a guide we haven’t covered? Send us your request via
 
 —
 AI Smart Home Hub — practical, testable smart-home guidance.# Force deployment Sat, Sep 20, 2025  2:27:09 PM
+

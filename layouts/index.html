@@ -40,51 +40,6 @@
   <!-- Top AdSense Slot -->
   {{ partial "adsense.html" . }}
 
-  <!-- Dynamic Popular Categories - 基于uiux-new.md建议的动态分类实现 -->
-  <section class="featured-categories">
-    <div class="container">
-      <div class="section-header">
-        <h2><i class="fa fa-star"></i> Popular Categories</h2>
-        <p class="section-subtitle">Explore smart home devices by type - automatically updated based on content</p>
-      </div>
-
-      {{/* 动态汇总分类并排序 - 基于uiux-new.md建议 */}}
-      {{ $terms := slice }}
-      {{ range $name, $tax := .Site.Taxonomies.categories }}
-        {{ $terms = $terms | append (dict "name" $name "slug" ($name | urlize) "count" (len $tax.Pages)) }}
-      {{ end }}
-      {{ $terms = where (sort $terms "count" "desc") ".count" "gt" 0 }}
-
-      <div class="categories-grid">
-        {{ range first 6 $terms }}
-        <a href="{{ "/categories/" | relURL }}{{ .slug }}/" class="category-card">
-          <div class="category-icon" style="background-color: {{ partial "category-image.html" (dict "slug" .slug "type" "color") }}">
-            <i class="{{ partial "category-image.html" (dict "slug" .slug "type" "icon") }}"></i>
-          </div>
-
-          <h3>{{ .name | title }}</h3>
-
-          <p>{{ partial "category-image.html" (dict "slug" .slug "name" .name "type" "description") }}</p>
-
-          <span class="category-count">{{ .count }} {{ if eq .count 1 }}article{{ else }}articles{{ end }}</span>
-
-        </a>
-        {{ end }}
-      </div>
-
-      {{/* 查看更多分类 */}}
-      {{ if gt (len $terms) 6 }}
-      <div class="categories-footer">
-        <a href="/categories/" class="view-all-categories">
-          <i class="fa fa-th-large"></i>
-          View All {{ len $terms }} Categories
-          <i class="fa fa-arrow-right"></i>
-        </a>
-      </div>
-      {{ end }}
-    </div>
-  </section>
-
   <!-- Latest Reviews -->
   <section class="latest-reviews">
     <div class="container">
@@ -146,6 +101,51 @@
         </article>
         {{ end }}
       </div>
+    </div>
+  </section>
+
+  <!-- Dynamic Popular Categories - 基于uiux-new.md建议的动态分类实现 -->
+  <section class="featured-categories">
+    <div class="container">
+      <div class="section-header">
+        <h2><i class="fa fa-star"></i> Popular Categories</h2>
+        <p class="section-subtitle">Explore smart home devices by type - automatically updated based on content</p>
+      </div>
+
+      {{/* 动态汇总分类并排序 - 基于uiux-new.md建议 */}}
+      {{ $terms := slice }}
+      {{ range $name, $tax := .Site.Taxonomies.categories }}
+        {{ $terms = $terms | append (dict "name" $name "slug" ($name | urlize) "count" (len $tax.Pages)) }}
+      {{ end }}
+      {{ $terms = where (sort $terms "count" "desc") ".count" "gt" 0 }}
+
+      <div class="categories-grid">
+        {{ range first 6 $terms }}
+        <a href="{{ "/categories/" | relURL }}{{ .slug }}/" class="category-card">
+          <div class="category-icon" style="background-color: {{ partial "category-image.html" (dict "slug" .slug "type" "color") }}">
+            <i class="{{ partial "category-image.html" (dict "slug" .slug "type" "icon") }}"></i>
+          </div>
+
+          <h3>{{ .name | title }}</h3>
+
+          <p>{{ partial "category-image.html" (dict "slug" .slug "name" .name "type" "description") }}</p>
+
+          <span class="category-count">{{ .count }} {{ if eq .count 1 }}article{{ else }}articles{{ end }}</span>
+
+        </a>
+        {{ end }}
+      </div>
+
+      {{/* 查看更多分类 */}}
+      {{ if gt (len $terms) 6 }}
+      <div class="categories-footer">
+        <a href="/categories/" class="view-all-categories">
+          <i class="fa fa-th-large"></i>
+          View All {{ len $terms }} Categories
+          <i class="fa fa-arrow-right"></i>
+        </a>
+      </div>
+      {{ end }}
     </div>
   </section>
 
@@ -326,12 +326,29 @@
   text-decoration: none;
   color: inherit;
   box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+.category-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: left 0.5s;
+}
+
+.category-card:hover::before {
+  left: 100%;
 }
 
 .category-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(0,123,255,0.25);
   text-decoration: none;
   color: inherit;
 }
@@ -347,11 +364,23 @@
   justify-content: center;
   margin: 0 auto 1rem;
   font-size: 2rem;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.category-card:hover .category-icon {
+  transform: rotate(5deg) scale(1.1);
+  box-shadow: 0 8px 25px rgba(0,123,255,0.3);
+}
+
+.category-card:hover h3 {
+  transform: translateY(-2px);
+  color: #007bff;
 }
 
 .category-card h3 {
   margin-bottom: 0.75rem;
   color: #2c3e50;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .category-card p {
@@ -446,12 +475,46 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+}
+
+.review-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0,123,255,0.05), rgba(0,123,255,0.1));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.review-card:hover::after {
+  opacity: 1;
 }
 
 .review-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 15px 45px rgba(0,123,255,0.2);
+}
+
+.review-card .review-image img {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.review-card:hover .review-image img {
+  transform: scale(1.05);
+}
+
+.review-card h3 a {
+  transition: color 0.3s ease;
+}
+
+.review-card:hover h3 a {
+  color: #007bff;
 }
 
 .review-image {

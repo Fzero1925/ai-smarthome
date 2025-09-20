@@ -5,8 +5,10 @@ date: 2025-09-07
 lastmod: 2025-09-07
 slug: "heat-pump-reversed-ob-setting-nest-ecobee-2025"
 draft: false
-categories: ["Guides","HVAC"]
+categories: ["Guides","HVAC","Troubleshooting","Tips"]
 tags: ["Heat pump","Reversing valve","O/B","Nest","ecobee","Wiring"]
+featured: true
+featured_image: "/images/google/nest/Google Nest.jpg"
 author: "AI SmartHome Hub Editorial"
 ---
 
